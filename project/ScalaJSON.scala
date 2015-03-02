@@ -25,13 +25,12 @@ object Repository {
 
 object ScalaJSON {
   val commonSettings = Seq(
-    version := "0.1",
+    name := "scala-json",
     scalaVersion := "2.11.5",
     organization := "com.mediamath",
     organizationName := "MediaMath, Inc",
     organizationHomepage := Some(url("http://www.mediamath.com")),
     credentials ++= Repository.userCredentials,
-    publishMavenStyle := true,
     crossPaths := true,
     publishTo := Some("publish" at Repository.globalPublishTo(isSnapshot.value)),
     publishArtifact in Test := false,
@@ -42,7 +41,9 @@ object ScalaJSON {
     libraryDependencies <++= scalaVersion { x =>
       Seq(
         "org.scala-lang" % "scala-reflect" % x,
-        "org.scala-lang" % "scala-compiler" % x
+        "org.scala-lang" % "scala-compiler" % x,
+
+        "com.lihaoyi" %% "utest" % "0.3.0" % "test"
       )
     },
 
@@ -54,13 +55,9 @@ object ScalaJSON {
     testFrameworks += new TestFramework("utest.runner.Framework")
   )
 
-  val settings = commonSettings ++ Seq(
-    name := "scala-json"
-  )
+  val settings = commonSettings
 
   val jsSettings = commonSettings ++ Seq(
-    name := "scala-json",
-
     unmanagedSourceDirectories in Compile +=
         (baseDirectory in ThisBuild).value / "src" / "main" / "scala",
     unmanagedSourceDirectories in Test +=

@@ -31,7 +31,7 @@ abstract class TypedEnumerator[K, T <: Enumerable[K, T]](implicit m: Manifest[T]
 
   trait Value extends Enumerable[K, T] { typed: T =>
     def enumerator = TypedEnumerator.this
-    def acc = acc
+    def acc = acc0
   }
 
   lazy val keyMap = valueMap(_.key)

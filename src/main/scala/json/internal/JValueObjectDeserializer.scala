@@ -67,7 +67,7 @@ class JValueObjectDeserializer extends StdDeserializer[JValue](classOf[JValue]) 
     deserialize(jp, ctx)
   }
 
-  def reset {
+  def reset() {
     if (valCache.size > maxCacheSizeBeforeFlush)
       valCache = valCache.empty
   }

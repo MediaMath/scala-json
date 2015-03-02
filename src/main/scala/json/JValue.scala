@@ -41,7 +41,7 @@ object JValue extends Accessors with VMContext.JValueCompanionBase /* extends Ge
 
     val res = deser.mapper.readValue[JValue](str, classOf[JValue])
 
-    deser.reset
+    deser.reset()
 
     res
   }

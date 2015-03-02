@@ -8,7 +8,7 @@ import js.JSConverters._
 object JSJValue {
   def from(v: Any): JValue = v match {
     case x: JValue => x
-    case seq0: js.Array[Any] =>
+    case seq0: js.Array[_] =>
       val seq: Seq[Any] = seq0
       val jvals: Seq[JValue] = seq.map(JSJValue.from)
 

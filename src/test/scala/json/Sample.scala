@@ -3,7 +3,8 @@ package json
 import json.annotations._
 import json.internal.JSONAnnotations.FieldAccessorAnnotation
 
-import org.qirx.littlespec.Specification
+import utest._
+import utest.ExecutionContext.RunNow
 
 import scala.annotation.meta
 
