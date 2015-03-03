@@ -14,6 +14,8 @@ JValue fromString "[1,2,3,4,5]"
 * Implicit conversion to JValue types
 ```tut
 "hello".js
+true.js
+1.7.js
 def testMap = Map("hey" -> "there")
 val testMapJs = testMap.js
 testMap.js.toDenseString
@@ -21,9 +23,20 @@ Seq.fill(3)(Set(false, true)).js
 testMap.keySet.headOption.js
 testMap.get("nokey").js
 ```
-* Use JValues dynamically
+* JS-like dynamic select
 ```tut
 require(testMapJs("nokey") == JUndefined)
+```
+* JS-like boolean conditions
+```tut
+if(testMapJs("nokey")) sys.error("unexpected")
+```
+* Compile-time case class marshalling
+```tut
+case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
+object TestClass { implicit val acc = ObjectAccessor.of[TestClass] }
+TestClass(1, None).js
+TestClass(1, None).js + (
 ```
 
 SBT

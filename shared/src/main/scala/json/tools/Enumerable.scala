@@ -2,18 +2,10 @@ package json.tools
 
 import json._
 
-trait Enumerable[K, T <: Enumerable[K, T, J], +J <: JValue] extends Product {
-  def enumerator: TypedEnumerator[K, T, J]
-  def key: K
-  def acc: JSONProducer[K, J]
-
-  def toJSON: J = key js acc
-}
-
-abstract class Enumerator[T <: Enumerable[String, T, JString]](implicit m: Manifest[T])
+abstract class Enumerator[T <: Enumerator[T]#Value](implicit m: Manifest[T])
   extends TypedEnumerator[String, T, JString]
 
-abstract class TypedEnumerator[K, T <: Enumerable[K, T, J], +J <: JValue](
+abstract class TypedEnumerator[K, T <: TypedEnumerator[K, T, J]#Value, +J <: JValue](
     implicit m: Manifest[T], acc0: JSONAccessorProducer[K, J]) {
   def values: Set[_ <: T]
 
@@ -29,9 +21,12 @@ abstract class TypedEnumerator[K, T <: Enumerable[K, T, J], +J <: JValue](
     out.toMap
   }
 
-  trait Value extends Enumerable[K, T, J] { typed: T =>
+  trait Value { typed: T =>
+    def key: K
+
     def enumerator = TypedEnumerator.this
     def acc = acc0
+    def toJSON: J = key js acc
   }
 
   lazy val keyMap = valueMap(_.key)

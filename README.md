@@ -19,6 +19,12 @@ res0: json.JValue = [1, 2, 3, 4, 5]
 scala> "hello".js
 res1: json.JString = "hello"
 
+scala> true.js
+res2: json.JBoolean = true
+
+scala> 1.7.js
+res3: json.JNumber = 1.7
+
 scala> def testMap = Map("hey" -> "there")
 testMap: scala.collection.immutable.Map[String,String]
 
@@ -29,20 +35,24 @@ testMapJs: json.JObject =
 }
 
 scala> testMap.js.toDenseString
-res2: String = {"hey":"there"}
+res4: String = {"hey":"there"}
 
 scala> Seq.fill(3)(Set(false, true)).js
-res3: json.JArray = [[false, true], [false, true], [false, true]]
+res5: json.JArray = [[false, true], [false, true], [false, true]]
 
 scala> testMap.keySet.headOption.js
-res4: json.JValue = "hey"
+res6: json.JValue = "hey"
 
 scala> testMap.get("nokey").js
-res5: json.JValue = null
+res7: json.JValue = null
 ```
 * Use JValues dynamically
 ```scala
 scala> require(testMapJs("nokey") == JUndefined)
+```
+* JS-like boolean conditions
+```scala
+scala> if(testMapJs("nokey")) sys.error("unexpected")
 ```
 
 SBT
