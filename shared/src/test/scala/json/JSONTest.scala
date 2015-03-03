@@ -2,6 +2,7 @@
 package json
 
 import json.internal.JSONAnnotations.FieldAccessorAnnotation
+import json.tools.Enumerator
 import utest.framework.TestSuite
 import utest._
 
@@ -53,6 +54,18 @@ object Tester extends TestSuite {
 }
 
                  """
+  sealed trait CorrectionReason extends CorrectionReason.Value {
+    def key = toString
+  }
+
+  object CorrectionReason extends Enumerator[CorrectionReason] {
+    case object AA extends CorrectionReason
+    case object BB extends CorrectionReason
+    case object CC extends CorrectionReason
+    case object DD extends CorrectionReason
+
+    val values = Set[CorrectionReason](AA, BB, CC, DD)
+  }
 
   implicit val testCustomAcc = JSONAccessor.create(
     (x: Byte) => JNumber(x),
@@ -95,6 +108,11 @@ object Tester extends TestSuite {
       "have equality bool" - testJSONEqual(JTrue)
       "have equality json" - testJSONEqual(JValue.fromString("""{"status": "", "percent": 0.5, "id": 4}"""))
       "have equality obj" - testJSONEqual(JObject("test".js -> "test".js, "test2".js -> 0.5.js))
+
+      "enumerator" - {
+        val k = (CorrectionReason.AA: CorrectionReason).js
+        require(CorrectionReason.AA == k.toObject[CorrectionReason])
+      }
 
       "have order equality" - require(testiter == jval)
 

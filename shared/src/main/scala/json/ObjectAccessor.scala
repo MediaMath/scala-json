@@ -121,7 +121,7 @@ trait JSONReader[T] extends TypedValueAccessor[T] {
   def fromJSON(js: JValue): T
 }
 
-trait JSONProducer[T, +JV <: JValue] extends TypedValueAccessor[T] {
+trait JSONProducer[-T, +JV <: JValue] extends TypedValueAccessor[T] {
   def createJSON(obj: T): JV
 }
 
@@ -168,8 +168,8 @@ trait JSONAccessorProducer[T, +JV <: JValue] extends JSONProducer[T, JV] with JS
   def extraSwaggerModels: Seq[JObject] = Nil
 }
 
-trait TypedValueAccessor[T] { //extends Manifest[T] {
-  def manifest: Manifest[T]
+trait TypedValueAccessor[-T] { //extends Manifest[T] {
+  def manifest: Manifest[_ >: T]
 
   def runtimeClass: Class[_] = manifest.runtimeClass
 }

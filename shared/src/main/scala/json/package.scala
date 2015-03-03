@@ -15,8 +15,7 @@ package object json extends JSONAnnotations.TypeAdder with JSONParser {
     obj.js.toString
 
   implicit class AnyValJSEx[T](val x: T) extends AnyVal {
-    def js[U <: JValue](implicit acc: JSONProducer[T, U]): U =
-      acc.createJSON(x)
+    def js[U <: JValue](implicit acc: JSONProducer[T, U]): U = acc.createJSON(x)
 
     /*def js(implicit acc: CaseClassObjectAccessor[T]): JObject =
 			acc.createJSON(x)*/
