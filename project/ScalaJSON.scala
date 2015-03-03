@@ -23,6 +23,8 @@ object Repository {
 }
 
 object ScalaJSON {
+  val genDocsTask = TaskKey[Unit]("gen-docs")
+
   val commonSettings = Seq(
     name := "scala-json",
     scalaVersion := "2.11.5",
@@ -51,7 +53,21 @@ object ScalaJSON {
     testFrameworks += new TestFramework("utest.runner.Framework")
   )
 
-  val jvmSettings = Seq(
-    libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1"
+  val jvmSettings = tut.Plugin.tutSettings ++ Seq(
+    libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1",
+
+    genDocsTask <<= (tut.Plugin.tut, baseDirectory in ThisBuild) map { (outFiles, baseDir) =>
+      for((outFile, _) <- outFiles) outFile.renameTo(baseDir / outFile.getName)
+    },
+
+    tut.Plugin.tutSourceDirectory := (baseDirectory in ThisBuild).value / "src" / "main" / "tut",
+
+    (sbt.Keys.`package` in Compile) <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask)
+  )
+
+  val settings = tut.Plugin.tutSettings ++ Seq(
+    publish := {},
+    publishLocal := {},
+    crossScalaVersions in ThisBuild := Seq("2.11.4")//, "2.10.4")
   )
 }

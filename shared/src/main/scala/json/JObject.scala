@@ -172,6 +172,6 @@ final case class JObject(override val fields: Map[JString, JValue])(
       }
     }
 
-    out append "}"
+    tabs append (nl + "}")
   }
 }
