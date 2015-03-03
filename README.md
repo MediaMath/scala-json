@@ -46,13 +46,36 @@ res6: json.JValue = "hey"
 scala> testMap.get("nokey").js
 res7: json.JValue = null
 ```
-* Use JValues dynamically
+* JS-like dynamic select
 ```scala
 scala> require(testMapJs("nokey") == JUndefined)
 ```
 * JS-like boolean conditions
 ```scala
 scala> if(testMapJs("nokey")) sys.error("unexpected")
+```
+* Compile-time case class marshalling
+```scala
+scala> case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
+defined class TestClass
+
+scala> implicit val acc = ObjectAccessor.of[TestClass] 
+acc: json.CaseClassObjectAccessor[TestClass]{val nameMap: String => String; val fields: IndexedSeq[json.FieldAccessor[TestClass]]; val manifest: Manifest[TestClass]} = ObjectAccessor(TestClass)
+
+scala> TestClass(1, None).js
+res10: json.JObject =
+{
+  "a": 1,
+  "c": ""
+}
+
+scala> TestClass(1, None).js + ("blah".js -> 1.js)
+res11: json.JObject =
+{
+  "a": 1,
+  "c": "",
+  "blah": 1
+}
 ```
 
 SBT
