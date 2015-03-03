@@ -1,12 +1,19 @@
-ScalaJSON.settings
+import ScalaJSON._
 
 version in ThisBuild := "0.1-SNAPSHOT"
 
 crossScalaVersions in ThisBuild := Seq("2.11.4")//, "2.10.4")
 
-lazy val jsonJs = Project("scala-json-js", file("scalajs"))
-    .enablePlugins(ScalaJSPlugin)
-    .settings(ScalaJSON.jsSettings: _*)
+lazy val json = crossProject.in(file("."))
+    .settings(commonSettings: _*)
+    .jvmSettings(jvmSettings: _*)
+    .jsSettings()
 
-lazy val root = Project("scala-json", file(".")).settings(ScalaJSON.settings: _*).aggregate(jsonJs)
+lazy val jsonJVM = json.jvm
+lazy val jsonJS = json.js
+
+
+publish := {}
+
+publishLocal := {}
 

@@ -1,7 +1,6 @@
 package json
 
 import scala.scalajs.js
-import json.internal.DefaultJVMShadowContext.{ VMContext => JVMContext }
 
 import js.JSConverters._
 
@@ -21,7 +20,7 @@ object JSJValue {
       }
       JObject(seq: _*)
     case x: String => JString(x)
-    case x         => JVMContext.fromAny(x)
+    case x         => JValue.fromAnyInternal(x)
   }
 
   def toJS(from: JValue): js.Any = from match {

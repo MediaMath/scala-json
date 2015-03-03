@@ -1,6 +1,5 @@
 package json.shadow
 
-import json.internal.DefaultJVMShadowContext
 import json.{ JSJValue, JValue }
 
 import scalajs.js
@@ -21,7 +20,7 @@ object VMContext {
 
   def fromAny(value: Any): JValue = JSJValue.from(value)
 
-  trait JValueCompanionBase extends DefaultJVMShadowContext.VMContext.JValueCompanionBase
+  trait JValueCompanionBase
 
-  trait JValueBase extends DefaultJVMShadowContext.VMContext.JValueBase
+  trait JValueBase
 }

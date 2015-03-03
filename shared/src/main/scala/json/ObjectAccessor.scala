@@ -64,15 +64,11 @@ trait FieldAccessor[T] extends Product2[Manifest[T], String] {
   }
 
   def createSwagger: JValue = try {
-    import json._
-
     val accProp = createSwaggerProperty
 
     JObject(name.js -> accProp)
   } catch {
     case e: NullPointerException => {
-      import json._
-
       JObject(name.js -> "null???".js)
     }
   }

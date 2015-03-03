@@ -18,7 +18,6 @@ object Repository {
   val remoteRepo = "remote" at Repository.remote
 
   def repo(isSnapshot: Boolean) = if (isSnapshot) Repository.snapshots else Repository.releases
-  def publishTo(isSnapshot: Boolean) = repo(isSnapshot) + "-local"
   def globalPublishTo(isSnapshot: Boolean) = repo(isSnapshot) + "-global"
   def userCredentials = (Path.userHome / ".ivy2" / "credentials" ** "*").filter(_.isFile).get.map(Credentials(_))
 }
@@ -46,19 +45,13 @@ object ScalaJSON {
     },
 
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "utest" % "0.3.0" % "test",
-      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1"
+      "com.lihaoyi" %%% "utest" % "0.3.0" % "test"
     ),
 
     testFrameworks += new TestFramework("utest.runner.Framework")
   )
 
-  val settings = commonSettings
-
-  val jsSettings = commonSettings ++ Seq(
-    unmanagedSourceDirectories in Compile +=
-        (baseDirectory in ThisBuild).value / "src" / "main" / "scala",
-    unmanagedSourceDirectories in Test +=
-        (baseDirectory in ThisBuild).value / "src" / "test" / "scala"
+  val jvmSettings = Seq(
+    libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1"
   )
 }

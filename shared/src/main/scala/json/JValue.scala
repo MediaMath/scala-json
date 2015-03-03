@@ -1,12 +1,16 @@
 package json
 
-import json.internal.{ DefaultJVMShadowContext, JValueObjectDeserializer, Accessors }
+import json.internal.{DefaultVMContext, Accessors}
+import DefaultVMContext._
 
-import DefaultJVMShadowContext._
-
-object JValue extends Accessors with VMContext.JValueCompanionBase /* extends GenericCompanion[JValueColl]*/ {
+private[json] object VM {
   //import shadow context! Will shadow default terms from on high
   import shadow._
+
+  val Context = VMContext
+}
+
+object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends GenericCompanion[JValueColl]*/ {
 
   //TODO: add applys for creating values from different types
   def apply(n: Int) = JNumber(n)
@@ -19,7 +23,37 @@ object JValue extends Accessors with VMContext.JValueCompanionBase /* extends Ge
   def from(v: Any): JValue = apply(v)
 
   def apply[T](v: T) /*(implicit acc: JSONProducer[T, JValue] = null)*/ : JValue =
-    VMContext.fromAny(v)
+    VM.Context.fromAny(v)
+
+  private[json] def fromAnyInternal(value: Any): JValue = value match {
+    //case x if acc == null => v.js
+    case x: JValue => x
+    case x: String => JString(x)
+    case None      => JNull
+    case null      => JNull
+    case true      => JTrue
+    case false     => JFalse
+    case x: Double => JNumber(x)
+    case x: Iterable[Any] =>
+      val seq = x.toSeq
+      if (seq.isEmpty) (x: @unchecked) match {
+        case _: Map[_, _] => JObject(Map.empty[JString, JValue])
+        case _            => JArray(Nil.toIndexedSeq)
+      }
+      else seq.head match {
+        case (k: String, v: Any) =>
+          val vals = x.toSeq map {
+            case (k: String, v) => k.js -> JValue(v)
+          }
+          JObject(vals: _*)
+        case (v: Any) =>
+          JArray(x.map(JValue.from).toIndexedSeq)
+      }
+    case x: Int   => JNumber(x)
+    case x: Short => JNumber(x)
+    case x: Long  => JNumber(x)
+    case x: Float => JNumber(x)
+  }
 
   //implicit def anyToJVal[T, U <: JValue](x: T)(implicit acc: JSONProducer[T, U]): U = x.js
   //implicit def anyToJVal[T](x: T)(implicit acc: JSONProducer[T, JValue]): JValue = x.js
@@ -30,10 +64,10 @@ object JValue extends Accessors with VMContext.JValueCompanionBase /* extends Ge
   implicit def intToJValue(v: Int): JNumber = JNumber(v)
 
   def fromString(str: String): JValue = {
-    VMContext.fromString(str)
+    VM.Context.fromString(str)
   }
 
-  type JValueBase = VMContext.JValueBase
+  type JValueBase = VM.Context.JValueBase
 }
 
 trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JValue, JValue] {
