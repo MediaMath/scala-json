@@ -3,7 +3,7 @@ package json.internal
 import json._
 
 object DefaultVMContext {
-  /*object VMContext {
+  object VMContext {
     def fromString(str: String): JValue = ???
 
     def fromAny(value: Any): JValue = ???
@@ -11,5 +11,5 @@ object DefaultVMContext {
     trait JValueCompanionBase
 
     trait JValueBase
-  }*/
+  }
 }
