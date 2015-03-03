@@ -5,6 +5,8 @@ import json.internal.JSONAnnotations.FieldAccessorAnnotation
 
 import utest._
 import utest.ExecutionContext.RunNow
+import utest.framework.Test
+import utest.util.Tree
 
 import scala.annotation.meta
 
@@ -16,26 +18,29 @@ object Sample {
     def foo: String
   }
 
+  object Foo {
+    implicit val acc = ObjectAccessor.of[Foo]
+  }
   case class Foo(foo: String,
     @JSONFieldName(field = "aa11") bar: Int,
     @NumAnno(11) optField: Option[String] = None,
     anArray: Seq[Int] = Nil) extends FooBase
 
+  object TestObjectCase {
+    implicit val acc = ObjectAccessor.of[TestObjectCase]
+  }
   @NameConversion(s => s.toUpperCase)
-  case class TestObjectCase(camelCase1: String = "", aNothingFieldNamee: Int = 1)
+  case class TestObjectCase(camelCase1: String = "", anotherFieldName: Int = 1)
 
-  //val oacc = CaseClassObjectAccessor.of[Foo]
+  object FooWrapper {
+    implicit val acc = ObjectAccessor.of[FooWrapper]
+  }
+  case class FooWrapper(foo: String, extra: Set[Foo]) extends FooBase
 }
 
 //this is more of a sample than a test....
-class Sample extends Specification {
+object SampleTest extends TestSuite {
   import Sample._
-
-  case class FooWrapper(foo: String, extra: Set[Foo]) extends FooBase
-
-  implicit val accessorForFoo = ObjectAccessor.of[Foo]
-  implicit val accessorForFooWrapper = ObjectAccessor.of[FooWrapper]
-  implicit val accessorForFooTestObjectCase = ObjectAccessor.of[TestObjectCase]
 
   //custom type marshalling
   implicit val testCustomAcc = ObjectAccessor.create[FooBase](
@@ -51,10 +56,11 @@ class Sample extends Specification {
     }
   )
 
-  "a sample test" - {
-    "access as json" - {
-      runTest()
-      success
+  val tests = TestSuite {
+    "a sample test" - {
+      "access as json" - {
+        runTest()
+      }
     }
   }
 
@@ -96,11 +102,11 @@ class Sample extends Specification {
     val fb: FooBase = fw
 
     //using custom accessor to handle super-type
-    require(fb.js == (fw.js + ("type".js, "foowrapper".js)))
+    require(fb.js == (fw.js + ("type".js -> "foowrapper".js)))
     require(fb.js.toObject[FooBase] == fw)
 
     val annoSet = (for {
-      field <- ObjectAccessor.caseClassAccessorOf[Foo].fields
+      field <- ObjectAccessor.of[Foo].fields
       anno <- field.annos
     } yield anno).toSet
 
@@ -115,30 +121,6 @@ class Sample extends Specification {
   }
 
   /*it should "allow new accessor types" in {
-		trait XMLAccessorWrapsObjectAccessor[T, ObjectAccessor[T]] {
-			def marshal(x: T): String
-		}
-
-		implicit case object StringSerialLongConverter extends
-				ObjectAccessorStringConverter[Long, LongAccessor.type] {
-			def marshal(x: Long): String = x.asInstanceOf[Long].toString
-		}
-
-		class StringAccessorType[T, U <: ObjectAccessor[T]](
-				implicit acc: U, converter: ObjectAccessorStringConverter[T, U]) {
-			/*val marshalFunc = acc match {
-				case LongAccessor => { x: T =>
-					x.asInstanceOf[Long].toString
-				}
-				case cacc: CaseClassObjectAccessor[T] =>
-					cacc.fields.map(_.fieldAccessor)
-
-			}*/
-
-			def from(x: T) = converter.marshal(x)
-		}
-		def newStringAccessor[T](implicit )
-
-		implicit val customFooAcc = StringAccessorType[Foo]
 	}*/
+
 }

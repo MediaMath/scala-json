@@ -24,6 +24,7 @@ object JArray { //extends GenericCompanion[scala.collection.immutable.Iterable] 
   def newJArrayBuilder: Builder[JValue, JArray] = new JArrayBuilder
 
   def apply(seq: TraversableOnce[JValue]): JArray = new JArray(seq.toIndexedSeq)
+  def apply(seq: JValue*) = new JArray(seq.toIndexedSeq)
   //def apply[T <: JValue](x: T, xN: T*): JArray = apply(x +: xN)
 
   class JArrayBuilder extends Builder[JValue, JArray] {

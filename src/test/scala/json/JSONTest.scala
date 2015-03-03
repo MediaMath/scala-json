@@ -2,64 +2,45 @@
 package json
 
 import json.internal.JSONAnnotations.FieldAccessorAnnotation
+import utest.framework.TestSuite
+import utest._
 
 import scala.annotation.meta
 
-/*case class TestObject3(label: Option[String],
-		url: Option[String], id: Long)*/
 
-trait TestObject3 extends Product4[String, Double, Long, Option[String]] {
-  def `status`: String
-  def `percent`: Double
-  def `id`: Long
-  def `errorMessage`: Option[String]
-
-  def _1 = `status`
-  def _2 = `percent`
-  def _3 = `id`
-  def _4 = `errorMessage`
-
-  def canEqual(other: Any) = other.isInstanceOf[TestObject3]
-
-  override def equals(other: Any): Boolean = runtime.ScalaRunTime._equals(this, other)
-
-  override def hashCode: Int = runtime.ScalaRunTime._hashCode(this)
-
-  override def toString: String = runtime.ScalaRunTime._toString(this)
-}
-
-object TestObject3 {
-  def apply(
-    `status`: String,
-    `percent`: Double,
-    `id`: Long,
-    `errorMessage`: Option[String] = None) = new Immutable(status, percent, id, errorMessage)
-
-  class Immutable(val `status`: String,
-    val `percent`: Double,
-    val `id`: Long,
-    val `errorMessage`: Option[String]) extends TestObject3
-}
-
-case class TestObject2(a: String, b: String, qqq: Double = 2.456,
-  c: String = "ddddd", d: Option[String] = Some("XXXX"),
-  @JSONFieldName(field = "aa11")@Tester.NumAnno(11) ffff: Option[String] = None,
-  @JSONFieldName(field = "zzz2") zzz: Map[String, TestObject3] = Map("asfa" ->
-    TestObject3("", 0.5, 4, None)),
-  seqa: Seq[Int] = Nil,
-  blah: Int = 123)
-
-case class TestObject(a: String,
-  @JSONFieldName(field = "BLAH") b: String,
-  c: Int, d: TestObject2)
-
-trait TestTrait {
-  def num: Int
-}
-
-object Tester {
+object Tester extends TestSuite {
   case class NumAnnoGeneric(n: Int) extends FieldAccessorAnnotation
   type NumAnno = (NumAnnoGeneric @meta.field @meta.getter)
+
+  case class TestObject3(val `status`: String,
+      val `percent`: Double,
+      val `id`: Long,
+      ᛋᚳᛖᚪ: String = "ᛋᚳᛖᚪᛚ᛫ᚦᛖᚪᚻ᛫ᛗᚪᚾᚾᚪ᛫ᚷᛖᚻᚹᛦᛚᚳ᛫ᛗᛁᚳᛚᚢᚾ᛫ᚻᛦᛏ᛫ᛞᚫᛚᚪᚾ")
+  object TestObject3 {
+    implicit val acc = ObjectAccessor.of[TestObject3]
+  }
+
+  object TestObject2 {
+    implicit val acc = ObjectAccessor.of[TestObject2]
+  }
+  case class TestObject2(a: String, b: String, qqq: Double = 2.456,
+      c: String = "ddddd", d: Option[String] = Some("XXXX"),
+      @JSONFieldName(field = "aa11") @Tester.NumAnno(11) ffff: Option[String] = None,
+      @JSONFieldName(field = "zzz2") zzz: Map[String, TestObject3] = Map("asfa" ->
+          TestObject3("", 0.5, 4)),
+      seqa: Seq[Int] = Nil,
+      blah: Int = 123)
+
+  object TestObject {
+    implicit val acc = ObjectAccessor.of[TestObject]
+  }
+  case class TestObject(a: String,
+      @JSONFieldName(field = "BLAH") b: String,
+      c: Int, d: TestObject2)
+
+  trait TestTrait {
+    def num: Int
+  }
 
   val testJSON = """
 {
@@ -85,47 +66,43 @@ object Tester {
     }
   )
 
-  implicit val accessorForTestObject3: CaseClassObjectAccessor[TestObject3] =
-    (ObjectAccessor.createFor(null: TestObject3))
+  def testJSONEqual(jv: JValue) =
+    require(JValue.fromString(jv.toString) == jv,
+      jv.toString + " != " + JValue.fromString(jv.toString))
 
-  implicit val accessorForTestObject2: CaseClassObjectAccessor[TestObject2] =
-    (ObjectAccessor.createFor(null: TestObject2))
+  val tests = TestSuite {
+    "JSON accessor should" - {
+      val test3 = TestObject3("", 0.5, 4)
+      val test2 = TestObject2("sdfsdg", "dfdfd")
+      val test1 = TestObject("aaa", "bbbb", 5, test2)
+      val acc = ObjectAccessor.accessorFor(test1)
+      val jval = test1.js
+      val t2jval = test2.js
+      val t3jval = test3.js
+      def testiter: JValue = jval.map(x => x) //(JValue.canBuildFrom[JValue])
+      def badt2 = t2jval + ("a" ->> JUndefined) + ("b" ->> JUndefined)
+      def badt1 = jval + ("d" ->> badt2) + ("BLAH" ->> JUndefined)
+      def parsedt2 = fromJSON[TestObject2](t2jval)
 
-  implicit val accessorForTestObject: CaseClassObjectAccessor[TestObject] =
-    (ObjectAccessor.createFor(null: TestObject))
+      "have annos" - require(TestObject2.acc.fields.flatMap(_.annos).nonEmpty)
 
-  def main(args: Array[String]) {
-    val test2 = TestObject2("sdfsdg", "dfdfd")
-    val test1 = TestObject("aaa", "bbbb", 5, test2)
+      "parse json" - JValue.fromString(testJSON2)
 
-    println(accessorForTestObject2.fields.flatMap(_.annos))
+      "have equality3" - testJSONEqual(t3jval)
+      "have equality string" - testJSONEqual(JString("test"))
+      "have equality num" - testJSONEqual(JNumber(0.5))
+      "have equality arr" - testJSONEqual(JArray(JNumber(0.5), "blah".js))
+      "have equality bool" - testJSONEqual(JTrue)
+      "have equality json" - testJSONEqual(JValue.fromString("""{"status": "", "percent": 0.5, "id": 4}"""))
+      "have equality obj" - testJSONEqual(JObject("test".js -> "test".js, "test2".js -> 0.5.js))
 
-    val acc = ObjectAccessor.accessorFor(test1)
-    println(acc)
-    val jval = JObject(test1)
-    val t2jval = JObject(test2)
+      "have order equality" - require(testiter == jval)
 
-    //import JValue.canBuildFrom
+      "access properties as undefined" - require(jval("sdgsdgsdgsdg") === JUndefined)
 
-    println(JValue.fromString(jval.toString))
+      "ignore unidentified fields" - require(test2 == parsedt2)
 
-    val testiter: JValue = jval.map(x => x) //(JValue.canBuildFrom[JValue])
-    println("mapped", testiter)
-
-    require(jval("sdgsdgsdgsdg") === JUndefined)
-
-    println((jval, t2jval))
-
-    val badt2 = t2jval + ("a" ->> JUndefined) + ("b" ->> JUndefined)
-    val badt1 = jval + ("d" ->> badt2) + ("BLAH" ->> JUndefined)
-    println(badt1)
-
-    val parsedt2 = fromJSON[TestObject2](t2jval)
-
-    println(parsedt2)
-
-    require(test2 == parsedt2)
-
+    }
   }
 
   val testJSON2 = """

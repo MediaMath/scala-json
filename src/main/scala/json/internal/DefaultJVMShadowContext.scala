@@ -2,13 +2,23 @@ package json.internal
 
 import json._
 
-/**
- * Created by crgodsey on 2/14/15.
- */
 object DefaultJVMShadowContext {
   //default context for JVM. Can be shadowed by other impls
   object VMContext {
-    def fromString(str: String): JValue = JValue.fromStringJackson(str)
+    val localMapper = new ThreadLocal[JValueObjectDeserializer] {
+      override protected def initialValue: JValueObjectDeserializer =
+        new JValueObjectDeserializer
+    }
+
+    def fromString(str: String): JValue = {
+      val deser = localMapper.get
+
+      val res = deser.mapper.readValue[JValue](str, classOf[JValue])
+
+      deser.reset()
+
+      res
+    }
 
     def fromAny(value: Any): JValue = value match {
       //case x if acc == null => v.js

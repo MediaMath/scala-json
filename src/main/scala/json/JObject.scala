@@ -104,9 +104,6 @@ final case class JObject(override val fields: Map[JString, JValue])(
     new JObject(fields - key)(newKeys)
   }
 
-  /*override def -(key: Any): JValue =
-		this - JValue.from(key).toJString.str*/
-
   def toJString: JString =
     sys.error("cannot convert JObject to JString")
   //JString("object " + uuid) //this... should be different
@@ -115,10 +112,6 @@ final case class JObject(override val fields: Map[JString, JValue])(
 
   override def jValue = this
   override def keys: Iterable[JString] = keyIterable
-  /*def toMap: Map[JString, JValue] = keys map { key =>
-		val jstr = key.toJString
-		(jstr, getJObjectValue(jstr))
-	} toMap*/
 
   override def companion: GenericCompanion[scala.collection.immutable.Iterable] = JObject
   override def newBuilder = JObject.newJObjectBuilder
@@ -134,6 +127,13 @@ final case class JObject(override val fields: Map[JString, JValue])(
   override def jBoolean: JBoolean = throw GenericJSONException("Expected JBoolean")
 
   override def toString = toJSONString
+
+  override def canEqual(that: Any) = true
+
+  override def equals(that: Any) = that match {
+    case JObject(f) => f == fields
+    case _ => false
+  }
 
   def ++(that: JObject): JObject = {
     val thisMap = toMap

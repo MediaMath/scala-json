@@ -87,8 +87,7 @@ class JValueObjectDeserializer extends StdDeserializer[JValue](classOf[JValue]) 
   def parseObject(jp: JsonParser, ctx: DeserializationContext): JObject = {
     require(jp.getCurrentToken == START_OBJECT, "not start of object")
 
-    var map = Map[JString, JValue]()
-    val keysBuilder = new VectorBuilder[JString]
+    val seqBuilder = new VectorBuilder[(JString, JValue)]
 
     while (jp.nextToken != END_OBJECT) {
       require(jp.getCurrentToken == FIELD_NAME, "unexpected token " + jp.getCurrentToken)
@@ -97,12 +96,12 @@ class JValueObjectDeserializer extends StdDeserializer[JValue](classOf[JValue]) 
       jp.nextToken
       val v = deserialize(jp, ctx)
 
-      map += key -> v
-      keysBuilder += key
+      seqBuilder += key -> v
     }
 
-    val res = keysBuilder.result
-    if (res.isEmpty) JObject.empty else JObject(map)(res)
+    val res = seqBuilder.result
+
+    if (res.isEmpty) JObject.empty else JObject(res: _*)
   }
 
   def parseArray(jp: JsonParser, ctx: DeserializationContext): JArray = {

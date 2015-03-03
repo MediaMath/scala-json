@@ -29,23 +29,6 @@ object JValue extends Accessors with VMContext.JValueCompanionBase /* extends Ge
   implicit def stringToJValue(v: String): JString = JString(v)
   implicit def intToJValue(v: Int): JNumber = JNumber(v)
 
-  val localMapper = new ThreadLocal[JValueObjectDeserializer] {
-    override protected def initialValue: JValueObjectDeserializer =
-      new JValueObjectDeserializer
-  }
-
-  def fromStringJackson(str: String): JValue = {
-    //jsonParser.parseJSON(str)
-
-    val deser = localMapper.get
-
-    val res = deser.mapper.readValue[JValue](str, classOf[JValue])
-
-    deser.reset()
-
-    res
-  }
-
   def fromString(str: String): JValue = {
     VMContext.fromString(str)
   }
@@ -53,7 +36,7 @@ object JValue extends Accessors with VMContext.JValueCompanionBase /* extends Ge
   type JValueBase = VMContext.JValueBase
 }
 
-trait JValue extends Product with JValue.JValueBase { //} with PartialFunction[JValue, JValue] {
+trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JValue, JValue] {
   def toJSONStringBuilder(settings: JSONBuilderSettings = prettyJSONBuilder, lvl: Int = 0): StringBuilder
 
   def toJString: JString
@@ -160,7 +143,6 @@ trait JValue extends Product with JValue.JValueBase { //} with PartialFunction[J
   }
 
   def ===(x: JValue) = equals(x)
-  def !=(to: JValue) = !(this == to)
   def !==(to: JValue) = !(this === to)
 
   def unary_!(): JBoolean = toJBoolean.not
@@ -172,23 +154,6 @@ trait JValue extends Product with JValue.JValueBase { //} with PartialFunction[J
   def toPrettyString = toString(prettyJSONBuilder)
 
   def toJSONString = toPrettyString
-
-  //override def companion: GenericCompanion[JValueColl] = JValue
-
-  override def canEqual(other: Any) = other.getClass == getClass
-
-  override def equals(other: Any) = other match {
-    case jval: JValue if canEqual(other) =>
-      //productIterator.toSeq == jval.productIterator.toSeq
-      scala.runtime.ScalaRunTime._equals(this, jval)
-    case _ => false
-  }
-
-  //TODO: this only works for immutables
-  //override lazy val hashCode: Int = super.hashCode
-
-  override def hashCode: Int =
-    (getClass, productIterator.toSeq).hashCode
 
   /*override def toString: String = productPrefix +
 			"(" + productIterator.mkString(", ") + ")"*/

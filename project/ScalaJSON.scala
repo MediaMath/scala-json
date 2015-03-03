@@ -41,9 +41,7 @@ object ScalaJSON {
     libraryDependencies <++= scalaVersion { x =>
       Seq(
         "org.scala-lang" % "scala-reflect" % x,
-        "org.scala-lang" % "scala-compiler" % x,
-
-        "com.lihaoyi" %% "utest" % "0.3.0" % "test"
+        "org.scala-lang" % "scala-compiler" % x
       )
     },
 

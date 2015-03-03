@@ -2,19 +2,19 @@ package json.tools
 
 import json._
 
-trait Enumerable[K, T <: Enumerable[K, T]] extends Product {
-  def enumerator: TypedEnumerator[K, T]
+trait Enumerable[K, T <: Enumerable[K, T, J], +J <: JValue] extends Product {
+  def enumerator: TypedEnumerator[K, T, J]
   def key: K
-  def acc: JSONProducer[K, JValue]
+  def acc: JSONProducer[K, J]
 
-  def toJSON: JValue = key js acc
+  def toJSON: J = key js acc
 }
 
-//TODO: figure out how to make this work with ints and stuff too
-abstract class Enumerator[T <: Enumerable[String, T]](implicit m: Manifest[T])
-  extends TypedEnumerator[String, T]
+abstract class Enumerator[T <: Enumerable[String, T, JString]](implicit m: Manifest[T])
+  extends TypedEnumerator[String, T, JString]
 
-abstract class TypedEnumerator[K, T <: Enumerable[K, T]](implicit m: Manifest[T], acc0: JSONAccessor[K]) {
+abstract class TypedEnumerator[K, T <: Enumerable[K, T, J], +J <: JValue](
+    implicit m: Manifest[T], acc0: JSONAccessorProducer[K, J]) {
   def values: Set[_ <: T]
 
   def valueMap[U](f: T => U): Map[U, T] = {
@@ -29,7 +29,7 @@ abstract class TypedEnumerator[K, T <: Enumerable[K, T]](implicit m: Manifest[T]
     out.toMap
   }
 
-  trait Value extends Enumerable[K, T] { typed: T =>
+  trait Value extends Enumerable[K, T, J] { typed: T =>
     def enumerator = TypedEnumerator.this
     def acc = acc0
   }
@@ -38,14 +38,14 @@ abstract class TypedEnumerator[K, T <: Enumerable[K, T]](implicit m: Manifest[T]
 
   def default(jv: JValue): T = sys.error(s"Unknown Enumerable type $jv for ${m.runtimeClass}")
 
-  implicit lazy val accessor = new JSONAccessorProducer[T, JString] {
-    def createJSON(from: T): JString = from.toJSON.toJString
+  implicit lazy val accessor = new JSONAccessorProducer[T, J] {
+    def createJSON(from: T): J = from.toJSON// from.toJSON.toJString    dislikee
     def fromJSON(from: JValue): T = keyMap.getOrElse(from.to[K], default(from))
     def manifest = m
 
     val jsValues = values.toSeq.map(_.toJSON)
 
     override def createSwaggerProperty: JObject =
-      super.createSwaggerProperty ++ JObject("enum".js -> JArray(jsValues))
+      super.createSwaggerProperty ++ JObject(JString("enum") -> JArray(jsValues))
   }
 }
