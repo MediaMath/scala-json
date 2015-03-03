@@ -1,5 +1,10 @@
+scala-json
+==========
+Compile time JSON marshalling of primitive values and basic collections. Runtime
+marshalling is available, but not required.
+
 Getting Started
-===============
+---------------
 
 * Import the json package
 ```scala
@@ -23,14 +28,17 @@ testMapJs: json.JObject =
   "hey": "there"
 }
 
-scala> Seq.fill(3)(testMap).js.toDenseString
-res2: String = [{"hey":"there"},{"hey":"there"},{"hey":"there"}]
+scala> testMap.js.toDenseString
+res2: String = {"hey":"there"}
+
+scala> Seq.fill(3)(Set(false, true)).js
+res3: json.JArray = [[false, true], [false, true], [false, true]]
 
 scala> testMap.keySet.headOption.js
-res3: json.JValue = "hey"
+res4: json.JValue = "hey"
 
 scala> testMap.get("nokey").js
-res4: json.JValue = null
+res5: json.JValue = null
 ```
 * Use JValues dynamically
 ```scala
@@ -42,7 +50,8 @@ SBT
 
 ```scala
 
-resolvers += "mmreleases" at "https://artifactory.mediamath.com/artifactory/libs-release-global"
+resolvers += "mmreleases" at
+    "https://artifactory.mediamath.com/artifactory/libs-release-global"
 
 libraryDependencies += "com.mediamath" %% "scala-json" % "0.1"
 
