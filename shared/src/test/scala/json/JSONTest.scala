@@ -2,7 +2,7 @@
 package json
 
 import json.internal.JSONAnnotations.FieldAccessorAnnotation
-import json.tools.Enumerator
+import json.tools.{TypedEnumerator, Enumerator}
 import utest.framework.TestSuite
 import utest._
 
@@ -67,6 +67,19 @@ object Tester extends TestSuite {
     val values = Set[CorrectionReason](AA, BB, CC, DD)
   }
 
+  sealed trait TypedEnumA extends TypedEnumA.Value {
+    def key = toString.charAt(0).toInt
+  }
+
+  object TypedEnumA extends TypedEnumerator[Int, TypedEnumA, JNumber] {
+    case object AA extends TypedEnumA
+    case object BB extends TypedEnumA
+    case object CC extends TypedEnumA
+    case object DD extends TypedEnumA
+
+    val values = Set(AA, BB, CC, DD)
+  }
+
   implicit val testCustomAcc = JSONAccessor.create(
     (x: Byte) => JNumber(x),
     _.toJNumber.num.toByte
@@ -110,8 +123,13 @@ object Tester extends TestSuite {
       "have equality obj" - testJSONEqual(JObject("test".js -> "test".js, "test2".js -> 0.5.js))
 
       "enumerator" - {
-        val k = (CorrectionReason.AA: CorrectionReason).js
+        val k = CorrectionReason.AA.js
         require(CorrectionReason.AA == k.toObject[CorrectionReason])
+      }
+
+      "typed enumerator" - {
+        val k = TypedEnumA.AA.js
+        require(TypedEnumA.AA == k.toObject[TypedEnumA])
       }
 
       "have order equality" - require(testiter == jval)
