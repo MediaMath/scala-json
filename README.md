@@ -14,20 +14,27 @@ res0: json.JValue = [1, 2, 3, 4, 5]
 scala> "hello".js
 res1: json.JString = "hello"
 
-scala> def map = Map("hey" -> "there")
-map: scala.collection.immutable.Map[String,String]
+scala> def testMap = Map("hey" -> "there")
+testMap: scala.collection.immutable.Map[String,String]
 
-scala> map.js
-res2: json.JObject =
+scala> val testMapJs = testMap.js
+testMapJs: json.JObject =
 {
   "hey": "there"
 }
 
-scala> Seq.fill(3)(map).js.toDenseString
-res3: String = [{"hey":"there"},{"hey":"there"},{"hey":"there"}]
+scala> Seq.fill(3)(testMap).js.toDenseString
+res2: String = [{"hey":"there"},{"hey":"there"},{"hey":"there"}]
 
-scala> map.keySet.headOption.js
-res4: json.JValue = "hey"
+scala> testMap.keySet.headOption.js
+res3: json.JValue = "hey"
+
+scala> testMap.get("nokey").js
+res4: json.JValue = null
+```
+* Use JValues dynamically
+```scala
+scala> require(testMapJs("nokey") == JUndefined)
 ```
 
 SBT

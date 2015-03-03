@@ -10,9 +10,14 @@ JValue fromString "[1,2,3,4,5]"
 ```tut
 "hello".js
 def testMap = Map("hey" -> "there")
-testMap.js
+val testMapJs = testMap.js
 Seq.fill(3)(testMap).js.toDenseString
 testMap.keySet.headOption.js
+testMap.get("nokey").js
+```
+* Use JValues dynamically
+```tut
+require(testMapJs("nokey") == JUndefined)
 ```
 
 SBT
