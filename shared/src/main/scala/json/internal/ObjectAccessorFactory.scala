@@ -53,9 +53,9 @@ object ObjectAccessorFactory {
     }
     val nameConversionExpr = c.Expr[String => String](nameConversion)
 
-    def manifestExpr(t: Type) = c.Expr[Manifest[_]](
-      TypeApply(Select(Ident(TermName("ObjectAccessor")),
-        TermName("manifestOf")), List(TypeTree(t))))
+    def classExpr(t: Type) = c.Expr[Class[_]](
+      TypeApply(Select(Ident(TermName("Predef")),
+        TermName("classOf")), List(TypeTree(t))))
 
     def methodWithMostArgs(methodName: String): MethodSymbol = {
       val mm = moduleTypeSig.member(TermName(methodName))
@@ -73,7 +73,7 @@ object ObjectAccessorFactory {
     val methodName = "apply"
     val applyMethod = methodWithMostArgs(methodName)
 
-    val objMfExpr = manifestExpr(typ0)
+    val objMfExpr = classExpr(typ0)
 
     val memberAnnos = (for {
       mem <- typ0.members
@@ -159,12 +159,12 @@ object ObjectAccessorFactory {
         jsTree.tree
       )
 
-      val mfExpr = manifestExpr(info.typ)
+      val mfExpr = classExpr(info.typ)
 
-      //manifestExpr
+      //classExpr
       val pTypeManifests = (info.typ match {
         case TypeRef(_, _, args) => args
-      }).map(manifestExpr(_).tree)
+      }).map(classExpr(_).tree)
 
       val defOptExpr = info.default match {
         case Some(xpr) => reify(Some(xpr.splice))
@@ -230,8 +230,8 @@ object ObjectAccessorFactory {
 
           /*val fieldManifest: Manifest[Any] =
             mfExpr.splice.asInstanceOf[Manifest[Any]]*/
-          val objManifest: Manifest[T] =
-            objMfExpr.splice.asInstanceOf[Manifest[T]]
+          val objClass: Class[T] =
+            objMfExpr.splice.asInstanceOf[Class[T]]
 
           val fieldAccessor = accExpr.splice.asInstanceOf[JSONAccessor[T]]
         }
@@ -340,13 +340,13 @@ object ObjectAccessorFactory {
     reify {
       import json._
 
-      new CaseClassObjectAccessor[T] {
+      val finalAcc = new CaseClassObjectAccessor[T] {
         val nameMap = nameConversionExpr.splice
 
         val fields: IndexedSeq[FieldAccessor[T]] =
           fieldsExpr.splice.asInstanceOf[IndexedSeq[FieldAccessor[T]]]
 
-        val manifest: Manifest[T] = objMfExpr.splice.asInstanceOf[Manifest[T]]
+        val clazz: Class[T] = objMfExpr.splice.asInstanceOf[Class[T]]
 
         def fromJSON(_x: JValue): T = {
           val x = _x.jObject
@@ -355,6 +355,8 @@ object ObjectAccessorFactory {
           deSerExpr.splice
         }
       }
+
+      finalAcc: CaseClassObjectAccessor[T]
     }
   }
 }

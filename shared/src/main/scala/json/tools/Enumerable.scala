@@ -2,11 +2,14 @@ package json.tools
 
 import json._
 
-abstract class Enumerator[T <: Enumerator[T]#Value](implicit m: Manifest[T])
+import scala.reflect.ClassTag
+import scala.reflect.classTag
+
+abstract class Enumerator[T <: Enumerator[T]#Value: ClassTag]
   extends TypedEnumerator[String, T, JString]
 
-abstract class TypedEnumerator[K, T <: TypedEnumerator[K, T, J]#Value, +J <: JValue](
-    implicit m: Manifest[T], acc0: JSONAccessorProducer[K, J]) {
+abstract class TypedEnumerator[K, T <: TypedEnumerator[K, T, J]#Value: ClassTag, +J <: JValue](
+    implicit acc0: JSONAccessorProducer[K, J]) {
   def values: Set[_ <: T]
 
   def valueMap[U](f: T => U): Map[U, T] = {
@@ -29,14 +32,14 @@ abstract class TypedEnumerator[K, T <: TypedEnumerator[K, T, J]#Value, +J <: JVa
     def toJSON: J = key js acc
   }
 
-  lazy val keyMap = valueMap(_.key)
+  lazy val keyMap: Map[K, T] = valueMap(_.key)
 
-  def default(jv: JValue): T = sys.error(s"Unknown Enumerable type $jv for ${m.runtimeClass}")
+  def default(jv: JValue): T = sys.error(s"Unknown Enumerable type $jv for ${classTag[T]}")
 
   implicit lazy val accessor = new JSONAccessorProducer[T, J] {
     def createJSON(from: T): J = from.toJSON// from.toJSON.toJString    dislikee
     def fromJSON(from: JValue): T = keyMap.getOrElse(from.to[K], default(from))
-    def manifest = m
+    def clazz = classTag[T].runtimeClass
 
     val jsValues = values.toSeq.map(_.toJSON)
 

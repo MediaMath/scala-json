@@ -10,12 +10,10 @@ object Repository {
   val snapshots = s"${artifactory}libs-snapshot"
   val releases = s"${artifactory}libs-release"
   val remote = s"${artifactory}remote-repos"
-  val pluginSnapshots = s"${artifactory}sbt-plugins-snapshot-local"
   val pluginRelease = s"${artifactory}sbt-plugins-release-local"
 
   val snapshotRepo = "snapshots" at Repository.snapshots
   val releaseRepo = "releases" at Repository.releases
-  val remoteRepo = "remote" at Repository.remote
 
   def repo(isSnapshot: Boolean) = if (isSnapshot) Repository.snapshots else Repository.releases
   def globalPublishTo(isSnapshot: Boolean) = repo(isSnapshot) + "-global"

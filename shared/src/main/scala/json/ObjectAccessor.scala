@@ -3,12 +3,13 @@ package json
 import json.internal.JSONAnnotations.{ FieldDescriptionGeneric, FieldAccessorAnnotation }
 import json.internal.ObjectAccessorFactory
 
-import scala.reflect.macros.Context
 import scala.language.experimental.macros
 import scala.annotation.{ implicitNotFound, ClassfileAnnotation }
+import scala.reflect.{ClassTag, ManifestFactory, classTag}
+
 
 //case class FieldAccessor[T](name: String, getFrom: T => Any)
-trait FieldAccessor[T] extends Product2[Manifest[T], String] {
+trait FieldAccessor[T] extends Product2[Class[T], String] {
   def name: String
   def getFrom(obj: T): Any
   def defOpt: Option[Any]
@@ -16,25 +17,25 @@ trait FieldAccessor[T] extends Product2[Manifest[T], String] {
   //def valueFromJValue(jval: JValue): Any
 
   def annos: Set[FieldAccessorAnnotation]
-  //def pTypeManifests: IndexedSeq[Manifest[_]]
+  //def pTypeClasss: IndexedSeq[Class[_]]
   def pTypeAccessors: IndexedSeq[Option[TypedValueAccessor[_]]]
 
-  //def fieldManifest: Manifest[_]
+  //def fieldClass: Class[_]
   def fieldAccessor: JSONAccessor[T]
-  def objManifest: Manifest[T]
+  def objClass: Class[T]
 
   def default: Any = defOpt.get
   def hasDefault: Boolean = defOpt.isDefined
-  def fieldManifest = fieldAccessor.manifest
+  def fieldClass = fieldAccessor.clazz
 
-  def _1 = objManifest
+  def _1 = objClass
   def _2 = name
 
   def canEqual(that: Any) = that.isInstanceOf[FieldAccessor[_]]
 
   override def equals(that: Any) = that match {
     case x: FieldAccessor[T] =>
-      x.objManifest == objManifest && x.name == name
+      x.objClass == objClass && x.name == name
     case _ => false
   }
 
@@ -99,7 +100,7 @@ trait CaseClassObjectAccessor[T] extends ObjectAccessor[T] with JSONProducer[T, 
     //TODO: need annos for root class
     val description = ""
 
-    val id = manifest.runtimeClass.getSimpleName
+    val id = clazz.getSimpleName
     val extras = fields.flatMap(_.fieldAccessor.extraSwaggerModels)
 
     val jv = JObject(
@@ -128,11 +129,11 @@ trait JSONProducer[-T, +JV <: JValue] extends TypedValueAccessor[T] {
 object JSONAccessor {
   def of[T](implicit acc: json.JSONAccessor[T]) = acc
 
-  def create[T, U <: JValue](toJ: T => U,
-    fromJ: JValue => T)(implicit m: Manifest[T]) = new JSONAccessorProducer[T, U] {
+  def create[T: ClassTag, U <: JValue](toJ: T => U,
+    fromJ: JValue => T) = new JSONAccessorProducer[T, U] {
     def createJSON(from: T): U = toJ(from)
     def fromJSON(from: JValue): T = fromJ(from)
-    def manifest = m
+    def clazz = classTag[T].runtimeClass
     //def fields: IndexedSeq[FieldAccessor[T]] = Nil.toIndexedSeq
   }
 }
@@ -142,40 +143,42 @@ trait JSONAccessorProducer[T, +JV <: JValue] extends JSONProducer[T, JV] with JS
   //type SourceType = T
 
   def createSwaggerProperty: JObject = {
-    val dat = manifest.runtimeClass match {
-      case x if x == classOf[Int] =>
+    val dat = ClassTag(clazz).asInstanceOf[ClassTag[_]] match {
+      case ManifestFactory.Int =>
         Map("type" -> "integer", "format" -> "int32")
-      case x if x == classOf[Long] =>
+      case ManifestFactory.Long =>
         Map("type" -> "long", "format" -> "int64")
-      case x if x == classOf[Float] =>
+      case ManifestFactory.Float =>
         Map("type" -> "number", "format" -> "float")
-      case x if x == classOf[Double] =>
+      case ManifestFactory.Double =>
         Map("type" -> "number", "format" -> "double")
-      case x if x == classOf[String] =>
+      case _ if clazz == classOf[String] =>
         Map("type" -> "string")
-      case x if x == classOf[Byte] =>
+      case ManifestFactory.Byte =>
         Map("type" -> "string", "format" -> "byte")
-      case x if x == classOf[Boolean] =>
+      case ManifestFactory.Boolean =>
         Map("type" -> "boolean")
       //case x if x == classOf[Date] => Map("type" -> "string", "format" -> "date")
       //case x if x == classOf[DateTime] => Map("type" -> "string", "format" -> "date-time")
-      case x => Map("type" -> x.getSimpleName)
+      case x => Map("type" -> x.runtimeClass.getSimpleName)
     }
 
     JValue(dat).toJObject + (JString("required") -> JTrue)
   }
 
+  override def toString = s"JSONAccessorProducer[${clazz.getName}, _]"
+
   def extraSwaggerModels: Seq[JObject] = Nil
 }
 
-trait TypedValueAccessor[-T] { //extends Manifest[T] {
-  def manifest: Manifest[_ >: T]
+trait TypedValueAccessor[-T] { //extends Class[T] {
+  def clazz: Class[_]
 
-  def runtimeClass: Class[_] = manifest.runtimeClass
+  override def toString = s"TypedValueAccessor[${clazz.getName}]"
 }
 
 trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
-  def manifest: Manifest[T]
+  def clazz: Class[_]
   def createJSON(obj: T): JObject
 
   def requiresObject = false
@@ -183,18 +186,18 @@ trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
   def canEqual(that: Any) = that.isInstanceOf[ObjectAccessor[_]]
 
   override def equals(that: Any) = that match {
-    case x: ObjectAccessor[_] => x.manifest == manifest
+    case x: ObjectAccessor[_] => x.clazz == clazz
     case _                    => false
   }
 
-  override def toString = "ObjectAccessor(" + manifest + ")"
-  override def hashCode = manifest.hashCode
+  override def toString = s"ObjectAccessor[${clazz.getName}]"
+  override def hashCode = clazz.hashCode
 }
 
 object ObjectAccessor {
   case object NoAccessor extends ObjectAccessor[Nothing] {
     def fields: IndexedSeq[FieldAccessor[Nothing]] = Nil.toIndexedSeq
-    def manifest: Manifest[Nothing] = manifestOf[Nothing]
+    def clazz: Class[Nothing] = classOf[Nothing]
     def fromJSON(from: JValue): Nothing = sys.error("Cannot create Nothing object")
     def createJSON(obj: Nothing): JObject = sys.error("Cannot create Nothing json")
 
@@ -207,15 +210,13 @@ object ObjectAccessor {
 
   def of[T <: Product]: CaseClassObjectAccessor[T] = macro ObjectAccessorFactory.newImpl[T]
 
-  def create[T: Manifest](toJ: T => JObject,
+  def create[T: ClassTag](toJ: T => JObject,
     fromJ: JValue => T) = new ObjectAccessor[T] {
     def createJSON(from: T): JObject = toJ(from)
     def fromJSON(from: JValue): T = fromJ(from)
-    def manifest = manifestOf[T]
+    def clazz = classTag[T].runtimeClass
     def fields: IndexedSeq[FieldAccessor[T]] = Nil.toIndexedSeq
   }
-
-  def manifestOf[T](implicit m: Manifest[T]): Manifest[T] = m
 
   @implicitNotFound(msg = "No implicit ObjectAccessor for ${T} in scope. Did you define/import one?")
   def accessorFor[T](obj: T)(implicit acc: ObjectAccessor[T]): ObjectAccessor[T] = acc

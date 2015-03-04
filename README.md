@@ -63,7 +63,7 @@ scala> case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[In
 defined class TestClass
 
 scala> implicit val acc = ObjectAccessor.of[TestClass]
-acc: json.CaseClassObjectAccessor[TestClass]{val nameMap: String => String; val fields: IndexedSeq[json.FieldAccessor[TestClass]]; val manifest: Manifest[TestClass]} = ObjectAccessor(TestClass)
+acc: json.CaseClassObjectAccessor[TestClass] = ObjectAccessor[TestClass]
 
 scala> val testClassJs = TestClass(1, None).js
 testClassJs: json.JObject =
@@ -102,9 +102,14 @@ res13: json.JArray =
 * Typed exceptions with field data
 ```scala
 scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
-     |   case e: json.InputFormatException => e.getMessage()
+     |   case e: json.InputFormatException =>
+     |     e.getExceptions.map {
+     |       case fieldEx: InputFieldException if fieldEx.fieldName == "a" =>
+     |         fieldEx.getMessage
+     |       case _ => ""
+     |     }.mkString
      | }
-res14: java.io.Serializable = a: numeric expected but found json.JString (of value "badint")
+res14: java.io.Serializable = numeric expected but found json.JString (of value "badint")
 ```
 
 SBT
