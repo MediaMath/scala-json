@@ -18,10 +18,10 @@ true.js
 1.7.js
 def testMap = Map("hey" -> "there")
 val testMapJs = testMap.js
-testMap.js.toDenseString
-Seq.fill(3)(Set(false, true)).js
+Map("key" -> Seq.fill(3)(Set(Some(false), None))).js
 testMap.keySet.headOption.js
 testMap.get("nokey").js
+testMap.js.toDenseString
 ```
 * JS-like dynamic select
 ```tut
@@ -36,7 +36,7 @@ if(testMapJs("nokey")) sys.error("unexpected")
 case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
 implicit val acc = ObjectAccessor.of[TestClass]
 TestClass(1, None).js
-TestClass(1, None).js + ("blah".js -> 1.js)
+TestClass(1, None).js + ("blah".js -> 1.js) - "a"
 Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 ```
 

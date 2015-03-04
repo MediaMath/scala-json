@@ -34,17 +34,20 @@ testMapJs: json.JObject =
   "hey": "there"
 }
 
-scala> testMap.js.toDenseString
-res4: String = {"hey":"there"}
-
-scala> Seq.fill(3)(Set(false, true)).js
-res5: json.JArray = [[false, true], [false, true], [false, true]]
+scala> Map("key" -> Seq.fill(3)(Set(Some(false), None))).js
+res4: json.JObject =
+{
+  "key": [[false, null], [false, null], [false, null]]
+}
 
 scala> testMap.keySet.headOption.js
-res6: json.JValue = "hey"
+res5: json.JValue = "hey"
 
 scala> testMap.get("nokey").js
-res7: json.JValue = null
+res6: json.JValue = null
+
+scala> testMap.js.toDenseString
+res7: String = {"hey":"there"}
 ```
 * JS-like dynamic select
 ```scala
@@ -69,10 +72,9 @@ res10: json.JObject =
   "c": ""
 }
 
-scala> TestClass(1, None).js + ("blah".js -> 1.js)
-res11: json.JObject =
+scala> TestClass(1, None).js + ("blah".js -> 1.js) - "a"
+res11: json.JValue =
 {
-  "a": 1,
   "c": "",
   "blah": 1
 }

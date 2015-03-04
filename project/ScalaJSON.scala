@@ -62,7 +62,9 @@ object ScalaJSON {
 
     tut.Plugin.tutSourceDirectory := (baseDirectory in ThisBuild).value / "src" / "main" / "tut",
 
-    (sbt.Keys.`package` in Compile) <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask)
+    (sbt.Keys.`package` in Compile) <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask),
+
+    (test in Test) <<= (test in Test).dependsOn(tut.Plugin.tut)
   )
 
   val settings = tut.Plugin.tutSettings ++ Seq(

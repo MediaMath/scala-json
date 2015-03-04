@@ -7,8 +7,10 @@ import java.util.UUID
 import scala.collection.IterableLike
 
 object JObject extends GenericCompanion[scala.collection.immutable.Iterable] {
+  type Pair = (JString, JValue)
+
   //TODO: allows duplicates...
-  def apply(values: (JString, JValue)*): JObject = {
+  def apply(values: Pair*): JObject = {
     val keyList = values.map(_._1)
     val keySet = keyList.toSet
 
@@ -20,22 +22,22 @@ object JObject extends GenericCompanion[scala.collection.immutable.Iterable] {
   def apply[T](obj: T)(implicit accessor: ObjectAccessor[T]): JObject =
     accessor.createJSON(obj).toJObject
 
-  def newCanBuildFrom = new CanBuildFrom[TraversableOnce[(JString, JValue)], (JString, JValue), JObject] {
-    def apply(from: TraversableOnce[(JString, JValue)]) = newJObjectBuilder // ++= from
+  def newCanBuildFrom = new CanBuildFrom[TraversableOnce[Pair], Pair, JObject] {
+    def apply(from: TraversableOnce[Pair]) = newJObjectBuilder // ++= from
     def apply() = newJObjectBuilder
   }
 
   lazy val empty = apply()
 
-  implicit def canBuildFrom: CanBuildFrom[TraversableOnce[(JString, JValue)], (JString, JValue), JObject] =
+  implicit def canBuildFrom: CanBuildFrom[TraversableOnce[Pair], Pair, JObject] =
     newCanBuildFrom
 
-  def newJObjectBuilder: Builder[(JString, JValue), JObject] = new JObjectBuilder
+  def newJObjectBuilder: Builder[Pair, JObject] = new JObjectBuilder
 
-  class JObjectBuilder extends Builder[(JString, JValue), JObject] {
-    val builder = new VectorBuilder[(JString, JValue)]
+  class JObjectBuilder extends Builder[Pair, JObject] {
+    val builder = new VectorBuilder[Pair]
 
-    def +=(item: (JString, JValue)): this.type = {
+    def +=(item: Pair): this.type = {
       builder += item
       this
     }
@@ -56,7 +58,8 @@ object JObject extends GenericCompanion[scala.collection.immutable.Iterable] {
 final case class JObject(override val fields: Map[JString, JValue])(
   implicit val keyIterable: Iterable[JString] = fields.map(_._1)) extends JValue
     //with Map[JString, JValue] with MapLike[JString, JValue, JObject] {
-    with Iterable[(JString, JValue)] with IterableLike[(JString, JValue), JObject] {
+    with Iterable[JObject.Pair] with IterableLike[JObject.Pair, JObject] {
+  import JObject.Pair
 
   lazy val uuid = UUID.randomUUID.toString
   //lazy val keyIterator: Iterator[JString] = _keyIterator
@@ -78,7 +81,7 @@ final case class JObject(override val fields: Map[JString, JValue])(
 
   def get(key: JString): Option[JValue] = fields.get(key)
 
-  def iterator: Iterator[(JString, JValue)] = keyIterator map { k =>
+  def iterator: Iterator[Pair] = keyIterator map { k =>
     k -> apply(k: JValue)
   }
 
