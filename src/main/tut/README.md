@@ -34,9 +34,10 @@ if(testMapJs("nokey")) sys.error("unexpected")
 * Compile-time case class marshalling
 ```tut
 case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
-implicit val acc = ObjectAccessor.of[TestClass] 
+implicit val acc = ObjectAccessor.of[TestClass]
 TestClass(1, None).js
 TestClass(1, None).js + ("blah".js -> 1.js)
+Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 ```
 
 SBT

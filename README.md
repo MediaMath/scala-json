@@ -59,7 +59,7 @@ scala> if(testMapJs("nokey")) sys.error("unexpected")
 scala> case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
 defined class TestClass
 
-scala> implicit val acc = ObjectAccessor.of[TestClass] 
+scala> implicit val acc = ObjectAccessor.of[TestClass]
 acc: json.CaseClassObjectAccessor[TestClass]{val nameMap: String => String; val fields: IndexedSeq[json.FieldAccessor[TestClass]]; val manifest: Manifest[TestClass]} = ObjectAccessor(TestClass)
 
 scala> TestClass(1, None).js
@@ -76,6 +76,17 @@ res11: json.JObject =
   "c": "",
   "blah": 1
 }
+
+scala> Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+res12: json.JArray =
+[{
+  "a": 1,
+  "c": ""
+}, {
+  "a": 1,
+  "b": 10,
+  "c": "hihi"
+}]
 ```
 
 SBT
