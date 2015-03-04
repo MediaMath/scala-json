@@ -114,6 +114,7 @@ final case class JNumber(value: Double) extends JValue {
 
   override def isNaN: Boolean = num.isNaN
   def isInfinity: Boolean = num.isInfinity
+  def isValid = !isNaN && !isInfinity
 
   def toLong = num.toLong
   def toInt = num.toInt

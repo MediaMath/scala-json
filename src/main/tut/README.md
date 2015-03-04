@@ -35,9 +35,18 @@ if(testMapJs("nokey")) sys.error("unexpected")
 ```tut
 case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
 implicit val acc = ObjectAccessor.of[TestClass]
-TestClass(1, None).js
+val testClassJs = TestClass(1, None).js
+val testClassJsString = testClassJs.toDenseString
+JValue.fromString(testClassJsString).toObject[TestClass]
+JObject("a".js -> 23.js).toObject[TestClass]
 TestClass(1, None).js + ("blah".js -> 1.js) - "a"
 Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+```
+* Typed exceptions with field data
+```tut
+try JObject("a".js -> "badint".js).toObject[TestClass] catch {
+  case e: json.InputFormatException => e.getMessage()
+}
 ```
 
 SBT

@@ -152,7 +152,7 @@ trait Accessors {
 
     def createJSON(obj: BigDecimal): JNumber = JNumber(obj.toDouble)
     def fromJSON(js: JValue): BigDecimal = js.toJNumber match {
-      case jn @ JNumber(d) if !jn.isNaN => BigDecimal(d)
+      case jn @ JNumber(d) if jn.isValid => BigDecimal(d)
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
@@ -197,8 +197,10 @@ trait Accessors {
     val manifest = manifestOf[Int]
 
     def createJSON(obj: Int): JNumber = JNumber(obj)
-    def fromJSON(js: JValue): Int = js.toJNumber match {
-      case jn @ JNumber(d) if !jn.isNaN =>
+    def fromJSON(js: JValue): Int = js match {
+      case x: JString if x.toJNumber.isValid =>
+        fromJSON(x.toJNumber)
+      case jn @ JNumber(d) if jn.isValid =>
         val nval = d.toInt
         if (nval.toDouble == d) nval
         else throw NumericTypeException("", d, "int")
@@ -211,8 +213,10 @@ trait Accessors {
     val manifest = manifestOf[Long]
 
     def createJSON(obj: Long): JNumber = JNumber(obj)
-    def fromJSON(js: JValue): Long = js.toJNumber match {
-      case jn @ JNumber(d) if !jn.isNaN =>
+    def fromJSON(js: JValue): Long = js match {
+      case x: JString if x.toJNumber.isValid =>
+        fromJSON(x.toJNumber)
+      case jn @ JNumber(d) if jn.isValid =>
         val nval = d.toLong
         if (nval.toDouble == d) nval
         else throw NumericTypeException("", d, "long")
@@ -225,8 +229,10 @@ trait Accessors {
     val manifest = manifestOf[Double]
 
     def createJSON(obj: Double): JNumber = JNumber(obj)
-    def fromJSON(js: JValue): Double = js.toJNumber match {
-      case jn @ JNumber(d) if !jn.isNaN => d
+    def fromJSON(js: JValue): Double = js match {
+      case x: JString if x.toJNumber.isValid =>
+        fromJSON(x.toJNumber)
+      case jn @ JNumber(d) if jn.isValid => d
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
@@ -236,8 +242,10 @@ trait Accessors {
     val manifest = manifestOf[Float]
 
     def createJSON(obj: Float): JNumber = JNumber(obj)
-    def fromJSON(js: JValue): Float = js.toJNumber match {
-      case jn @ JNumber(d) if !jn.isNaN =>
+    def fromJSON(js: JValue): Float = js match {
+      case x: JString if x.toJNumber.isValid =>
+        fromJSON(x.toJNumber)
+      case jn @ JNumber(d) if jn.isValid =>
         val nval = d.toFloat
         if (nval.toDouble == d) nval
         else throw NumericTypeException("", d, "float")
@@ -250,8 +258,10 @@ trait Accessors {
     val manifest = manifestOf[Short]
 
     def createJSON(obj: Short): JNumber = JNumber(obj)
-    def fromJSON(js: JValue): Short = js.toJNumber match {
-      case jn @ JNumber(d) if !jn.isNaN =>
+    def fromJSON(js: JValue): Short = js match {
+      case x: JString if x.toJNumber.isValid =>
+        fromJSON(x.toJNumber)
+      case jn @ JNumber(d) if jn.isValid =>
         val nval = d.toShort
         if (nval.toDouble == d) nval
         else throw NumericTypeException("", d, "short")

@@ -25,12 +25,15 @@ object Repository {
 object ScalaJSON {
   val genDocsTask = TaskKey[Unit]("gen-docs")
 
-  val commonSettings = Seq(
-    name := "scala-json",
+  val baseSettings = Seq(
     scalaVersion := "2.11.5",
     organization := "com.mediamath",
     organizationName := "MediaMath, Inc",
-    organizationHomepage := Some(url("http://www.mediamath.com")),
+    organizationHomepage := Some(url("http://www.mediamath.com"))
+  )
+
+  val commonSettings = baseSettings ++ Seq(
+    name := "scala-json",
     credentials ++= Repository.userCredentials,
     crossPaths := true,
     publishTo := Some("publish" at Repository.globalPublishTo(isSnapshot.value)),
@@ -53,23 +56,21 @@ object ScalaJSON {
     testFrameworks += new TestFramework("utest.runner.Framework")
   )
 
-  val jvmSettings = tut.Plugin.tutSettings ++ Seq(
-    libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1",
+  val jvmSettings = Seq(
+    libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1"
+  )
 
-    genDocsTask <<= (tut.Plugin.tut, baseDirectory in ThisBuild) map { (outFiles, baseDir) =>
+  val settings = baseSettings ++ tut.Plugin.tutSettings ++ Seq(
+    publish := {},
+    publishLocal := {},
+    crossScalaVersions in ThisBuild := Seq("2.11.4"),//, "2.10.4"),
+
+    genDocsTask <<= (tut.Plugin.tut, baseDirectory) map { (outFiles, baseDir) =>
       for((outFile, _) <- outFiles) outFile.renameTo(baseDir / outFile.getName)
     },
-
-    tut.Plugin.tutSourceDirectory := (baseDirectory in ThisBuild).value / "src" / "main" / "tut",
 
     (sbt.Keys.`package` in Compile) <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask),
 
     (test in Test) <<= (test in Test).dependsOn(tut.Plugin.tut)
-  )
-
-  val settings = tut.Plugin.tutSettings ++ Seq(
-    publish := {},
-    publishLocal := {},
-    crossScalaVersions in ThisBuild := Seq("2.11.4")//, "2.10.4")
   )
 }

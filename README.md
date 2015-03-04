@@ -65,22 +65,31 @@ defined class TestClass
 scala> implicit val acc = ObjectAccessor.of[TestClass]
 acc: json.CaseClassObjectAccessor[TestClass]{val nameMap: String => String; val fields: IndexedSeq[json.FieldAccessor[TestClass]]; val manifest: Manifest[TestClass]} = ObjectAccessor(TestClass)
 
-scala> TestClass(1, None).js
-res10: json.JObject =
+scala> val testClassJs = TestClass(1, None).js
+testClassJs: json.JObject =
 {
   "a": 1,
   "c": ""
 }
 
+scala> val testClassJsString = testClassJs.toDenseString
+testClassJsString: String = {"a":1,"c":""}
+
+scala> JValue.fromString(testClassJsString).toObject[TestClass]
+res10: TestClass = TestClass(1,None,,None)
+
+scala> JObject("a".js -> 23.js).toObject[TestClass]
+res11: TestClass = TestClass(23,None,,None)
+
 scala> TestClass(1, None).js + ("blah".js -> 1.js) - "a"
-res11: json.JValue =
+res12: json.JValue =
 {
   "c": "",
   "blah": 1
 }
 
 scala> Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
-res12: json.JArray =
+res13: json.JArray =
 [{
   "a": 1,
   "c": ""
@@ -89,6 +98,13 @@ res12: json.JArray =
   "b": 10,
   "c": "hihi"
 }]
+```
+* Typed exceptions with field data
+```scala
+scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
+     |   case e: json.InputFormatException => e.getMessage()
+     | }
+res14: java.io.Serializable = a: numeric expected but found json.JString (of value "badint")
 ```
 
 SBT
