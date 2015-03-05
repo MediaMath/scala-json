@@ -12,6 +12,7 @@ import scala.reflect.macros.Universe
 
 /** Dummy object to get the right shadowing for 2.10 / 2.11 cross compilation */
 private object Compat210 {
+  @deprecated("", "")
   object whitebox {
     type Context = scala.reflect.macros.Context
   }
@@ -29,6 +30,7 @@ object ObjectAccessorFactory {
   }
 
   def newImpl[T: c.WeakTypeTag](c: Context): c.Expr[CaseClassObjectAccessor[T]] = {
+    @deprecated("", "")
     object Shadow210 { //shadow universe methods for 210 compat
       def TermName(s: String) = c.universe.newTermName(s)
 
