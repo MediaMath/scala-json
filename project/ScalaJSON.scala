@@ -61,7 +61,7 @@ object ScalaJSON {
   def settings(jsonJS: Project, jsonJVM: Project) = baseSettings ++ tut.Plugin.tutSettings ++ Seq(
     publish := {},
     publishLocal := {},
-    crossScalaVersions in ThisBuild := Seq("2.11.4"),//, "2.10.4"),
+    crossScalaVersions in ThisBuild := Seq(scalaVersion.value, "2.10.4"),
 
     genDocsTask <<= (tut.Plugin.tut, baseDirectory, version) map { (outFiles, baseDir, ver) =>
       for((outFile, _) <- outFiles) {
