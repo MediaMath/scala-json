@@ -142,21 +142,23 @@ object JSONAccessor {
 trait JSONAccessorProducer[T, +JV <: JValue] extends JSONProducer[T, JV] with JSONReader[T] {
   //type SourceType = T
 
+  val StrClassTag = ClassTag(classOf[String])
+
   def createSwaggerProperty: JObject = {
-    val dat = ClassTag(clazz).asInstanceOf[ClassTag[_]] match {
-      case ManifestFactory.Int =>
+    val dat = (ClassTag(clazz): ClassTag[_]) match {
+      case ClassTag.Int =>
         Map("type" -> "integer", "format" -> "int32")
-      case ManifestFactory.Long =>
+      case ClassTag.Long =>
         Map("type" -> "long", "format" -> "int64")
-      case ManifestFactory.Float =>
+      case ClassTag.Float =>
         Map("type" -> "number", "format" -> "float")
-      case ManifestFactory.Double =>
+      case ClassTag.Double =>
         Map("type" -> "number", "format" -> "double")
-      case _ if clazz == classOf[String] =>
+      case StrClassTag =>
         Map("type" -> "string")
-      case ManifestFactory.Byte =>
+      case ClassTag.Byte =>
         Map("type" -> "string", "format" -> "byte")
-      case ManifestFactory.Boolean =>
+      case ClassTag.Boolean =>
         Map("type" -> "boolean")
       //case x if x == classOf[Date] => Map("type" -> "string", "format" -> "date")
       //case x if x == classOf[DateTime] => Map("type" -> "string", "format" -> "date-time")

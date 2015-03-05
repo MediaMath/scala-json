@@ -58,7 +58,7 @@ object ScalaJSON {
     libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1"
   )
 
-  val settings = baseSettings ++ tut.Plugin.tutSettings ++ Seq(
+  def settings(jsonJS: Project, jsonJVM: Project) = baseSettings ++ tut.Plugin.tutSettings ++ Seq(
     publish := {},
     publishLocal := {},
     crossScalaVersions in ThisBuild := Seq("2.11.4"),//, "2.10.4"),
@@ -69,6 +69,8 @@ object ScalaJSON {
 
     (sbt.Keys.`package` in Compile) <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask),
 
-    (test in Test) <<= (test in Test).dependsOn(tut.Plugin.tut)
+    (test in Test) <<= (test in Test).dependsOn(tut.Plugin.tut, fastOptJS in jsonJS in Test),
+
+    (unmanagedClasspath in Compile) <<= (fullClasspath in Compile in jsonJVM)
   )
 }

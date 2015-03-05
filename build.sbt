@@ -8,6 +8,4 @@ lazy val json = crossProject.in(file("."))
 lazy val jsonJVM = json.jvm
 lazy val jsonJS = json.js
 
-ScalaJSON.settings
-
-(unmanagedClasspath in Compile) <<= (fullClasspath in Compile in jsonJVM)
+ScalaJSON.settings(jsonJS = jsonJS, jsonJVM = jsonJVM)
