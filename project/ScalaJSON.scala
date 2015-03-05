@@ -72,6 +72,7 @@ object ScalaJSON {
     },
 
     (sbt.Keys.`package` in Compile) <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask),
+    publish <<= publish.dependsOn(genDocsTask),
 
     (test in Test) <<= (test in Test).dependsOn(tut.Plugin.tut, fastOptJS in jsonJS in Test),
 
