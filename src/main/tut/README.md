@@ -62,14 +62,14 @@ SBT
 resolvers += "mmreleases" at
     "https://artifactory.mediamath.com/artifactory/libs-release-global"
 
-libraryDependencies += "com.mediamath" %% "scala-json" % "0.1"
+libraryDependencies += "com.mediamath" %% "scala-json" % "__VER__"
 
 ```
 
-and for scala.js
+and for Scala.js
 
 ```scala
 
-libraryDependencies += "com.mediamath" %%% "scala-json" % "0.1"
+libraryDependencies += "com.mediamath" %%% "scala-json" % "__VER__"
 
 ```

@@ -63,8 +63,12 @@ object ScalaJSON {
     publishLocal := {},
     crossScalaVersions in ThisBuild := Seq("2.11.4"),//, "2.10.4"),
 
-    genDocsTask <<= (tut.Plugin.tut, baseDirectory) map { (outFiles, baseDir) =>
-      for((outFile, _) <- outFiles) outFile.renameTo(baseDir / outFile.getName)
+    genDocsTask <<= (tut.Plugin.tut, baseDirectory, version) map { (outFiles, baseDir, ver) =>
+      for((outFile, _) <- outFiles) {
+        val out = readFile(outFile).replaceAllLiterally("__VER__", ver)
+
+        writeFile(baseDir / outFile.getName, out)
+      }
     },
 
     (sbt.Keys.`package` in Compile) <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask),
@@ -73,4 +77,12 @@ object ScalaJSON {
 
     (unmanagedClasspath in Compile) <<= (fullClasspath in Compile in jsonJVM)
   )
+
+  def printToFile(f: java.io.File)(op: java.io.PrintWriter => Unit) {
+    val p = new java.io.PrintWriter(f)
+    try { op(p) } finally { p.close() }
+  }
+
+  def writeFile(f: File, content: String) = printToFile(f)(_.println(content))
+  def readFile(f: File): String = scala.io.Source.fromFile(f).mkString
 }
