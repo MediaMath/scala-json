@@ -142,9 +142,9 @@ object JSONAccessor {
 trait JSONAccessorProducer[T, +JV <: JValue] extends JSONProducer[T, JV] with JSONReader[T] {
   //type SourceType = T
 
-  val StrClassTag = ClassTag(classOf[String])
-
   def createSwaggerProperty: JObject = {
+    val StrClassTag = ClassTag(classOf[String])
+
     val dat = (ClassTag(clazz): ClassTag[_]) match {
       case ClassTag.Int =>
         Map("type" -> "integer", "format" -> "int32")
