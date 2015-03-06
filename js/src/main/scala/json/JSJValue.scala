@@ -1,7 +1,7 @@
 package json
 
 import scala.scalajs.js
-
+import scalajs.js.{JSON => NativeJSON}
 import js.JSConverters._
 
 object JSJValue {

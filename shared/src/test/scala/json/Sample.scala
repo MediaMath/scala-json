@@ -4,9 +4,6 @@ import json.annotations._
 import json.internal.JSONAnnotations.FieldAccessorAnnotation
 
 import utest._
-import utest.ExecutionContext.RunNow
-import utest.framework.Test
-import utest.util.Tree
 
 import scala.annotation.meta
 

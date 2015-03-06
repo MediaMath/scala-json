@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.{ DeserializationContext, ObjectMapper }
 import json._
 
-import scala.collection.immutable.VectorBuilder
+import scala.collection.immutable.{StringOps, VectorBuilder}
 
 class JValueObjectDeserializer extends StdDeserializer[JValue](classOf[JValue]) {
   import com.fasterxml.jackson.core.JsonToken._
@@ -83,7 +83,6 @@ class JValueObjectDeserializer extends StdDeserializer[JValue](classOf[JValue]) 
         x
     }
 
-  //super.deserializeWithType()
   def parseObject(jp: JsonParser, ctx: DeserializationContext): JObject = {
     require(jp.getCurrentToken == START_OBJECT, "not start of object")
 

@@ -27,7 +27,8 @@ object ScalaJSON {
     scalaVersion := "2.11.5",
     organization := "com.mediamath",
     organizationName := "MediaMath, Inc",
-    organizationHomepage := Some(url("http://www.mediamath.com"))
+    organizationHomepage := Some(url("http://www.mediamath.com")),
+    crossScalaVersions := Seq(scalaVersion.value, "2.10.4")
   )
 
   val commonSettings = baseSettings ++ Seq(
@@ -61,7 +62,6 @@ object ScalaJSON {
   def settings(jsonJS: Project, jsonJVM: Project) = baseSettings ++ tut.Plugin.tutSettings ++ Seq(
     publish := {},
     publishLocal := {},
-    crossScalaVersions in ThisBuild := Seq(scalaVersion.value, "2.10.4"),
 
     genDocsTask <<= (tut.Plugin.tut, baseDirectory, version) map { (outFiles, baseDir, ver) =>
       for((outFile, _) <- outFiles) {

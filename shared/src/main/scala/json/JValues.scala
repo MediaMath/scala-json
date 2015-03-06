@@ -71,7 +71,7 @@ final case class JString(value: String) extends JValue with Iterable[JString] { 
   override def jBoolean: JBoolean = throw GenericJSONException("Expected JBoolean")
 
   def toJSONStringBuilder(settings: JSONBuilderSettings,
-    lvl: Int): StringBuilder = quoteJSONString(str)
+    lvl: Int): StringBuilder = JValue.Context.quoteJSONString(str)
 
   override def jValue = this
 

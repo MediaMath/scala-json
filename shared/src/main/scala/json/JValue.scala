@@ -11,6 +11,7 @@ private[json] object VM {
 }
 
 object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends GenericCompanion[JValueColl]*/ {
+  val Context = VM.Context
 
   //TODO: add applys for creating values from different types
   def apply(n: Int) = JNumber(n)
