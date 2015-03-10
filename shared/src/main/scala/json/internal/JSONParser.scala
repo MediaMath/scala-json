@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
-package json.shadow
+package json.internal
 
-object Stub
+import scala.collection.immutable.StringOps
+
+trait JSONParser {
+
+  case class JSONBuilderSettings(
+      spaceString: String = " ", ignoreNulls: Boolean = true,
+      newLineString: String = "\n", tabString: String = "  ") {
+    def nTabs(n: Int) = if (tabString == "") ""
+    else (for (i <- 0 until n) yield tabString).mkString
+  }
+
+  val prettyJSONBuilder = JSONBuilderSettings()
+  val denseJSONBuilder = JSONBuilderSettings(
+    newLineString = "", tabString = "", spaceString = "")
+
+
+
+}
