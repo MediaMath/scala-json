@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 MediaMath, Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package json.internal
 
 import scala.collection.immutable.StringOps
@@ -15,82 +31,6 @@ trait JSONParser {
   val denseJSONBuilder = JSONBuilderSettings(
     newLineString = "", tabString = "", spaceString = "")
 
-  //modified some escaping for '/'
-  final def quoteJSONString(string: String): StringBuilder = {
-    require(string != null)
 
-    val len = string.length
-    val sb = new StringBuilder(len + 4)
-
-    sb.append('"')
-    for (i <- 0 until len) {
-      string.charAt(i) match {
-        case c if c == '"' || c == '\\' => //Set('"', '\\') contains c =>
-          sb.append('\\')
-          sb.append(c)
-        //not needed?
-        /*case c if c == '/' =>
-					//                if (b == '<') {
-					sb.append('\\')
-					//                }
-					sb.append(c)*/
-        case '\b' => sb.append("\\b")
-        case '\t' => sb.append("\\t")
-        case '\n' => sb.append("\\n")
-        case '\f' => sb.append("\\f")
-        case '\r' => sb.append("\\r")
-        case c =>
-          if (c < ' ') {
-            val t = "000" + Integer.toHexString(c)
-            sb.append("\\u" + t.substring(t.length() - 4))
-          } else {
-            sb.append(c)
-          }
-      }
-    }
-    sb.append('"')
-
-    sb
-  }
-
-  final def unQuoteJSONString(string: String): String = {
-    val sb = new StringBuilder
-    val iter = new StringOps(string).iterator
-
-    require(string.charAt(0) == '"', "no starting quote")
-    require(string.charAt(string.length - 1) == '"', "no ending quote")
-
-    iter.take(1)
-
-    iter foreach {
-      case c if Set('\r', '\n', 0) contains c =>
-        sys.error("Unterminated string")
-      case '\\' => iter.next match {
-        case 'b' =>
-          sb.append('\b')
-        case 't' =>
-          sb.append('\t')
-        case 'n' =>
-          sb.append('\n')
-        case 'f' =>
-          sb.append('\f')
-        case 'r' =>
-          sb.append('\r')
-        case 'u' =>
-          val n = iter.take(4).mkString
-          sb.append(Integer.parseInt(n, 16).toChar)
-        case 'x' =>
-          val n = iter.take(2).mkString
-          sb.append(Integer.parseInt(n, 16).toChar)
-        case c =>
-          sb.append(c)
-      }
-      case c if c == '"' =>
-      //require(!iter.hasNext, "no ending quote2: " + c)
-      case c             => sb.append(c)
-    }
-
-    sb.mkString
-  }
 
 }
