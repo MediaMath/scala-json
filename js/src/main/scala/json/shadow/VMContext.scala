@@ -17,7 +17,7 @@
 package json.shadow
 
 import json.internal.BaseVMContext
-import json.{ JSJValue, JValue }
+import json.{JSONAccessorProducer, JSJValue, JValue}
 import scalajs.js.{JSON => NativeJSON}
 import scala.scalajs.js.annotation.JSExport
 import scalajs.js
@@ -34,7 +34,14 @@ object VMContext extends BaseVMContext {
 
   def fromAny(value: Any): JValue = JSJValue.from(value)
 
-  trait JValueCompanionBase
+  trait JValueCompanionBase {
+    implicit case object JsAnyAccessor extends JSONAccessorProducer[js.Any, JValue] {
+      val clazz = classOf[JValue]
+
+      def createJSON(obj: js.Any): JValue = JValue from obj
+      def fromJSON(jValue: JValue): js.Any = JSJValue toJS jValue
+    }
+  }
 
   trait JValueBase { _: JValue =>
     //this adds JSON.stringify support
