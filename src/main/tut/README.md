@@ -45,7 +45,7 @@ Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 * Typed exceptions with field data
 ```tut
 try JObject("a".js -> "badint".js).toObject[TestClass] catch {
-  case e: json.InputFormatException =>
+  case e: InputFormatException =>
     e.getExceptions.map {
       case fieldEx: InputFieldException if fieldEx.fieldName == "a" =>
         fieldEx.getMessage
