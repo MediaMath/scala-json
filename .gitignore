@@ -4,10 +4,12 @@
 *.DS_Store
 *.swp
 *.out
+._*
 
 
 # java specific
 *.class
+*.jar
 
 # sbt specific
 target/
@@ -25,6 +27,7 @@ project/plugins/project
 project/hidden.plugins.sbt
 dist
 .history
+test-output
 
 # eclipse specific
 .metadata
