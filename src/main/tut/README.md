@@ -1,12 +1,20 @@
 scala-json
 ==========
-Compile time JSON marshalling of primitive values and basic collections. Runtime
-marshalling is available, but not required.
+Compile time JSON marshalling of primitive values and basic collections.
+
+Goals
+-----
+* Compile-time marshalling
+* Provide a usable JS-like API for intermediate JSON data
+* Create implicit accessors that chain to resolve Higher-Kind types (```Option[T]```)
+* Enable you to create structures for existing JSON APIs
+* Enable you to create readable APIs that match existing/specific structure.
+
 
 Getting Started
 ---------------
 
-* Import the json package
+* Import the json packag=
 ```tut
 import json._
 JValue fromString "[1,2,3,4,5]"

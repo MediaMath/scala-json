@@ -88,7 +88,7 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
 }
 
 trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JValue, JValue] {
-  def toJSONStringBuilder(settings: JSONBuilderSettings = prettyJSONBuilder, lvl: Int = 0): StringBuilder
+  def toJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty, lvl: Int = 0): StringBuilder
 
   def toJString: JString
   def toJNumber: JNumber //can return JNaN
@@ -201,8 +201,8 @@ trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JV
   def toString(settings: JSONBuilderSettings,
     lvl: Int = 0): String = toJSONStringBuilder(settings).toString
 
-  def toDenseString = toString(denseJSONBuilder)
-  def toPrettyString = toString(prettyJSONBuilder)
+  def toDenseString = toString(JSONBuilderSettings.dense)
+  def toPrettyString = toString(JSONBuilderSettings.pretty)
 
   def toJSONString = toPrettyString
 

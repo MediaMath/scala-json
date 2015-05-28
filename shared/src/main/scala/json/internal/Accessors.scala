@@ -161,6 +161,7 @@ trait Accessors {
     }
   }
 
+  //TODO: needs to be rethought, moved or removed
   implicit case object BigDecimalAccessor extends JSONAccessorProducer[BigDecimal, JNumber] {
     val clazz = classOf[BigDecimal]
 

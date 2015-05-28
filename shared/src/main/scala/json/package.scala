@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import json.internal.{ JSONParser, JSONAnnotations }
+import json.internal.JSONAnnotations
 
 /**
  * Created by crgodsey on 2/14/15.
  */
-package object json extends JSONAnnotations.TypeAdder with JSONParser {
+package object json extends JSONAnnotations.TypeAdder {
   val JNaN = JNumber(Double.NaN)
 
   type JSONAccessor[T] = JSONAccessorProducer[T, JValue]

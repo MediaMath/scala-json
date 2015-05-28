@@ -16,9 +16,9 @@
 
 import sbt.Keys._
 import sbt._
+import sbt.dsl._
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
-import sbt.dsl._
 
 object Repository {
   val host = "artifactory.mediamath.com"

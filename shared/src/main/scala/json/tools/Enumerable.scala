@@ -52,6 +52,8 @@ abstract class TypedEnumerator[K, T <: TypedEnumerator[K, T, J]#Value: ClassTag,
 
   def default(jv: JValue): T = sys.error(s"Unknown Enumerable type $jv for ${classTag[T]}")
 
+  def apply(k: K) = keyMap(k)
+
   implicit lazy val accessor = new JSONAccessorProducer[T, J] {
     def createJSON(from: T): J = from.toJSON// from.toJSON.toJString    dislikee
     def fromJSON(from: JValue): T = keyMap.getOrElse(from.to[K], default(from))

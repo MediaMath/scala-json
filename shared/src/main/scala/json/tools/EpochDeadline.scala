@@ -41,16 +41,7 @@ final case class EpochDeadline(time: FiniteDuration) extends Ordered[EpochDeadli
 }
 
 object EpochDeadline extends Ordering[EpochDeadline] {
-  def now = EpochDeadline(Duration(System.currentTimeMillis, TimeUnit.MILLISECONDS))
-
-  def apply(tsSeconds: Double): EpochDeadline = from(tsSeconds)
-
-  def from(tsSeconds: Double) =
-    EpochDeadline(Duration((tsSeconds * 1000).toLong, TimeUnit.MILLISECONDS))
-
-  implicit def ordering: Ordering[EpochDeadline] = this
-
-  //private val logging = new SLF4JLoggingAdapter(classOf[EpochDeadline])
+  val epoch = EpochDeadline(0.seconds)
 
   implicit val deadlineAccessor: JSONAccessor[EpochDeadline] =
     JSONAccessor.create(
@@ -63,16 +54,17 @@ object EpochDeadline extends Ordering[EpochDeadline] {
         val num = x.toJNumber
         require(!num.isNaN, "bad number " + x)
 
-        try {
-          EpochDeadline.from(math.max(num.num, 0.0))
-        } catch {
-          //shouldnt happen... but it did
-          case x: IllegalArgumentException =>
-            //logging.error(x, "IllegalArgumentException when parsing EpochDeadline")
-            EpochDeadline.now
-        }
+        EpochDeadline.from(math.max(num.num, 0.0))
       }
     )
+
+  def now = epoch + System.currentTimeMillis.millis
+
+  def apply(tsSeconds: Double): EpochDeadline = from(tsSeconds)
+
+  def from(tsSeconds: Double) = epoch + (tsSeconds * 1000).millis
+
+  implicit def ordering: Ordering[EpochDeadline] = this
 
   override def compare(x: EpochDeadline, y: EpochDeadline): Int = x compare y
 }
