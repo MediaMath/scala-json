@@ -1,7 +1,11 @@
 scala-json
 ==========
-Compile time JSON marshalling of primitive values and basic collections. Runtime
-marshalling is available, but not required.
+Compile time JSON marshalling of primitive values, case-classes, basic collections, and whatever you can imagine.
+* Extensible Accessor API. Serialize any type you want.
+* Produce normal looking Scala structures from any existing JSON API.
+* Produce pretty and human readable JSON.
+* Uses defaults correctly.
+* Extensible annotation API to make your accessors more dynamic.
 
 Getting Started
 ---------------
@@ -45,7 +49,7 @@ Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 * Typed exceptions with field data
 ```tut
 try JObject("a".js -> "badint".js).toObject[TestClass] catch {
-  case e: json.InputFormatException =>
+  case e: InputFormatException =>
     e.getExceptions.map {
       case fieldEx: InputFieldException if fieldEx.fieldName == "a" =>
         fieldEx.getMessage
