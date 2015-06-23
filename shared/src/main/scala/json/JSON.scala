@@ -33,11 +33,7 @@ sealed trait JSONException extends Exception
 case class GenericJSONException(msg: String = "JSON Exception") extends Exception(msg) with JSONException
 case class JUndefinedException(msg: String = "Cannot access JUndefined") extends Exception(msg) with JSONException
 
-trait StacklessJSONThrowable extends Throwable {
-  override def fillInStackTrace: Throwable = this
-}
-
-trait InputFormatException extends Exception with StacklessJSONThrowable with Product {
+trait InputFormatException extends Exception with Product {
   //def fieldName: String
   def prependFieldName(newField: String): InputFormatException
   def messageWithField: String = getMessage
