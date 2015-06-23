@@ -42,7 +42,7 @@ object ScalaJSON {
   val genDocsTask = TaskKey[Unit]("gen-docs")
 
   val baseSettings = Seq(
-    scalaVersion := "2.11.5",
+    scalaVersion := "2.11.6",
     organization := "com.mediamath",
     organizationName := "MediaMath, Inc",
     organizationHomepage := Some(url("http://www.mediamath.com")),
