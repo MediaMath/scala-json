@@ -22,6 +22,7 @@ import js.JSConverters._
 
 object JSJValue {
   def from(v: Any): JValue = v match {
+    case x if js.isUndefined(x) => JUndefined
     case x: JValue => x
     case seq0 if js.Array.isArray(seq0.asInstanceOf[js.Any]) =>
       val seq: Seq[Any] = seq0.asInstanceOf[js.Array[_]]

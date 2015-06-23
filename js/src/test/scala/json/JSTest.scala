@@ -34,20 +34,24 @@ object JSTest extends TestSuite {
       val nativeSer = NativeJSON.stringify(fooJs.toJSON)
       val reserd = JValue fromString nativeSer
 
-      require(reserd == fooJs)
+      assert(reserd == fooJs)
     }
 
     "test parse" - {
       val real = JValue from Seq(
         1, 2, Map.empty, Nil, Map("a" -> 1), "", null, 5.123, Nil
       )
-      val parsed = NativeJSON parse """[1,2,{},[],{"a":1},"",null,5.123]"""
+      val parsed = (NativeJSON parse """[1,2,{},[],{"a":1},"",null,5.123]""").asInstanceOf[js.Array[js.Dynamic]]
 
-      parsed.push(emptyArray)
+      parsed.push(emptyArray))
 
       val reserd = JValue from parsed
 
-      require(reserd == real)
+      assert(reserd == real)
+    }
+
+    "undefined" - {
+      assert(JValue.from(js.undefined) == JUndefined)
     }
   })
 }
