@@ -29,13 +29,13 @@ scala> def testMap = Map("hey" -> "there")
 testMap: scala.collection.immutable.Map[String,String]
 
 scala> val testMapJs = testMap.js
-testMapJs: json.JObject =
+testMapJs: json.JObject = 
 {
   "hey": "there"
 }
 
 scala> Map("key" -> Seq.fill(3)(Set(Some(false), None))).js
-res4: json.JObject =
+res4: json.JObject = 
 {
   "key": [[false, null], [false, null], [false, null]]
 }
@@ -66,9 +66,9 @@ scala> implicit val acc = ObjectAccessor.of[TestClass]
 acc: json.CaseClassObjectAccessor[TestClass] = ObjectAccessor[TestClass]
 
 scala> val testClassJs = TestClass(1, None).js
-testClassJs: json.JObject =
+testClassJs: json.JObject = 
 {
-  "a": 1,
+  "a": 1, 
   "c": ""
 }
 
@@ -82,21 +82,21 @@ scala> JObject("a".js -> 23.js).toObject[TestClass]
 res11: TestClass = TestClass(23,None,,None)
 
 scala> TestClass(1, None).js + ("blah".js -> 1.js) - "a"
-res12: json.JValue =
+res12: json.JValue = 
 {
-  "c": "",
+  "c": "", 
   "blah": 1
 }
 
 scala> Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
-res13: json.JArray =
+res13: json.JArray = 
 [{
-    "a": 1,
-    "c": ""
+    "a": 1, 
+    "c": ""  
 }, {
-    "a": 1,
-    "b": 10,
-    "c": "hihi"
+    "a": 1, 
+    "b": 10, 
+    "c": "hihi"  
 }]
 ```
 * Typed exceptions with field data
@@ -120,7 +120,7 @@ SBT
 resolvers += "mmreleases" at
     "https://artifactory.mediamath.com/artifactory/libs-release-global"
 
-libraryDependencies += "com.mediamath" %% "scala-json" % "0.1-RC4"
+libraryDependencies += "com.mediamath" %% "scala-json" % "0.1-RC5"
 
 ```
 
@@ -128,7 +128,7 @@ and for Scala.js
 
 ```scala
 
-libraryDependencies += "com.mediamath" %%% "scala-json" % "0.1-RC4"
+libraryDependencies += "com.mediamath" %%% "scala-json" % "0.1-RC5"
 
 ```
 

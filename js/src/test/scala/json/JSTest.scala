@@ -43,7 +43,7 @@ object JSTest extends TestSuite {
       )
       val parsed = (NativeJSON parse """[1,2,{},[],{"a":1},"",null,5.123]""").asInstanceOf[js.Array[js.Dynamic]]
 
-      parsed.push(emptyArray))
+      parsed.push(emptyArray)
 
       val reserd = JValue from parsed
 

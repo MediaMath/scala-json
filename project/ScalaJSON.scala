@@ -31,8 +31,10 @@ object Repository {
   val snapshotRepo = "snapshots" at Repository.snapshots
   val releaseRepo = "releases" at Repository.releases
 
+  val globalSuffix = "" //"-global"
+
   def repo(isSnapshot: Boolean) = if (isSnapshot) Repository.snapshots else Repository.releases
-  def globalPublishTo(isSnapshot: Boolean) = repo(isSnapshot) + "-global"
+  def globalPublishTo(isSnapshot: Boolean) = repo(isSnapshot) + globalSuffix
   def userCredentials = (Path.userHome / ".ivy2" / "credentials" ** "*").filter(_.isFile).get.map(Credentials(_))
 }
 
