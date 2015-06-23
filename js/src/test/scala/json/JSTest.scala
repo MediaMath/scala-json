@@ -21,8 +21,10 @@ import scalajs.js
 import scalajs.js.{JSON => NativeJSON}
 
 object JSTest extends TestSuite {
+  def emptyArray = js.Dynamic.newInstance(js.Dynamic.global.Array)()
+
   val tests = TestSuite("test JS" - {
-    "test json" - {
+    "test produce" - {
       import Sample._
 
       val foo = Foo("a", 1)
@@ -32,7 +34,24 @@ object JSTest extends TestSuite {
       val nativeSer = NativeJSON.stringify(fooJs.toJSON)
       val reserd = JValue fromString nativeSer
 
-      require(reserd == fooJs)
+      assert(reserd == fooJs)
+    }
+
+    "test parse" - {
+      val real = JValue from Seq(
+        1, 2, Map.empty, Nil, Map("a" -> 1), "", null, 5.123, Nil
+      )
+      val parsed = (NativeJSON parse """[1,2,{},[],{"a":1},"",null,5.123]""").asInstanceOf[js.Array[js.Dynamic]]
+
+      parsed.push(emptyArray))
+
+      val reserd = JValue from parsed
+
+      assert(reserd == real)
+    }
+
+    "undefined" - {
+      assert(JValue.from(js.undefined) == JUndefined)
     }
   })
 }
