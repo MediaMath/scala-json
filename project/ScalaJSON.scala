@@ -31,8 +31,10 @@ object Repository {
   val snapshotRepo = "snapshots" at Repository.snapshots
   val releaseRepo = "releases" at Repository.releases
 
+  val publishSuffix = "-local" //"-global"
+
   def repo(isSnapshot: Boolean) = if (isSnapshot) Repository.snapshots else Repository.releases
-  def globalPublishTo(isSnapshot: Boolean) = repo(isSnapshot) + "-global"
+  def globalPublishTo(isSnapshot: Boolean) = repo(isSnapshot) + publishSuffix
   def userCredentials = (Path.userHome / ".ivy2" / "credentials" ** "*").filter(_.isFile).get.map(Credentials(_))
 }
 
@@ -40,11 +42,11 @@ object ScalaJSON {
   val genDocsTask = TaskKey[Unit]("gen-docs")
 
   val baseSettings = Seq(
-    scalaVersion := "2.11.5",
+    scalaVersion := "2.11.6",
     organization := "com.mediamath",
     organizationName := "MediaMath, Inc",
     organizationHomepage := Some(url("http://www.mediamath.com")),
-    crossScalaVersions := Seq(scalaVersion.value, "2.10.4")
+    crossScalaVersions := Seq(scalaVersion.value, "2.10.5")
   )
 
   val commonSettings = baseSettings ++ Seq(

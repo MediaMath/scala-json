@@ -42,7 +42,7 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
   def apply[T](v: T) /*(implicit acc: JSONProducer[T, JValue] = null)*/ : JValue =
     VM.Context.fromAny(v)
 
-  private[json] def fromAnyInternal(value: Any): JValue = value match {
+  private[json] def fromAnyInternalPF: PartialFunction[Any, JValue] = {
     //case x if acc == null => v.js
     case x: JValue => x
     case x: String => JString(x)
@@ -71,6 +71,8 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
     case x: Long  => JNumber(x)
     case x: Float => JNumber(x)
   }
+
+  private[json] def fromAnyInternal(value: Any): JValue = fromAnyInternalPF(value)
 
   //implicit def anyToJVal[T, U <: JValue](x: T)(implicit acc: JSONProducer[T, U]): U = x.js
   //implicit def anyToJVal[T](x: T)(implicit acc: JSONProducer[T, JValue]): JValue = x.js
