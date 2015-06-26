@@ -34,7 +34,8 @@ object Repository {
   val publishSuffix = "-local" //"-global"
 
   def repo(isSnapshot: Boolean) = if (isSnapshot) Repository.snapshots else Repository.releases
-  def globalPublishTo(isSnapshot: Boolean) = repo(isSnapshot) + publishSuffix
+  def publishTo(isSnapshot: Boolean) = repo(isSnapshot) + publishSuffix
+
   def userCredentials = (Path.userHome / ".ivy2" / "credentials" ** "*").filter(_.isFile).get.map(Credentials(_))
 }
 
@@ -53,7 +54,7 @@ object ScalaJSON {
     name := "scala-json",
     credentials ++= Repository.userCredentials,
     crossPaths := true,
-    publishTo := Some("publish" at Repository.globalPublishTo(isSnapshot.value)),
+    publishTo := Some("publish" at Repository.publishTo(isSnapshot.value)),
     publishArtifact in Test := false,
 
     scalacOptions ++= Seq("-deprecation", "-language:_", "-unchecked", "-Xlint",

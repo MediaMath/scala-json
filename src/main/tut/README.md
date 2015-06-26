@@ -4,14 +4,17 @@ Compile time JSON marshalling of primitive values and basic collections.
 
 Goals
 -----
-* Compile-time marshalling via implicits
-* Provide a usable JS-like API for intermediate JSON data
+Compile time JSON marshalling of primitive values, case-classes, basic collections, and whatever you can imagine.
+* Extensible Accessor API. Serialize any type you want.
+* Provide a usable JS-like DSL for intermediate JSON data
 * Create implicit accessors that chain to resolve Higher-Kind types (```Option[T]```)
-* Enable you to create structures for existing JSON APIs
+* Produce normal looking Scala structures from any existing JSON API.
+* Produce pretty and human readable JSON.
 * Enable you to create readable APIs that match existing/specific structure.
+* Uses defaults correctly.
+* Extensible annotation API to make your accessors more dynamic.
 * Use existing scala collection CanBuildFrom factories to support buildable collections.
-* Provide support for unkown-types via 'pickling' with a class Registry
-
+* Provide support for unknown types (Any) via 'pickling' with a class Registry
 
 Getting Started
 ---------------
@@ -55,7 +58,7 @@ Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 * Typed exceptions with field data
 ```tut
 try JObject("a".js -> "badint".js).toObject[TestClass] catch {
-  case e: json.InputFormatException =>
+  case e: InputFormatException =>
     e.getExceptions.map {
       case fieldEx: InputFieldException if fieldEx.fieldName == "a" =>
         fieldEx.getMessage
