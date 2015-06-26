@@ -4,11 +4,13 @@ Compile time JSON marshalling of primitive values and basic collections.
 
 Goals
 -----
-* Compile-time marshalling
+* Compile-time marshalling via implicits
 * Provide a usable JS-like API for intermediate JSON data
 * Create implicit accessors that chain to resolve Higher-Kind types (```Option[T]```)
 * Enable you to create structures for existing JSON APIs
 * Enable you to create readable APIs that match existing/specific structure.
+* Use existing scala collection CanBuildFrom factories to support buildable collections.
+* Provide support for unkown-types via 'pickling' with a class Registry
 
 
 Getting Started

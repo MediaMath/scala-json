@@ -324,6 +324,7 @@ object ObjectAccessorFactory {
             case t if t =:= typeOf[Double]  => reify(0.0)
             case t if t =:= typeOf[Short]   => reify(0.toShort)
             case t if t =:= typeOf[Boolean] => reify(false)
+            case t if t <:< typeOf[Any]     => reify(null)
             case t                          => sys.error("Unkown default type for " + t)
           }
 
