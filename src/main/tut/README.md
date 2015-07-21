@@ -7,7 +7,7 @@ Goals
 Compile time JSON marshalling of primitive values, case-classes, basic collections, and whatever you can imagine.
 * Extensible Accessor API. Serialize any type you want.
 * Provide a usable JS-like DSL for intermediate JSON data
-* Create implicit accessors that chain to resolve Higher-Kind types (```scala Option[T]```)
+* Create implicit accessors that chain to resolve Higher-Kind types (```Option[T]```)
 * Produce normal looking Scala structures from any existing JSON API.
 * Produce pretty and human readable JSON.
 * Enable you to create readable APIs that match existing/specific structure.

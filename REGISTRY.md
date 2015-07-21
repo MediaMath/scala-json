@@ -23,7 +23,7 @@ scala> AccessorRegistry.addAccessor[TestClass]
 ```
 
 The AccessorRegistry also provides an accessor for the Scala
-type ```scala Any```. When used carefully, this can allow you to serialize to and from the type ```scala Any``` assuming
+type ```Any```. When used carefully, this can allow you to serialize to and from the type ```Any``` assuming
 the base types have been registered in the AccessorRegistry.
 
 ```scala
