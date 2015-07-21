@@ -332,10 +332,9 @@ object ObjectAccessorFactory {
             val defOpt = defOptExpr.splice
 
             val b = (jval.splice.apply(JString(info.name.splice)): JValue) match {
-              case JUndefined if defOpt.isDefined =>
-                defOpt.get
+              case JUndefined if defOpt.isDefined => defOpt.get
               case JNull      => None
-              case JUndefined => None //TODO: this should throw an error
+              case JUndefined => None
               case jv => try accExpr.splice.fromJSON(jv) catch {
                 case e: InputFormatException =>
                   inputExceptionsXpr.splice += e.prependFieldName(info.name.splice)
@@ -406,3 +405,4 @@ object ObjectAccessorFactory {
     }
   }
 }
+                                                   

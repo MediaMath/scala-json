@@ -1,6 +1,6 @@
 scala-json
 ==========
-Compile time JSON marshalling of primitive values and basic collections.
+Compile time JSON marshalling for [https://github.com/scala/scala] and [https://github.com/scala-js/scala-js]
 
 Goals
 -----
