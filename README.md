@@ -1,6 +1,6 @@
 scala-json
 ==========
-Compile time JSON marshalling of primitive values and basic collections.
+Compile time JSON marshalling for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js)
 
 Goals
 -----
@@ -128,8 +128,12 @@ res14: java.io.Serializable = numeric expected but found json.JString (of value 
 [Accessors](./ACCESSORS.md)
 ---
 
+Accessors are the compile-time constructs that allow you to marshal scala types.
+
 [Registry](./REGISTRY.md)
 ---
+
+The Accessor Registry allows you to pickle registered types from untyped (Any) data.
 
 SBT
 ---
