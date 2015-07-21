@@ -67,10 +67,10 @@ try JObject("a".js -> "badint".js).toObject[TestClass] catch {
 }
 ```
 
-[Accessors](./ACCESSORS.MD)
+[Accessors](./ACCESSORS.md)
 ---
 
-[Registry](./REGISTRY.MD)
+[Registry](./REGISTRY.md)
 ---
 
 SBT
