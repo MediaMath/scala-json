@@ -1,6 +1,6 @@
 scala-json
 ==========
-Compile time JSON marshalling for [https://github.com/scala/scala] and [https://github.com/scala-js/scala-js]
+Compile time JSON marshalling for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js)
 
 Goals
 -----
@@ -70,8 +70,12 @@ try JObject("a".js -> "badint".js).toObject[TestClass] catch {
 [Accessors](./ACCESSORS.md)
 ---
 
+Accessors are the compile-time constructs that allow you to marshal scala types.
+
 [Registry](./REGISTRY.md)
 ---
+
+The Accessor Registry allows you to pickle registered types from untyped (Any) data.
 
 SBT
 ---
