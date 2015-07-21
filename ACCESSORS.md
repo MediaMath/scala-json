@@ -11,6 +11,12 @@ between JSON APIs and are left for you to handle. Things like Set, Seq, Map
 have a very literal definition and refer to the accessor of the value type
 for per-item marshalling. These are provided for you out of the box.
 
+The one partial exception to this is the treatment of Option. Normally
+defaults of a case class are used if there is either a null or undefined present.
+Option treats null and undefined differently. If an Option field is null, None
+is used regardless of the default. If the field is undefined, the default is used
+or an InputFormatException is thrown if there is no default. 
+
 Scala macros are used to create accessors for case classes automatically.
 It's best to put these under a val or lazy val in a static scope. They can
 be used on demand but it can cause serious code bloat as the macro code
