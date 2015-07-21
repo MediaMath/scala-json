@@ -49,7 +49,7 @@ regularJS: json.JObject =
       "a": 1,
       "c": ""
     },
-    "clazz": "TestClass"
+    "class": "TestClass"
   }
 }
 
@@ -62,10 +62,10 @@ pickeledJS: json.JObject =
         "a": 1,
         "c": ""
       },
-      "clazz": "TestClass"
+      "class": "TestClass"
     }
   },
-  "clazz": "Envelope"
+  "class": "Envelope"
 }
 
 scala> require(pickeledJS.toObject[Any](AccessorRegistry.anyAccessor) == inst)
