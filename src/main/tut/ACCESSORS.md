@@ -15,7 +15,8 @@ The one partial exception to this is the treatment of Option. Normally
 defaults of a case class are used if there is either a null or undefined present.
 Option treats null and undefined differently. If an Option field is null, None
 is used regardless of the default. If the field is undefined, the default is used
-or an InputFormatException is thrown if there is no default. 
+or else it resolves to null. This gives Option fields the unique property
+of resolving even if undefined is present. 
 
 Scala macros are used to create accessors for case classes automatically.
 It's best to put these under a val or lazy val in a static scope. They can
