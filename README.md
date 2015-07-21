@@ -125,10 +125,10 @@ scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
 res14: java.io.Serializable = numeric expected but found json.JString (of value "badint")
 ```
 
-[Accessors](./ACCESSORS.MD)
+[Accessors](./ACCESSORS.md)
 ---
 
-[Registry](./REGISTRY.MD)
+[Registry](./REGISTRY.md)
 ---
 
 SBT
