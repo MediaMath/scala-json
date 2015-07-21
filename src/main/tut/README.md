@@ -19,7 +19,7 @@ Compile time JSON marshalling of primitive values, case-classes, basic collectio
 Getting Started
 ---------------
 
-* Import the json packag=
+* Import the json package
 ```tut
 import json._
 JValue fromString "[1,2,3,4,5]"
@@ -66,6 +66,12 @@ try JObject("a".js -> "badint".js).toObject[TestClass] catch {
     }.mkString
 }
 ```
+
+[Accessors](./ACCESSORS.MD)
+---
+
+[Registry](./REGISTRY.MD)
+---
 
 SBT
 ---

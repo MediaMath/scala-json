@@ -19,7 +19,7 @@ Compile time JSON marshalling of primitive values, case-classes, basic collectio
 Getting Started
 ---------------
 
-* Import the json packag=
+* Import the json package
 ```scala
 scala> import json._
 import json._
@@ -106,11 +106,11 @@ res13: json.JArray =
 [{
     "a": 1,
     "c": ""
-}, {
+  }, {
     "a": 1,
     "b": 10,
     "c": "hihi"
-}]
+  }]
 ```
 * Typed exceptions with field data
 ```scala
@@ -124,6 +124,12 @@ scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
      | }
 res14: java.io.Serializable = numeric expected but found json.JString (of value "badint")
 ```
+
+[Accessors](./ACCESSORS.MD)
+---
+
+[Registry](./REGISTRY.MD)
+---
 
 SBT
 ---
