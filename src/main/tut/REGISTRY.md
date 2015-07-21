@@ -1,3 +1,6 @@
+AccessorRegistry
+================
+
 The AccessorRegistry gives you a way of 'pickling' objects based on their underlying type. Unlike when
 using the accessors implicitly, this requires looking up the class type of a serialized/deserialized object to
 locate the accessor. This can be especially handy in message-passing systems that may need to deserialize
