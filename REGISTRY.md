@@ -26,12 +26,12 @@ scala> val inst = TestClass(1, None)
 inst: TestClass = TestClass(1,None,,None)
 
 scala> val jv = inst.js(AccessorRegistry.anyAccessor)
-jv: json.JObject =
+jv: json.JObject = 
 {
   "data": {
-    "a": 1,
+    "a": 1, 
     "c": ""
-  },
+  }, 
   "clazz": "TestClass"
 }
 
