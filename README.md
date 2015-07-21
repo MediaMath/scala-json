@@ -104,13 +104,13 @@ res12: json.JValue =
 scala> Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 res13: json.JArray =
 [{
-    "a": 1,
-    "c": ""
-  }, {
-    "a": 1,
-    "b": 10,
-    "c": "hihi"
-  }]
+  "a": 1,
+  "c": ""
+}, {
+  "a": 1,
+  "b": 10,
+  "c": "hihi"
+}]
 ```
 * Typed exceptions with field data
 ```scala

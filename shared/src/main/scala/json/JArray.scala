@@ -121,7 +121,7 @@ final case class JArray(override val values: IndexedSeq[JValue]) extends JValue 
     values foreach { v =>
       if (!isFirst) out.append("," + settings.spaceString)
 
-      out append v.toJSONStringBuilder(settings, lvl + 1)
+      out append v.toJSONStringBuilder(settings, lvl)
 
       isFirst = false
     }
