@@ -23,6 +23,7 @@ package object json extends JSONAnnotations.TypeAdder {
   val JNaN = JNumber(Double.NaN)
 
   type JSONAccessor[T] = JSONAccessorProducer[T, JValue]
+  val JSONAccessor = internal.JSONAccessor
 
   def fromJSON[T](jval: JValue)(implicit acc: JSONAccessor[T]) =
     acc.fromJSON(jval)

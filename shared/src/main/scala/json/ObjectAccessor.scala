@@ -142,18 +142,6 @@ trait JSONProducer[-T, +JV <: JValue] extends TypedValueAccessor[T] {
   def createJSON(obj: T): JV
 }
 
-object JSONAccessor {
-  def of[T](implicit acc: json.JSONAccessor[T]) = acc
-
-  def create[T: ClassTag, U <: JValue](toJ: T => U,
-    fromJ: JValue => T) = new JSONAccessorProducer[T, U] {
-    def createJSON(from: T): U = toJ(from)
-    def fromJSON(from: JValue): T = fromJ(from)
-    def clazz = classTag[T].runtimeClass
-    //def fields: IndexedSeq[FieldAccessor[T]] = Nil.toIndexedSeq
-  }
-}
-
 //trait JSONAccessor[T] extends JSONProducer[T, JValue] with JSONReader[T] {
 trait JSONAccessorProducer[T, +JV <: JValue] extends JSONProducer[T, JV] with JSONReader[T] {
   //type SourceType = T

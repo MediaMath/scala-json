@@ -1,7 +1,20 @@
 scala-json
 ==========
-Compile time JSON marshalling of primitive values and basic collections. Runtime
-marshalling is available, but not required.
+Compile time JSON marshalling of primitive values and basic collections.
+
+Goals
+-----
+Compile time JSON marshalling of primitive values, case-classes, basic collections, and whatever you can imagine.
+* Extensible Accessor API. Serialize any type you want.
+* Provide a usable JS-like DSL for intermediate JSON data
+* Create implicit accessors that chain to resolve Higher-Kind types (```Option[T]```)
+* Produce normal looking Scala structures from any existing JSON API.
+* Produce pretty and human readable JSON.
+* Enable you to create readable APIs that match existing/specific structure.
+* Uses defaults correctly.
+* Extensible annotation API to make your accessors more dynamic.
+* Use existing scala collection CanBuildFrom factories to support buildable collections.
+* Provide support for unknown types (Any) via 'pickling' with a class Registry
 
 Getting Started
 ---------------
@@ -29,13 +42,13 @@ scala> def testMap = Map("hey" -> "there")
 testMap: scala.collection.immutable.Map[String,String]
 
 scala> val testMapJs = testMap.js
-testMapJs: json.JObject = 
+testMapJs: json.JObject =
 {
   "hey": "there"
 }
 
 scala> Map("key" -> Seq.fill(3)(Set(Some(false), None))).js
-res4: json.JObject = 
+res4: json.JObject =
 {
   "key": [[false, null], [false, null], [false, null]]
 }
@@ -66,9 +79,9 @@ scala> implicit val acc = ObjectAccessor.of[TestClass]
 acc: json.CaseClassObjectAccessor[TestClass] = ObjectAccessor[TestClass]
 
 scala> val testClassJs = TestClass(1, None).js
-testClassJs: json.JObject = 
+testClassJs: json.JObject =
 {
-  "a": 1, 
+  "a": 1,
   "c": ""
 }
 
@@ -82,27 +95,27 @@ scala> JObject("a".js -> 23.js).toObject[TestClass]
 res11: TestClass = TestClass(23,None,,None)
 
 scala> TestClass(1, None).js + ("blah".js -> 1.js) - "a"
-res12: json.JValue = 
+res12: json.JValue =
 {
-  "c": "", 
+  "c": "",
   "blah": 1
 }
 
 scala> Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
-res13: json.JArray = 
+res13: json.JArray =
 [{
-    "a": 1, 
-    "c": ""  
-}, {
-    "a": 1, 
-    "b": 10, 
-    "c": "hihi"  
-}]
+    "a": 1,
+    "c": ""
+  }, {
+    "a": 1,
+    "b": 10,
+    "c": "hihi"
+  }]
 ```
 * Typed exceptions with field data
 ```scala
 scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
-     |   case e: json.InputFormatException =>
+     |   case e: InputFormatException =>
      |     e.getExceptions.map {
      |       case fieldEx: InputFieldException if fieldEx.fieldName == "a" =>
      |         fieldEx.getMessage
@@ -112,6 +125,12 @@ scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
 res14: java.io.Serializable = numeric expected but found json.JString (of value "badint")
 ```
 
+[Accessors](./ACCESSORS.md)
+---
+
+[Registry](./REGISTRY.md)
+---
+
 SBT
 ---
 
@@ -120,7 +139,7 @@ SBT
 resolvers += "mmreleases" at
     "https://artifactory.mediamath.com/artifactory/libs-release-global"
 
-libraryDependencies += "com.mediamath" %% "scala-json" % "0.1-RC7"
+libraryDependencies += "com.mediamath" %% "scala-json" % "colin-SNAPSHOT"
 
 ```
 
@@ -128,7 +147,7 @@ and for Scala.js
 
 ```scala
 
-libraryDependencies += "com.mediamath" %%% "scala-json" % "0.1-RC7"
+libraryDependencies += "com.mediamath" %%% "scala-json" % "colin-SNAPSHOT"
 
 ```
 
