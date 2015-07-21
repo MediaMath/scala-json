@@ -16,29 +16,37 @@ It's best to put these under a val or lazy val in a static scope. They can
 be used on demand but it can cause serious code bloat as the macro code
 is inlined per usage.
 
-```tut
+```scala
+scala> import json._
 import json._
 
-case class TestClass(a: Int)
-implicit val testClassAcc = ObjectAccessor.of[TestClass]
+scala> case class TestClass(a: Int)
+defined class TestClass
+
+scala> implicit val testClassAcc = ObjectAccessor.of[TestClass]
+testClassAcc: json.CaseClassObjectAccessor[TestClass] = ObjectAccessor[TestClass]
 ```
 
 Custom types
-```tut
-class Foo(val bar: String)
-val fooAccessor = JSONAccessor.create[Foo, JValue](
-      { x: Foo =>
-        x.bar.js
-      },
-      { x: JValue =>
-        new Foo(x.jString.str)
-      }
-    )
+```scala
+scala> class Foo(val bar: String)
+defined class Foo
+
+scala> val fooAccessor = JSONAccessor.create[Foo, JValue](
+     |       { x: Foo =>
+     |         x.bar.js
+     |       },
+     |       { x: JValue =>
+     |         new Foo(x.jString.str)
+     |       }
+     |     )
+fooAccessor: json.JSONAccessorProducer[Foo,json.JValue] = JSONAccessorProducer[Foo, _]
 ```
 
 Sub-classes
-```tut
-class Bar(s: String) extends Foo(s)
+```scala
+scala> class Bar(s: String) extends Foo(s)
+defined class Bar
 ```
 
 Putting the implicit under a companion object of the same name provides
@@ -51,3 +59,4 @@ object TestClass {
 
 Proxying between types can be tricky, but its verbose nature allows you to implement
 whatever sub-classing format you want for your JSON serialization.
+
