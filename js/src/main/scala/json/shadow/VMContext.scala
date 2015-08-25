@@ -43,7 +43,7 @@ object VMContext extends BaseVMContext {
     }
   }
 
-  trait JValueBase {
+  private[json] trait JValueBase {
     //this adds JSON.stringify support
     @JSExport final def toJSON: js.Any = toNativeJS
 

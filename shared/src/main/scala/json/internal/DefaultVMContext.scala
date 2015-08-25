@@ -25,7 +25,7 @@ trait BaseVMContext {
 
   trait JValueCompanionBase
 
-  trait JValueBase
+  private[json] trait JValueBase
 
   trait JBooleanBase
   trait JNumberBase
@@ -41,7 +41,7 @@ object DefaultVMContext {
   object VMContext extends BaseVMContext {
     trait JValueCompanionBase
 
-    trait JValueBase
+    private[json] trait JValueBase
 
     trait JBooleanBase
     trait JNumberBase

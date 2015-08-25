@@ -22,10 +22,6 @@ import json.internal.{BaseVMContext, JValueObjectDeserializer}
 import scala.collection.immutable.StringOps
 
 object VMContext extends BaseVMContext {
-  trait JValueCompanionBase
-
-  trait JValueBase
-
   val localMapper = new ThreadLocal[JValueObjectDeserializer] {
     override protected def initialValue: JValueObjectDeserializer =
       new JValueObjectDeserializer
