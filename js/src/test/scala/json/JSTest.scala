@@ -24,6 +24,46 @@ object JSTest extends TestSuite {
   def emptyArray = js.Dynamic.newInstance(js.Dynamic.global.Array)()
 
   val tests = TestSuite("test JS" - {
+    "test object" - {
+      val x = js.Dictionary.empty[js.Any]
+      val result = JObject()
+
+      assert(JSJValue.fromNativeJS(x) == result)
+      assert(JSJValue.from(x) == result)
+    }
+
+    "test array" - {
+      val x = new js.Array[js.Any]
+      val result = JArray.empty
+
+      assert(JSJValue.fromNativeJS(x) == result)
+      assert(JSJValue.from(x) == result)
+    }
+
+    "test string" - {
+      val x = "blah"
+      val result = JString(x)
+
+      assert(JSJValue.fromNativeJS(x) == result)
+      assert(JSJValue.from(x) == result)
+    }
+
+    "test int" - {
+      val x = 1
+      val result = JNumber(x)
+
+      assert(JSJValue.fromNativeJS(x) == result)
+      assert(JSJValue.from(x) == result)
+    }
+
+    "test double" - {
+      val x = 1.124484
+      val result = JNumber(x)
+
+      assert(JSJValue.fromNativeJS(x) == result)
+      assert(JSJValue.from(x) == result)
+    }
+
     "test produce" - {
       import Sample._
 
@@ -32,6 +72,7 @@ object JSTest extends TestSuite {
       val fooJs = fw.js
 
       val nativeSer = NativeJSON.stringify(fooJs.toJSON)
+      println(nativeSer)
       val reserd = JValue fromString nativeSer
 
       assert(reserd == fooJs)
