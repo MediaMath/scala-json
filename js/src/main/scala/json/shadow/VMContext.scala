@@ -43,7 +43,11 @@ object VMContext extends BaseVMContext {
     }
   }
 
+<<<<<<< HEAD
   trait JValueBase {
+=======
+  private[json] trait JValueBase {
+>>>>>>> gh-pages
     //this adds JSON.stringify support
     @JSExport final def toJSON: js.Any = toNativeJS
 
