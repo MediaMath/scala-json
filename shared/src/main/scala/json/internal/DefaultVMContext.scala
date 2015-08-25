@@ -25,11 +25,8 @@ trait BaseVMContext {
 
   trait JValueCompanionBase
 
-<<<<<<< HEAD
-  trait JValueBase
-=======
   private[json] trait JValueBase
->>>>>>> gh-pages
+
 
   trait JBooleanBase
   trait JNumberBase
@@ -45,11 +42,7 @@ object DefaultVMContext {
   object VMContext extends BaseVMContext {
     trait JValueCompanionBase
 
-<<<<<<< HEAD
-    trait JValueBase
-=======
     private[json] trait JValueBase
->>>>>>> gh-pages
 
     trait JBooleanBase
     trait JNumberBase
