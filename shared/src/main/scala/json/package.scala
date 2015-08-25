@@ -17,9 +17,21 @@
 import json.internal.JSONAnnotations
 
 /**
- * Created by crgodsey on 2/14/15.
+ * ==Overview==
+ * This is the package namespace for everything scala-json.
+ * It is recommended to import json._ in your file when working
+ * with scala json. The base type for all JSON values is the
+ * [[json.JValue]].
+ *
+ * ==JValue Types==
+ *  - [[json.JNumber]] - JSON Numeric Type
+ *  - [[json.JString]] - JSON String Type
+ *  - [[json.JBoolean]] - JSON Boolean Types: [[json.JTrue]] and [[json.JFalse]]
+ *  - [[json.JUndefined]] - JSON undefined value
+ *  - [[json.JNull]] - JSON null value
  */
 package object json extends JSONAnnotations.TypeAdder {
+  /** Special NaN JNumber value */
   val JNaN = JNumber(Double.NaN)
 
   type JSONAccessor[T] = JSONAccessorProducer[T, JValue]
@@ -31,6 +43,7 @@ package object json extends JSONAnnotations.TypeAdder {
   def toJSONString[T](obj: T)(implicit acc: JSONAccessor[T]) =
     obj.js.toString
 
+  /** This is the class extension that allows you to use the .js method on any value */
   implicit class AnyValJSEx[T](val x: T) extends AnyVal {
     def js[U <: JValue](implicit acc: JSONProducer[T, U]): U = acc.createJSON(x)
 

@@ -22,7 +22,7 @@ object JBoolean {
   def apply(b: Boolean) = if (b) JTrue else JFalse
 }
 
-sealed trait JBoolean extends JValue {
+sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
   def value: Boolean
 
   def isTrue = value
@@ -62,7 +62,7 @@ object JString {
   implicit def stringToJValue(v: String): JString = JString(v)
 }
 
-final case class JString(value: String) extends JValue with Iterable[JString] { //with IterableLike[JString, JString] {
+final case class JString(value: String) extends JValue with Iterable[JString] with VM.Context.JStringBase { //with IterableLike[JString, JString] {
   def iterator: Iterator[JString] =
     (new StringOps(str)).toIterator.map(c => JString(c.toString))
 
@@ -115,7 +115,7 @@ object JNumber {
   implicit def FtoJValue(x: Float): JNumber = JNumber(x)
 }
 
-final case class JNumber(value: Double) extends JValue {
+final case class JNumber(value: Double) extends JValue with VM.Context.JNumberBase {
   //require(num != null) //hmmm
 
   def iterator: Iterator[JValue] = sys.error("Cannot iterate a number!")
@@ -158,7 +158,7 @@ final case class JNumber(value: Double) extends JValue {
   }
 }
 
-final case object JNull extends JValue {
+final case object JNull extends JValue with VM.Context.JNullBase {
   def iterator: Iterator[JValue] = sys.error("Cannot iterate null!")
 
   override def jObject: JObject = throw GenericJSONException("Expected JObject")
@@ -180,7 +180,7 @@ final case object JNull extends JValue {
     lvl: Int): StringBuilder = new StringBuilder("null")
 }
 
-final case object JUndefined extends JValue {
+final case object JUndefined extends JValue with VM.Context.JUndefinedBase {
   def iterator: Iterator[JValue] = throw JUndefinedException("Cannot iterate undefined!")
 
   override def jObject: JObject = throw GenericJSONException("Expected JObject")

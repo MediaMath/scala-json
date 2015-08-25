@@ -23,9 +23,17 @@ trait BaseVMContext {
   def fromAny(value: Any): JValue
   def quoteJSONString(string: String): StringBuilder
 
-  type JValueCompanionBase
+  trait JValueCompanionBase
 
-  type JValueBase
+  trait JValueBase
+
+  trait JBooleanBase
+  trait JNumberBase
+  trait JArrayBase
+  trait JObjectBase
+  trait JUndefinedBase
+  trait JNullBase
+  trait JStringBase
 }
 
 object DefaultVMContext {
@@ -34,6 +42,14 @@ object DefaultVMContext {
     trait JValueCompanionBase
 
     trait JValueBase
+
+    trait JBooleanBase
+    trait JNumberBase
+    trait JArrayBase
+    trait JObjectBase
+    trait JUndefinedBase
+    trait JNullBase
+    trait JStringBase
 
     def fromString(str: String): JValue = ???
     def fromAny(value: Any): JValue = ???

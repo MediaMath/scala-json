@@ -78,6 +78,10 @@ object ScalaJSON {
     libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1"
   )
 
+  val jsSettings = Seq(
+    target in Compile in doc := baseDirectory.value / ".." / "doc"
+  )
+
   def settings(jsonJS: Project, jsonJVM: Project) = baseSettings ++ tut.Plugin.tutSettings ++ Seq(
     publish := {},
     publishLocal := {},
@@ -90,12 +94,15 @@ object ScalaJSON {
       }
     },
 
-    (sbt.Keys.`package` in Compile) <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask),
-    publish <<= publish.dependsOn(genDocsTask),
+    sbt.Keys.`package` in Compile <<= (sbt.Keys.`package` in Compile).dependsOn(genDocsTask),
 
-    (test in Test) <<= (test in Test).dependsOn(tut.Plugin.tut, fastOptJS in jsonJS in Test),
+    publish <<= publish.dependsOn(genDocsTask, doc in Compile),
 
-    (unmanagedClasspath in Compile) <<= (fullClasspath in Compile in jsonJVM)
+    test in Test <<= (test in Test).dependsOn(tut.Plugin.tut, fastOptJS in jsonJS in Test),
+
+    unmanagedClasspath in Compile <<= (fullClasspath in Compile in jsonJVM),
+
+    doc in Compile <<= (doc in Compile).dependsOn(genDocsTask, doc in Compile in jsonJVM)
   )
 
   def printToFile(f: java.io.File)(op: java.io.PrintWriter => Unit) {

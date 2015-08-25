@@ -101,8 +101,8 @@ res12: json.JValue =
   "blah": 1
 }
 
-scala> Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
-res13: json.JArray =
+scala> val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+seqJson: json.JArray =
 [{
   "a": 1,
   "c": ""
@@ -111,6 +111,16 @@ res13: json.JArray =
   "b": 10,
   "c": "hihi"
 }]
+```
+* Dynamic field access
+```scala
+scala> seqJson.dynamic(1).c.value
+res13: json.JValue = "hihi"
+
+scala> seqJson.dynamic.length
+res14: json.JDynamic = 2
+
+scala> require(seqJson.d == seqJson.dynamic)
 ```
 * Typed exceptions with field data
 ```scala
@@ -122,7 +132,7 @@ scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
      |       case _ => ""
      |     }.mkString
      | }
-res14: java.io.Serializable = numeric expected but found json.JString (of value "badint")
+res16: java.io.Serializable = numeric expected but found json.JString (of value "badint")
 ```
 
 [Accessors](./ACCESSORS.md)
@@ -143,7 +153,7 @@ SBT
 resolvers += "mmreleases" at
     "https://artifactory.mediamath.com/artifactory/libs-release-global"
 
-libraryDependencies += "com.mediamath" %% "scala-json" % "0.2-RC1"
+libraryDependencies += "com.mediamath" %% "scala-json" % "0.2-SNAPSHOT"
 
 ```
 
@@ -151,7 +161,7 @@ and for Scala.js
 
 ```scala
 
-libraryDependencies += "com.mediamath" %%% "scala-json" % "0.2-RC1"
+libraryDependencies += "com.mediamath" %%% "scala-json" % "0.2-SNAPSHOT"
 
 ```
 

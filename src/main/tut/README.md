@@ -53,7 +53,13 @@ val testClassJsString = testClassJs.toDenseString
 JValue.fromString(testClassJsString).toObject[TestClass]
 JObject("a".js -> 23.js).toObject[TestClass]
 TestClass(1, None).js + ("blah".js -> 1.js) - "a"
-Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+```
+* Dynamic field access
+```tut
+seqJson.dynamic(1).c.value
+seqJson.dynamic.length
+require(seqJson.d == seqJson.dynamic)
 ```
 * Typed exceptions with field data
 ```tut

@@ -27,16 +27,18 @@ object JObject extends GenericCompanion[scala.collection.immutable.Iterable] {
 
   //TODO: allows duplicates...
   def apply(values: Pair*): JObject = {
-    val keyList = values.map(_._1)
-    val keySet = keyList.toSet
+    val map = values.toMap
 
-    require(keyList.length == keySet.size, "duplicate keys!")
+    if(map.size != values.length) throw DuplicateKeyException()
 
-    JObject(values.toMap)(keyList)
+    new JObject(map)(values)
   }
 
   def apply[T](obj: T)(implicit accessor: ObjectAccessor[T]): JObject =
     accessor.createJSON(obj).toJObject
+
+  def apply(fields: Map[JString, JValue]): JObject =
+    new JObject(fields)(fields)
 
   def newCanBuildFrom = new CanBuildFrom[TraversableOnce[Pair], Pair, JObject] {
     def apply(from: TraversableOnce[Pair]) = newJObjectBuilder // ++= from
@@ -72,15 +74,13 @@ object JObject extends GenericCompanion[scala.collection.immutable.Iterable] {
 }
 
 final case class JObject(override val fields: Map[JString, JValue])(
-  implicit val keyIterable: Iterable[JString] = fields.map(_._1)) extends JValue
-    //with Map[JString, JValue] with MapLike[JString, JValue, JObject] {
-    with Iterable[JObject.Pair] with IterableLike[JObject.Pair, JObject] {
+  val iterable: Iterable[JObject.Pair] = fields) extends JValue
+    with Iterable[JObject.Pair] with IterableLike[JObject.Pair, JObject] with VM.Context.JObjectBase {
   import JObject.Pair
 
   lazy val uuid = UUID.randomUUID.toString
-  //lazy val keyIterator: Iterator[JString] = _keyIterator
 
-  def keyIterator = keyIterable.iterator
+  def keyIterator = iterable.iterator.map(_._1)
 
   def empty = JObject.empty
 
@@ -104,33 +104,35 @@ final case class JObject(override val fields: Map[JString, JValue])(
   def +[B1 >: JValue](kv: (JString, B1)): JObject = {
     val thisMap = fields
 
-    val (key, v) = kv
+    val (key, v: JValue) = kv
 
     val newMap = (thisMap + kv).asInstanceOf[Map[JString, JValue]]
 
     //append new keys to end
     if (thisMap.get(key).isDefined)
-      new JObject(newMap)(keyIterable)
+      new JObject(newMap)(iterable)
     else {
-      val seq = keyIterable ++ Seq(key)
-      new JObject(newMap)(seq)
+      val builder = new VectorBuilder[Pair]
+      builder ++= iterable
+      builder += key -> v
+      new JObject(newMap)(builder.result())
     }
   }
 
   def -(key: JString): JObject = {
-    val newKeys = keyIterable.filter(_ != key)
+    val newIterator = iterator.filter(pair => pair._1 != key)
 
-    new JObject(fields - key)(newKeys)
+    new JObject(fields - key)(newIterator.toVector)
   }
 
   def toJString: JString =
     sys.error("cannot convert JObject to JString")
-  //JString("object " + uuid) //this... should be different
+
   def toJNumber: JNumber = JNaN
   def toJBoolean: JBoolean = JTrue
 
   override def jValue = this
-  override def keys: Iterable[JString] = keyIterable
+  override def keys: Iterable[JString] = iterable.map(_._1)
 
   override def companion: GenericCompanion[scala.collection.immutable.Iterable] = JObject
   override def newBuilder = JObject.newJObjectBuilder
@@ -157,12 +159,15 @@ final case class JObject(override val fields: Map[JString, JValue])(
   def ++(that: JObject): JObject = {
     val thisMap = toMap
     val thatMap = that.toMap
-    val thisSeq = keyIterator.toSeq
+    val thisSeq = iterator
     val thisKeySet = thisMap.keySet
-    val newKeys = that.keyIterator.toSeq
-    val appendSeq = newKeys.filter(!thisKeySet(_))
+    val appendSeq = that.iterator.filter(pair => !thisKeySet(pair._1))
 
-    JObject(thisMap ++ thatMap)(thisSeq ++ appendSeq)
+    val builder = new VectorBuilder[Pair]
+    builder ++= iterable
+    builder ++= appendSeq
+
+    new JObject(thisMap ++ thatMap)(builder.result)
   }
 
   def toJSONStringBuilder(settings: JSONBuilderSettings,
