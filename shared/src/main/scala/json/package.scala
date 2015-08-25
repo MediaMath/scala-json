@@ -18,7 +18,7 @@ import json.internal.JSONAnnotations
 
 /**
  * ==Overview==
- * This is the package namespace for everything scala-json.
+ * This is the package namespace for everything scala-json ( [[https://github.com/MediaMath/scala-json/]] ).
  * It is recommended to import json._ in your file when working
  * with scala json. The base type for all JSON values is the
  * [[json.JValue]].
