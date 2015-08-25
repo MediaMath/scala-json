@@ -1,0 +1,1123 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>json - json</title>
+          <meta name="description" content="json - json" />
+          <meta name="keywords" content="json json" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'json.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../lib/package_big.png" />
+        
+        <h1>json</h1><span class="permalink">
+      <a href="../index.html#json.package" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">json</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><h4>Overview</h4><p>This is the package namespace for everything scala-json.
+It is recommended to import json._ in your file when working
+with scala json. The base type for all JSON values is the
+<a href="JValue.html" class="extype" name="json.JValue">json.JValue</a>.</p><h4>JValue Types</h4><ul><li><a href="JNumber.html" class="extype" name="json.JNumber">json.JNumber</a> - JSON Numeric Type</li><li><a href="JString.html" class="extype" name="json.JString">json.JString</a> - JSON String Type</li><li><a href="JBoolean.html" class="extype" name="json.JBoolean">json.JBoolean</a> - JSON Boolean Types: <a href="JTrue$.html" class="extype" name="json.JTrue">json.JTrue</a> and <a href="JFalse$.html" class="extype" name="json.JFalse">json.JFalse</a></li><li><a href="JUndefined$.html" class="extype" name="json.JUndefined">json.JUndefined</a> - JSON undefined value</li><li><a href="JNull$.html" class="extype" name="json.JNull">json.JNull</a> - JSON null value
+</li></ul></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="json.internal.JSONAnnotations.TypeAdder">TypeAdder</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="json"><span>json</span></li><li class="in" name="json.internal.JSONAnnotations.TypeAdder"><span>TypeAdder</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="json.AnyValJSEx" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AnyValJSEx[T]extendsAnyVal"></a>
+      <a id="AnyValJSEx[T]:AnyValJSEx[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="package$$AnyValJSEx.html"><span class="name">AnyValJSEx</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@AnyValJSEx[T]extendsAnyVal" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This is the class extension that allows you to use the .js method on any value</p>
+    </li><li name="json.CaseClassObjectAccessor" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CaseClassObjectAccessor[T]extendsObjectAccessor[T]withJSONProducer[T,json.JObject]"></a>
+      <a id="CaseClassObjectAccessor[T]:CaseClassObjectAccessor[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CaseClassObjectAccessor.html"><span class="name">CaseClassObjectAccessor</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="ObjectAccessor.html" class="extype" name="json.ObjectAccessor">ObjectAccessor</a>[<span class="extype" name="json.CaseClassObjectAccessor.T">T</span>] with <a href="JSONProducer.html" class="extype" name="json.JSONProducer">JSONProducer</a>[<span class="extype" name="json.CaseClassObjectAccessor.T">T</span>, <a href="JObject.html" class="extype" name="json.JObject">JObject</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@CaseClassObjectAccessor[T]extendsObjectAccessor[T]withJSONProducer[T,json.JObject]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.DuplicateKeyException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DuplicateKeyExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable"></a>
+      <a id="DuplicateKeyException:DuplicateKeyException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DuplicateKeyException.html"><span class="name">DuplicateKeyException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;Duplicate keys in object!&quot;</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.JSONException">JSONException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@DuplicateKeyExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Exception that happens when creating a JObject with ordered pairs that contain duplicate keys</p>
+    </li><li name="json.FieldAccessor" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FieldAccessor[T]extendsProduct2[Class[T],String]"></a>
+      <a id="FieldAccessor[T]:FieldAccessor[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="FieldAccessor.html"><span class="name">FieldAccessor</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.Product2">Product2</span>[<span class="extype" name="scala.Predef.Class">Class</span>[<span class="extype" name="json.FieldAccessor.T">T</span>], <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@FieldAccessor[T]extendsProduct2[Class[T],String]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.internal.JSONAnnotations.TypeAdder.FieldDescription" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FieldDescription=json.internal.JSONAnnotations.FieldDescriptionGeneric@scala.annotation.meta.getter@scala.annotation.meta.field"></a>
+      <a id="FieldDescription:FieldDescription"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FieldDescription</span><span class="result"> = <a href="internal/JSONAnnotations$$FieldDescriptionGeneric.html" class="extype" name="json.internal.JSONAnnotations.FieldDescriptionGeneric">FieldDescriptionGeneric</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@FieldDescription=json.internal.JSONAnnotations.FieldDescriptionGeneric@scala.annotation.meta.getter@scala.annotation.meta.field" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TypeAdder</dd></dl></div>
+    </li><li name="json.internal.JSONAnnotations.TypeAdder.FieldName" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FieldName=json.internal.JSONAnnotations.JSONFieldNameGeneric@scala.annotation.meta.getter@scala.annotation.meta.field"></a>
+      <a id="FieldName:FieldName"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FieldName</span><span class="result"> = <a href="internal/JSONAnnotations$$JSONFieldNameGeneric.html" class="extype" name="json.internal.JSONAnnotations.JSONFieldNameGeneric">JSONFieldNameGeneric</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@FieldName=json.internal.JSONAnnotations.JSONFieldNameGeneric@scala.annotation.meta.getter@scala.annotation.meta.field" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TypeAdder</dd></dl></div>
+    </li><li name="json.GenericFieldException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GenericFieldExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable"></a>
+      <a id="GenericFieldException:GenericFieldException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="GenericFieldException.html"><span class="name">GenericFieldException</span></a><span class="params">(<span name="fieldName">fieldName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="cause">cause: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFieldException.html" class="extype" name="json.InputFieldException">InputFieldException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@GenericFieldExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic field exception for parsing errors on a field.</p>
+    </li><li name="json.GenericJSONException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GenericJSONExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable"></a>
+      <a id="GenericJSONException:GenericJSONException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="GenericJSONException.html"><span class="name">GenericJSONException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;JSON Exception&quot;</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.JSONException">JSONException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@GenericJSONExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.internal.JSONAnnotations.TypeAdder.IgnoreFieldDoc" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="IgnoreFieldDoc=json.internal.JSONAnnotations.IgnoreFieldDocGeneric@scala.annotation.meta.getter@scala.annotation.meta.field"></a>
+      <a id="IgnoreFieldDoc:IgnoreFieldDoc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">IgnoreFieldDoc</span><span class="result"> = <a href="internal/JSONAnnotations$$IgnoreFieldDocGeneric.html" class="extype" name="json.internal.JSONAnnotations.IgnoreFieldDocGeneric">IgnoreFieldDocGeneric</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@IgnoreFieldDoc=json.internal.JSONAnnotations.IgnoreFieldDocGeneric@scala.annotation.meta.getter@scala.annotation.meta.field" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TypeAdder</dd></dl></div>
+    </li><li name="json.InputFieldException" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="InputFieldExceptionextendsExceptionwithJSONExceptionwithInputFormatException"></a>
+      <a id="InputFieldException:InputFieldException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="InputFieldException.html"><span class="name">InputFieldException</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.JSONException">JSONException</a> with <a href="InputFormatException.html" class="extype" name="json.InputFormatException">InputFormatException</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@InputFieldExceptionextendsExceptionwithJSONExceptionwithInputFormatException" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base type for 'input format' exceptions that can contain exceptions for multiple fields.</p>
+    </li><li name="json.InputFormatException" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="InputFormatExceptionextendsExceptionwithJSONException"></a>
+      <a id="InputFormatException:InputFormatException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="InputFormatException.html"><span class="name">InputFormatException</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.JSONException">JSONException</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@InputFormatExceptionextendsExceptionwithJSONException" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base type for 'input format' exceptions.</p>
+    </li><li name="json.InputFormatsException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InputFormatsExceptionextendsExceptionwithInputFormatExceptionwithProductwithSerializable"></a>
+      <a id="InputFormatsException:InputFormatsException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="InputFormatsException.html"><span class="name">InputFormatsException</span></a><span class="params">(<span name="set">set: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="InputFormatException.html" class="extype" name="json.InputFormatException">InputFormatException</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFormatException.html" class="extype" name="json.InputFormatException">InputFormatException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@InputFormatsExceptionextendsExceptionwithInputFormatExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Exception that contains format exceptions for multiple fields</p>
+    </li><li name="json.InputTypeException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InputTypeExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable"></a>
+      <a id="InputTypeException:InputTypeException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="InputTypeException.html"><span class="name">InputTypeException</span></a><span class="params">(<span name="fieldName">fieldName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="needsType">needsType: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="isType">isType: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="v">v: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFieldException.html" class="extype" name="json.InputFieldException">InputFieldException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@InputTypeExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Field exception that occurs when receiving an unexpected type for a field.</p>
+    </li><li name="json.JArray" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JArrayextendsJValuewithIterable[json.JValue]withIterableLike[json.JValue,json.JArray]withjson.VM.Context.JArrayBasewithProductwithSerializable"></a>
+      <a id="JArray:JArray"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JArray.html"><span class="name">JArray</span></a><span class="params">(<span name="values">values: <span class="extype" name="scala.IndexedSeq">IndexedSeq</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>]</span>)</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="scala.collection.immutable.Iterable">Iterable</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>] with <span class="extype" name="scala.collection.IterableLike">IterableLike</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>, <a href="JArray.html" class="extype" name="json.JArray">JArray</a>] with <a href="shadow/VMContext$$JArrayBase.html" class="extype" name="json.shadow.VMContext.JArrayBase">JArrayBase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JArrayextendsJValuewithIterable[json.JValue]withIterableLike[json.JValue,json.JArray]withjson.VM.Context.JArrayBasewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JBoolean" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="JBooleanextendsJValuewithjson.VM.Context.JBooleanBase"></a>
+      <a id="JBoolean:JBoolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JBoolean.html"><span class="name">JBoolean</span></a><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <a href="shadow/VMContext$$JBooleanBase.html" class="extype" name="json.shadow.VMContext.JBooleanBase">JBooleanBase</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JBooleanextendsJValuewithjson.VM.Context.JBooleanBase" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JDynamic" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JDynamicextendsDynamicwithProductwithSerializable"></a>
+      <a id="JDynamic:JDynamic"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JDynamic.html"><span class="name">JDynamic</span></a><span class="params">(<span name="value">value: <a href="JValue.html" class="extype" name="json.JValue">JValue</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Dynamic">Dynamic</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JDynamicextendsDynamicwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JNumber" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JNumberextendsJValuewithjson.VM.Context.JNumberBasewithProductwithSerializable"></a>
+      <a id="JNumber:JNumber"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JNumber.html"><span class="name">JNumber</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <a href="shadow/VMContext$$JNumberBase.html" class="extype" name="json.shadow.VMContext.JNumberBase">JNumberBase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JNumberextendsJValuewithjson.VM.Context.JNumberBasewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JObject" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JObjectextendsJValuewithIterable[json.JObject.Pair]withIterableLike[json.JObject.Pair,json.JObject]withjson.VM.Context.JObjectBasewithProductwithSerializable"></a>
+      <a id="JObject:JObject"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JObject.html"><span class="name">JObject</span></a><span class="params">(<span name="fields">fields: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="JString.html" class="extype" name="json.JString">JString</a>, <a href="JValue.html" class="extype" name="json.JValue">JValue</a>]</span>)</span><span class="params">(<span name="iterable">iterable: <span class="extype" name="scala.Iterable">Iterable</span>[<a href="JObject$.html#Pair=(json.JString,json.JValue)" class="extmbr" name="json.JObject.Pair">Pair</a>] = <span class="symbol">fields</span></span>)</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="scala.Iterable">Iterable</span>[<a href="JObject$.html#Pair=(json.JString,json.JValue)" class="extmbr" name="json.JObject.Pair">Pair</a>] with <span class="extype" name="scala.collection.IterableLike">IterableLike</span>[<a href="JObject$.html#Pair=(json.JString,json.JValue)" class="extmbr" name="json.JObject.Pair">Pair</a>, <a href="JObject.html" class="extype" name="json.JObject">JObject</a>] with <a href="shadow/VMContext$$JObjectBase.html" class="extype" name="json.shadow.VMContext.JObjectBase">JObjectBase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JObjectextendsJValuewithIterable[json.JObject.Pair]withIterableLike[json.JObject.Pair,json.JObject]withjson.VM.Context.JObjectBasewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JSONAccessor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]"></a>
+      <a id="JSONAccessor[T]:JSONAccessor[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">JSONAccessor</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> = <a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a>[<span class="extype" name="json.JSONAccessor.T">T</span>, <a href="JValue.html" class="extype" name="json.JValue">JValue</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JSONAccessorProducer" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="JSONAccessorProducer[T,+JV&lt;:json.JValue]extendsJSONProducer[T,JV]withJSONReader[T]"></a>
+      <a id="JSONAccessorProducer[T,+JV&lt;:JValue]:JSONAccessorProducer[T,JV]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JSONAccessorProducer.html"><span class="name">JSONAccessorProducer</span></a><span class="tparams">[<span name="T">T</span>, <span name="JV">+JV &lt;: <a href="JValue.html" class="extype" name="json.JValue">JValue</a></span>]</span><span class="result"> extends <a href="JSONProducer.html" class="extype" name="json.JSONProducer">JSONProducer</a>[<span class="extype" name="json.JSONAccessorProducer.T">T</span>, <span class="extype" name="json.JSONAccessorProducer.JV">JV</span>] with <a href="JSONReader.html" class="extype" name="json.JSONReader">JSONReader</a>[<span class="extype" name="json.JSONAccessorProducer.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONAccessorProducer[T,+JV&lt;:json.JValue]extendsJSONProducer[T,JV]withJSONReader[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JSONBuilderSettings" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JSONBuilderSettingsextendsProductwithSerializable"></a>
+      <a id="JSONBuilderSettings:JSONBuilderSettings"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JSONBuilderSettings.html"><span class="name">JSONBuilderSettings</span></a><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONBuilderSettingsextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JSONException" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="JSONExceptionextendsExceptionwithProduct"></a>
+      <a id="JSONException:JSONException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JSONException.html"><span class="name">JSONException</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONExceptionextendsExceptionwithProduct" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base type for all JSON exceptions.</p><div class="fullcomment"><div class="comment cmt"><p>Base type for all JSON exceptions. All exceptions are based off of case classes.</p></div></div>
+    </li><li name="json.internal.JSONAnnotations.TypeAdder.JSONFieldName" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="JSONFieldName=json.internal.JSONAnnotations.JSONFieldNameGeneric@scala.annotation.meta.getter@scala.annotation.meta.field"></a>
+      <a id="JSONFieldName:JSONFieldName"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">JSONFieldName</span><span class="result"> = <a href="internal/JSONAnnotations$$JSONFieldNameGeneric.html" class="extype" name="json.internal.JSONAnnotations.JSONFieldNameGeneric">JSONFieldNameGeneric</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONFieldName=json.internal.JSONAnnotations.JSONFieldNameGeneric@scala.annotation.meta.getter@scala.annotation.meta.field" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TypeAdder</dd></dl></div>
+    </li><li name="json.JSONProducer" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="JSONProducer[-T,+JV&lt;:json.JValue]extendsTypedValueAccessor[T]"></a>
+      <a id="JSONProducer[-T,+JV&lt;:JValue]:JSONProducer[T,JV]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JSONProducer.html"><span class="name">JSONProducer</span></a><span class="tparams">[<span name="T">-T</span>, <span name="JV">+JV &lt;: <a href="JValue.html" class="extype" name="json.JValue">JValue</a></span>]</span><span class="result"> extends <a href="TypedValueAccessor.html" class="extype" name="json.TypedValueAccessor">TypedValueAccessor</a>[<span class="extype" name="json.JSONProducer.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONProducer[-T,+JV&lt;:json.JValue]extendsTypedValueAccessor[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JSONReader" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="JSONReader[T]extendsTypedValueAccessor[T]"></a>
+      <a id="JSONReader[T]:JSONReader[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JSONReader.html"><span class="name">JSONReader</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="TypedValueAccessor.html" class="extype" name="json.TypedValueAccessor">TypedValueAccessor</a>[<span class="extype" name="json.JSONReader.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONReader[T]extendsTypedValueAccessor[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JSONStringOps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JSONStringOpsextendsAnyVal"></a>
+      <a id="JSONStringOps:JSONStringOps"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="package$$JSONStringOps.html"><span class="name">JSONStringOps</span></a><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONStringOpsextendsAnyVal" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JString" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JStringextendsJValuewithIterable[json.JString]withjson.VM.Context.JStringBasewithProductwithSerializable"></a>
+      <a id="JString:JString"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JString.html"><span class="name">JString</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="scala.Iterable">Iterable</span>[<a href="JString.html" class="extype" name="json.JString">JString</a>] with <a href="shadow/VMContext$$JStringBase.html" class="extype" name="json.shadow.VMContext.JStringBase">JStringBase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JStringextendsJValuewithIterable[json.JString]withjson.VM.Context.JStringBasewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JUndefinedException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JUndefinedExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable"></a>
+      <a id="JUndefinedException:JUndefinedException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JUndefinedException.html"><span class="name">JUndefinedException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;Cannot access JUndefined&quot;</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.JSONException">JSONException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JUndefinedExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Exception that happens when accessing fields of JUndefined</p>
+    </li><li name="json.JValue" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="JValueextendsjson.JValue.JValueBasewithEquals"></a>
+      <a id="JValue:JValue"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JValue.html"><span class="name">JValue</span></a><span class="result"> extends <a href="JValue$.html#JValueBase=json.VM.Context.JValueBase" class="extmbr" name="json.JValue.JValueBase">JValueBase</a> with <span class="extype" name="scala.Equals">Equals</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JValueextendsjson.JValue.JValueBasewithEquals" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.MissingFieldException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MissingFieldExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable"></a>
+      <a id="MissingFieldException:MissingFieldException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MissingFieldException.html"><span class="name">MissingFieldException</span></a><span class="params">(<span name="fieldName">fieldName: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFieldException.html" class="extype" name="json.InputFieldException">InputFieldException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@MissingFieldExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Field exception for a field that was expecting a value but had no default.</p>
+    </li><li name="json.internal.JSONAnnotations.TypeAdder.NameConversion" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NameConversion=json.internal.JSONAnnotations.NameConversionGeneric@scala.annotation.meta.companionObject@scala.annotation.meta.companionClass"></a>
+      <a id="NameConversion:NameConversion"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">NameConversion</span><span class="result"> = <a href="internal/JSONAnnotations$$NameConversionGeneric.html" class="extype" name="json.internal.JSONAnnotations.NameConversionGeneric">NameConversionGeneric</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@NameConversion=json.internal.JSONAnnotations.NameConversionGeneric@scala.annotation.meta.companionObject@scala.annotation.meta.companionClass" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TypeAdder</dd></dl></div>
+    </li><li name="json.NumericTypeException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NumericTypeExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable"></a>
+      <a id="NumericTypeException:NumericTypeException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NumericTypeException.html"><span class="name">NumericTypeException</span></a><span class="params">(<span name="fieldName">fieldName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="v">v: <span class="extype" name="scala.Any">Any</span></span>, <span name="typString">typString: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFieldException.html" class="extype" name="json.InputFieldException">InputFieldException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@NumericTypeExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Field exception for a field that was expecting a numeric type.</p>
+    </li><li name="json.ObjectAccessor" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ObjectAccessor[T]extendsJSONAccessorProducer[T,json.JObject]"></a>
+      <a id="ObjectAccessor[T]:ObjectAccessor[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ObjectAccessor.html"><span class="name">ObjectAccessor</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a>[<span class="extype" name="json.ObjectAccessor.T">T</span>, <a href="JObject.html" class="extype" name="json.JObject">JObject</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@ObjectAccessor[T]extendsJSONAccessorProducer[T,json.JObject]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.TypedValueAccessor" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TypedValueAccessor[-T]extendsAnyRef"></a>
+      <a id="TypedValueAccessor[-T]:TypedValueAccessor[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="TypedValueAccessor.html"><span class="name">TypedValueAccessor</span></a><span class="tparams">[<span name="T">-T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@TypedValueAccessor[-T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="json.CaseClassObjectAccessor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CaseClassObjectAccessor"></a>
+      <a id="CaseClassObjectAccessor:CaseClassObjectAccessor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CaseClassObjectAccessor$.html"><span class="name">CaseClassObjectAccessor</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@CaseClassObjectAccessor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.Constants" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Constants"></a>
+      <a id="Constants:Constants"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Constants$.html"><span class="name">Constants</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@Constants" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JArray" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JArray"></a>
+      <a id="JArray:JArray"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JArray$.html"><span class="name">JArray</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JArray" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JBoolean" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JBoolean"></a>
+      <a id="JBoolean:JBoolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JBoolean$.html"><span class="name">JBoolean</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JBoolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JDynamic" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JDynamic"></a>
+      <a id="JDynamic:JDynamic"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JDynamic$.html"><span class="name">JDynamic</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JDynamic" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JFalse" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JFalse"></a>
+      <a id="JFalse:JFalse"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JFalse$.html"><span class="name">JFalse</span></a><span class="result"> extends <a href="JBoolean.html" class="extype" name="json.JBoolean">JBoolean</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JFalse" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json#JNaN" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JNaN:json.JNumber"></a>
+      <a id="JNaN:JNumber"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">JNaN</span><span class="result">: <a href="JNumber.html" class="extype" name="json.JNumber">JNumber</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JNaN:json.JNumber" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Special NaN JNumber value</p>
+    </li><li name="json.JNull" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JNull"></a>
+      <a id="JNull:JNull"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JNull$.html"><span class="name">JNull</span></a><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <a href="shadow/VMContext$$JNullBase.html" class="extype" name="json.shadow.VMContext.JNullBase">JNullBase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JNull" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JNumber" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JNumber"></a>
+      <a id="JNumber:JNumber"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JNumber$.html"><span class="name">JNumber</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JNumber" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JObject" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JObject"></a>
+      <a id="JObject:JObject"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JObject$.html"><span class="name">JObject</span></a><span class="result"> extends <span class="extype" name="scala.collection.generic.GenericCompanion">GenericCompanion</span>[<span class="extype" name="scala.collection.immutable.Iterable">Iterable</span>] with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JObject" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JSJValue" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JSJValue"></a>
+      <a id="JSJValue:JSJValue"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JSJValue$.html"><span class="name">JSJValue</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSJValue" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json#JSONAccessor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JSONAccessor:json.internal.JSONAccessor.type"></a>
+      <a id="JSONAccessor:json.internal.JSONAccessor.type"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">JSONAccessor</span><span class="result">: <a href="internal/JSONAccessor$.html" class="extype" name="json.internal.JSONAccessor">json.internal.JSONAccessor</a>.type</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONAccessor:json.internal.JSONAccessor.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JSONBuilderSettings" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JSONBuilderSettings"></a>
+      <a id="JSONBuilderSettings:JSONBuilderSettings"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JSONBuilderSettings$.html"><span class="name">JSONBuilderSettings</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JSONBuilderSettings" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JString" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JString"></a>
+      <a id="JString:JString"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JString$.html"><span class="name">JString</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JString" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JTrue" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JTrue"></a>
+      <a id="JTrue:JTrue"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JTrue$.html"><span class="name">JTrue</span></a><span class="result"> extends <a href="JBoolean.html" class="extype" name="json.JBoolean">JBoolean</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JTrue" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JUndefined" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JUndefined"></a>
+      <a id="JUndefined:JUndefined"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JUndefined$.html"><span class="name">JUndefined</span></a><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <a href="shadow/VMContext$$JUndefinedBase.html" class="extype" name="json.shadow.VMContext.JUndefinedBase">JUndefinedBase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JUndefined" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.JValue" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JValue"></a>
+      <a id="JValue:JValue"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="JValue$.html"><span class="name">JValue</span></a><span class="result"> extends <a href="internal/Accessors.html" class="extype" name="json.internal.Accessors">Accessors</a> with <a href="shadow/VMContext$$JValueCompanionBase.html" class="extype" name="json.shadow.VMContext.JValueCompanionBase">JValueCompanionBase</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@JValue" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.ObjectAccessor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ObjectAccessor"></a>
+      <a id="ObjectAccessor:ObjectAccessor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ObjectAccessor$.html"><span class="name">ObjectAccessor</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@ObjectAccessor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.annotations" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="annotations"></a>
+      <a id="annotations:annotations"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="annotations$.html"><span class="name">annotations</span></a><span class="result"> extends <span class="extype" name="json.internal.JSONAnnotations.TypeAdder">TypeAdder</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@annotations" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json#fromJSON" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="fromJSON[T](jval:json.JValue)(implicitacc:json.package.JSONAccessor[T]):T"></a>
+      <a id="fromJSON[T](JValue)(JSONAccessor[T]):T"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fromJSON</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="jval">jval: <a href="JValue.html" class="extype" name="json.JValue">JValue</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="acc">acc: <a href="#JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]" class="extmbr" name="json.JSONAccessor">JSONAccessor</a>[<span class="extype" name="json.fromJSON.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="json.fromJSON.T">T</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@fromJSON[T](jval:json.JValue)(implicitacc:json.package.JSONAccessor[T]):T" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.internal" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="internal"></a>
+      <a id="internal:internal"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="internal/package.html"><span class="name">internal</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@internal" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.shadow" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="shadow"></a>
+      <a id="shadow:shadow"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="shadow/package.html"><span class="name">shadow</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@shadow" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json#toJSONString" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="toJSONString[T](obj:T)(implicitacc:json.package.JSONAccessor[T]):String"></a>
+      <a id="toJSONString[T](T)(JSONAccessor[T]):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toJSONString</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="obj">obj: <span class="extype" name="json.toJSONString.T">T</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="acc">acc: <a href="#JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]" class="extmbr" name="json.JSONAccessor">JSONAccessor</a>[<span class="extype" name="json.toJSONString.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@toJSONString[T](obj:T)(implicitacc:json.package.JSONAccessor[T]):String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="json.tools" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="tools"></a>
+      <a id="tools:tools"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="tools/package.html"><span class="name">tools</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@tools" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="json.internal.JSONAnnotations.TypeAdder">
+              <h3>Inherited from <span class="extype" name="json.internal.JSONAnnotations.TypeAdder">TypeAdder</span></h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
