@@ -50,26 +50,26 @@ object VMContext extends BaseVMContext {
     def toNativeJS: js.Any
   }
 
-  trait JBooleanBase { 
+  private[json] trait JBooleanBase {
     def value: Boolean
     
     def toNativeJS: js.Any = value 
   }
-  
-  trait JNumberBase {
+
+  private[json] trait JNumberBase {
     def value: Double
     
     def toNativeJS: js.Any = value
   }
 
-  trait JArrayBase {
+  private[json] trait JArrayBase {
     def values: Seq[JValue]
 
     def toNativeJS: js.Array[js.Any] =
       new js.Array[js.Any] ++ values.iterator.map(_.toNativeJS)
   }
 
-  trait JObjectBase {
+  private[json] trait JObjectBase {
     def iterator: Iterator[JObject.Pair]
 
     def toNativeJS: js.Any = {
@@ -81,15 +81,15 @@ object VMContext extends BaseVMContext {
     }
   }
 
-  trait JUndefinedBase {
+  private[json] trait JUndefinedBase {
     def toNativeJS: js.Any = js.undefined
   }
 
-  trait JNullBase {
+  private[json] trait JNullBase {
     def toNativeJS: js.Any = null
   }
 
-  trait JStringBase {
+  private[json] trait JStringBase {
     def value: String
 
     def toNativeJS: js.Any = value

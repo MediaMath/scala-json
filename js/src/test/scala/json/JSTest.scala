@@ -24,6 +24,13 @@ object JSTest extends TestSuite {
   def emptyArray = js.Dynamic.newInstance(js.Dynamic.global.Array)()
 
   val tests = TestSuite("test JS" - {
+    "test native JSON" - {
+      val str = Tester.testJSON2
+      val native = NativeJSON.parse(str)
+
+      assert(JSJValue.from(native) == JValue.from(native))
+    }
+
     "test object" - {
       val x = js.Dictionary.empty[js.Any]
       val result = JObject()

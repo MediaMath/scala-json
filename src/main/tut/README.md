@@ -83,6 +83,9 @@ Accessors are the compile-time constructs that allow you to marshal scala types.
 
 The Accessor Registry allows you to pickle registered types from untyped (Any) data.
 
+[Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
+---
+
 SBT
 ---
 

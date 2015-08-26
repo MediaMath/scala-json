@@ -22,9 +22,7 @@ object JBoolean {
   def apply(b: Boolean) = if (b) JTrue else JFalse
 }
 
-sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
-  def value: Boolean
-
+sealed abstract class JBoolean(val value: Boolean) extends JValue with VM.Context.JBooleanBase {
   def isTrue = value
 
   override def jValue = this
@@ -40,10 +38,10 @@ sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
   override def jString: JString = throw GenericJSONException("Expected JString")
   override def jBoolean: JBoolean = this
 
-  lazy val not: JBoolean = JBoolean(!value)
-  lazy val toJString: JString =
+  val not: JBoolean = JBoolean(!value)
+  val toJString: JString =
     if (value) Constants.trueString else Constants.falseString
-  lazy val toJNumber: JNumber =
+  val toJNumber: JNumber =
     if (value) Constants.number1 else Constants.number0
 
   def toJSONStringBuilder(settings: JSONBuilderSettings,
@@ -51,12 +49,8 @@ sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
 }
 
 //TODO: also cant serialize case objects extending abstract classes here... gahhhhh
-final case object JTrue extends JBoolean {
-  def value = true
-}
-final case object JFalse extends JBoolean {
-  def value = false
-}
+final case object JTrue extends JBoolean(true)
+final case object JFalse extends JBoolean(false)
 
 object JString {
   implicit def stringToJValue(v: String): JString = JString(v)
@@ -113,9 +107,14 @@ object JNumber {
   implicit def DtoJValue(x: Double): JNumber = JNumber(x)
   implicit def LtoJValue(x: Long): JNumber = JNumber(x)
   implicit def FtoJValue(x: Float): JNumber = JNumber(x)
+
+  def apply(value: Double): JNumber = value match {
+    case 0 => Constants.number0
+    case 1 => Constants.number1
+  }
 }
 
-final case class JNumber(value: Double) extends JValue with VM.Context.JNumberBase {
+final case class JNumber private[json](value: Double) extends JValue with VM.Context.JNumberBase {
   //require(num != null) //hmmm
 
   def iterator: Iterator[JValue] = sys.error("Cannot iterate a number!")
