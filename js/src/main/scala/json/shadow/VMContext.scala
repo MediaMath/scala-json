@@ -95,8 +95,6 @@ object VMContext extends BaseVMContext {
     def toNativeJS: js.Any = value
   }
 
-
-  def quoteJSONString(string: String): StringBuilder =
-    new StringBuilder(NativeJSON.stringify(string))
-
+  final def quoteJSONString(string: String, sb: StringBuilder): StringBuilder =
+    sb append NativeJSON.stringify(string)
 }

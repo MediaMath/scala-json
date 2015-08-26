@@ -109,8 +109,7 @@ object Tester extends TestSuite {
   )
 
   def testJSONEqual(jv: JValue) =
-    require(JValue.fromString(jv.toString) == jv,
-      jv.toString + " != " + JValue.fromString(jv.toString))
+    assert(JValue.fromString(jv.toString) == jv)
 
   val tests = TestSuite {
     "JSON accessor should" - {
@@ -140,20 +139,26 @@ object Tester extends TestSuite {
 
       "enumerator" - {
         val k = CorrectionReason.AA.js
-        require(CorrectionReason.AA == k.toObject[CorrectionReason])
+        assert(CorrectionReason.AA == k.toObject[CorrectionReason])
       }
 
       "typed enumerator" - {
         val k = TypedEnumA.AA.js
-        require(TypedEnumA.AA == k.toObject[TypedEnumA])
+        assert(TypedEnumA.AA == k.toObject[TypedEnumA])
       }
 
-      "have order equality" - require(testiter == jval)
+      "have order equality" - assert(testiter == jval)
 
-      "access properties as undefined" - require(jval("sdgsdgsdgsdg") === JUndefined)
+      "access properties as undefined" - assert(jval("sdgsdgsdgsdg") === JUndefined)
 
-      "ignore unidentified fields" - require(test2 == parsedt2)
+      "ignore unidentified fields" - assert(test2 == parsedt2)
 
+      "jarray as collection" - {
+        val jarr = JArray(1, 2, 3, 4)
+        val arr: JArray = jarr.map(x => x)
+        val arr2: Seq[Double] = jarr.map(_.jNumber.value)
+
+      }
     }
   }
 

@@ -23,8 +23,6 @@ object annotations extends JSONAnnotations.TypeAdder
 
 /** Constants that can be used to avoid allocation */
 object Constants {
-  val number1 = new JNumber(1)
-  val number0 = new JNumber(0)
   val trueString = JString("true")
   val falseString = JString("false")
   val nullString = JString("null")

@@ -21,7 +21,7 @@ import json._
 trait BaseVMContext {
   def fromString(str: String): JValue
   def fromAny(value: Any): JValue
-  def quoteJSONString(string: String): StringBuilder
+  def quoteJSONString(string: String, builder: StringBuilder): StringBuilder
 
   private[json] trait JValueCompanionBase
 
@@ -51,6 +51,6 @@ object DefaultVMContext {
 
     def fromString(str: String): JValue = ???
     def fromAny(value: Any): JValue = ???
-    def quoteJSONString(string: String): StringBuilder = ???
+    def quoteJSONString(string: String, builder: StringBuilder): StringBuilder = ???
   }
 }

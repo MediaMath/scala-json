@@ -170,10 +170,8 @@ final case class JObject(override val fields: Map[JString, JValue])(
     new JObject(thisMap ++ thatMap)(builder.result)
   }
 
-  def toJSONStringBuilder(settings: JSONBuilderSettings,
-    lvl: Int): StringBuilder = {
-    val out = new StringBuilder
-
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+      out: StringBuilder, lvl: Int): StringBuilder = {
     val nl = settings.newLineString
     val tab = settings.tabString
 
@@ -188,9 +186,9 @@ final case class JObject(override val fields: Map[JString, JValue])(
         if (!isFirst) out.append("," + settings.spaceString + nl)
 
         tabs append tab
-        out append key.toJSONStringBuilder(settings)
+        key.appendJSONStringBuilder(settings, out)
         out append (":" + settings.spaceString)
-        out append v.toJSONStringBuilder(settings, lvl + 1)
+        v.appendJSONStringBuilder(settings, out, lvl + 1)
 
         isFirst = false
       }

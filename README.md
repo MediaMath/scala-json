@@ -134,6 +134,14 @@ scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
      | }
 res16: java.io.Serializable = numeric expected but found json.JString (of value "badint")
 ```
+* JArrays as scala collections
+```scala
+scala> JArray(1, 2, 3, 4).map(x => x.toJString)
+res17: json.JArray = ["1", "2", "3", "4"]
+
+scala> JArray(1, 2, 3, 4).map(_.num)
+res18: scala.collection.immutable.IndexedSeq[Double] = Vector(1.0, 2.0, 3.0, 4.0)
+```
 
 [Accessors](./ACCESSORS.md)
 ---
@@ -144,6 +152,9 @@ Accessors are the compile-time constructs that allow you to marshal scala types.
 ---
 
 The Accessor Registry allows you to pickle registered types from untyped (Any) data.
+
+[Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
+---
 
 SBT
 ---

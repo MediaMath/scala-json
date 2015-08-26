@@ -94,7 +94,8 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
 }
 
 trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JValue, JValue] {
-  def toJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty, lvl: Int = 0): StringBuilder
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+    builder: StringBuilder = new StringBuilder, lvl: Int = 0): StringBuilder
 
   /** JS-like string representation of this value. */
   def toJString: JString
@@ -238,6 +239,9 @@ trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JV
 
   /** Boolean ''not'' according to JS boolean logic */
   def unary_!(): JBoolean = toJBoolean.not
+
+  def toJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty, lvl: Int = 0): StringBuilder =
+    appendJSONStringBuilder(settings, new StringBuilder(128), lvl)
 
   /** toString method that uses a specific [[json.JSONBuilderSettings]] and specific indent level to generate JSON */
   def toString(settings: JSONBuilderSettings,

@@ -315,7 +315,7 @@ with scala json. The base type for all JSON values is the
     </span>
       <p class="shortcomment cmt">Field exception that occurs when receiving an unexpected type for a field.</p>
     </li><li name="json.JArray" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="JArrayextendsJValuewithIterable[json.JValue]withIterableLike[json.JValue,json.JArray]withjson.VM.Context.JArrayBasewithProductwithSerializable"></a>
+      <a id="JArrayextendsJValuewithIndexedSeq[json.JValue]withIndexedSeqLike[json.JValue,json.JArray]withjson.VM.Context.JArrayBasewithProductwithSerializable"></a>
       <a id="JArray:JArray"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -323,10 +323,10 @@ with scala json. The base type for all JSON values is the
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="JArray.html"><span class="name">JArray</span></a><span class="params">(<span name="values">values: <span class="extype" name="scala.IndexedSeq">IndexedSeq</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>]</span>)</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="scala.collection.immutable.Iterable">Iterable</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>] with <span class="extype" name="scala.collection.IterableLike">IterableLike</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>, <a href="JArray.html" class="extype" name="json.JArray">JArray</a>] with <span class="extype" name="json.shadow.VMContext.JArrayBase">JArrayBase</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="JArray.html"><span class="name">JArray</span></a><span class="params">(<span name="values">values: <span class="extype" name="scala.collection.immutable.IndexedSeq">IndexedSeq</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>]</span>)</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="scala.collection.immutable.IndexedSeq">IndexedSeq</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>] with <span class="extype" name="scala.collection.IndexedSeqLike">IndexedSeqLike</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>, <a href="JArray.html" class="extype" name="json.JArray">JArray</a>] with <span class="extype" name="json.shadow.VMContext.JArrayBase">JArrayBase</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#json.package@JArrayextendsJValuewithIterable[json.JValue]withIterableLike[json.JValue,json.JArray]withjson.VM.Context.JArrayBasewithProductwithSerializable" title="Permalink" target="_top">
+      <a href="../index.html#json.package@JArrayextendsJValuewithIndexedSeq[json.JValue]withIndexedSeqLike[json.JValue,json.JArray]withjson.VM.Context.JArrayBasewithProductwithSerializable" title="Permalink" target="_top">
         <img src="../lib/permalink.png" />
       </a>
     </span>
@@ -365,19 +365,19 @@ with scala json. The base type for all JSON values is the
       </a>
     </span>
       
-    </li><li name="json.JNumber" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="JNumberextendsJValuewithjson.VM.Context.JNumberBasewithProductwithSerializable"></a>
+    </li><li name="json.JNumber" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="JNumberextendsJValuewithjson.VM.Context.JNumberBase"></a>
       <a id="JNumber:JNumber"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">case class</span>
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="JNumber.html"><span class="name">JNumber</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="json.shadow.VMContext.JNumberBase">JNumberBase</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="JNumber.html"><span class="name">JNumber</span></a><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="json.shadow.VMContext.JNumberBase">JNumberBase</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#json.package@JNumberextendsJValuewithjson.VM.Context.JNumberBasewithProductwithSerializable" title="Permalink" target="_top">
+      <a href="../index.html#json.package@JNumberextendsJValuewithjson.VM.Context.JNumberBase" title="Permalink" target="_top">
         <img src="../lib/permalink.png" />
       </a>
     </span>
@@ -711,7 +711,7 @@ with scala json. The base type for all JSON values is the
         <img src="../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Constants that can be used to avoid allocation</p>
     </li><li name="json.JArray" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="JArray"></a>
       <a id="JArray:JArray"></a>
@@ -823,7 +823,7 @@ with scala json. The base type for all JSON values is the
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="JNumber$.html"><span class="name">JNumber</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="JNumber$.html"><span class="name">JNumber</span></a>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#json.package@JNumber" title="Permalink" target="_top">
@@ -1000,7 +1000,7 @@ with scala json. The base type for all JSON values is the
         <img src="../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Package space for all scala-json annotations</p>
     </li><li name="json#fromJSON" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="fromJSON[T](jval:json.JValue)(implicitacc:json.package.JSONAccessor[T]):T"></a>
       <a id="fromJSON[T](JValue)(JSONAccessor[T]):T"></a>

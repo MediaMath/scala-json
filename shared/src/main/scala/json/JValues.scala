@@ -20,9 +20,15 @@ import scala.collection.immutable.StringOps
 
 object JBoolean {
   def apply(b: Boolean) = if (b) JTrue else JFalse
+  def unapply(x: JBoolean): Option[Boolean] = Some(x.value)
 }
 
-sealed abstract class JBoolean(val value: Boolean) extends JValue with VM.Context.JBooleanBase {
+sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
+  def value: Boolean
+  def not: JBoolean
+  def toJNumber: JNumber
+  def toJString: JString
+
   def isTrue = value
 
   override def jValue = this
@@ -38,19 +44,22 @@ sealed abstract class JBoolean(val value: Boolean) extends JValue with VM.Contex
   override def jString: JString = throw GenericJSONException("Expected JString")
   override def jBoolean: JBoolean = this
 
-  val not: JBoolean = JBoolean(!value)
-  val toJString: JString =
-    if (value) Constants.trueString else Constants.falseString
-  val toJNumber: JNumber =
-    if (value) Constants.number1 else Constants.number0
-
-  def toJSONStringBuilder(settings: JSONBuilderSettings,
-    lvl: Int): StringBuilder = new StringBuilder(value.toString)
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+      out: StringBuilder, lvl: Int): StringBuilder = out append toJString.str
 }
 
-//TODO: also cant serialize case objects extending abstract classes here... gahhhhh
-final case object JTrue extends JBoolean(true)
-final case object JFalse extends JBoolean(false)
+final case object JTrue extends JBoolean {
+  def value = true
+  def not = JFalse
+  def toJNumber: JNumber = JNumber.one
+  def toJString: JString = Constants.trueString
+}
+final case object JFalse extends JBoolean {
+  def value = false
+  def not = JTrue
+  def toJNumber: JNumber = JNumber.zero
+  def toJString: JString = Constants.falseString
+}
 
 object JString {
   implicit def stringToJValue(v: String): JString = JString(v)
@@ -80,8 +89,8 @@ final case class JString(value: String) extends JValue with Iterable[JString] wi
   override def jString: JString = this
   override def jBoolean: JBoolean = throw GenericJSONException("Expected JBoolean")
 
-  def toJSONStringBuilder(settings: JSONBuilderSettings,
-    lvl: Int): StringBuilder = JValue.Context.quoteJSONString(str)
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+      out: StringBuilder, lvl: Int): StringBuilder = JValue.Context.quoteJSONString(str, out)
 
   override def jValue = this
 
@@ -103,25 +112,37 @@ final case class JString(value: String) extends JValue with Iterable[JString] wi
 }
 
 object JNumber {
-  implicit def ItoJValue(x: Int): JNumber = JNumber(x)
-  implicit def DtoJValue(x: Double): JNumber = JNumber(x)
-  implicit def LtoJValue(x: Long): JNumber = JNumber(x)
-  implicit def FtoJValue(x: Float): JNumber = JNumber(x)
+  implicit def ItoJValue(x: Int): JNumber = apply(x)
+  implicit def LtoJValue(x: Long): JNumber = apply(x)
+  implicit def StoJValue(x: Short): JNumber = apply(x)
+  implicit def DtoJValue(x: Double): JNumber = apply(x)
+  implicit def FtoJValue(x: Float): JNumber = apply(x)
+
+  val zero: JNumber = JNumberImpl(0)
+  val one: JNumber = JNumberImpl(1)
 
   def apply(value: Double): JNumber = value match {
-    case 0 => Constants.number0
-    case 1 => Constants.number1
+    case 0 => zero
+    case 1 => one
+    case x => JNumberImpl(x)
+  }
+
+  def unapply(x: JNumber): Option[Double] = x match {
+    case x: JNumberImpl => Some(x.value)
+    case _ => None
   }
 }
 
-final case class JNumber private[json](value: Double) extends JValue with VM.Context.JNumberBase {
-  //require(num != null) //hmmm
+private[json] final case class JNumberImpl(value: Double) extends JNumber
+
+sealed trait JNumber extends JValue with VM.Context.JNumberBase {
+  val value: Double
 
   def iterator: Iterator[JValue] = sys.error("Cannot iterate a number!")
 
   def numToString = if (isLong) toLong.toString else num.toString
 
-  def isLong = num == toLong.toDouble
+  def isLong = num == toInt
 
   override def apply(key: JValue): JValue = JUndefined
 
@@ -150,10 +171,11 @@ final case class JNumber private[json](value: Double) extends JValue with VM.Con
 
   def toJString: JString = JString(numToString)
 
-  def toJSONStringBuilder(settings: JSONBuilderSettings, lvl: Int): StringBuilder = {
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+      out: StringBuilder, lvl: Int): StringBuilder = {
     require(!isNaN && !isInfinity, "invalid number for json")
 
-    new StringBuilder(numToString)
+    out append numToString
   }
 }
 
@@ -168,15 +190,14 @@ final case object JNull extends JValue with VM.Context.JNullBase {
 
   def value = null
   override def jValue = this
-  val toJBoolean: JBoolean = JFalse
-  val toJString: JString = Constants.nullString
-  val toJNumber: JNumber = JNumber(0)
+  def toJBoolean: JBoolean = JFalse
+  def toJString: JString = Constants.nullString
+  def toJNumber: JNumber = JNumber.zero
   override def apply(key: JValue): JValue = {
-    val kstr = key.toJString.str
-    sys.error(s"Cannot read property '$kstr' of null") //TypeError
+    sys.error(s"Cannot read property '$key' of null") //TypeError
   }
-  def toJSONStringBuilder(settings: JSONBuilderSettings,
-    lvl: Int): StringBuilder = new StringBuilder("null")
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+      out: StringBuilder, lvl: Int): StringBuilder = out append "null"
 }
 
 final case object JUndefined extends JValue with VM.Context.JUndefinedBase {
@@ -193,8 +214,8 @@ final case object JUndefined extends JValue with VM.Context.JUndefinedBase {
   val toJBoolean: JBoolean = JFalse
   val toJNumber: JNumber = JNaN
   def toJString: JString = throw JUndefinedException() //"undefined"
-  def toJSONStringBuilder(settings: JSONBuilderSettings,
-    lvl: Int): StringBuilder = throw JUndefinedException("Cant serialize undefined!")
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+      out: StringBuilder, lvl: Int): StringBuilder = throw JUndefinedException("Cant serialize undefined!")
   override def apply(key: JValue): JValue = {
     val kstr = key.toJString.str
     throw JUndefinedException(s"Cannot read property '$kstr' of undefined")

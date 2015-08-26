@@ -19,14 +19,10 @@ package json
 import scala.collection.generic.{ CanBuildFrom, GenericCompanion }
 import scala.collection.mutable.Builder
 import scala.collection.immutable.VectorBuilder
-import scala.collection.{ IterableLike, immutable }
+import scala.collection.{IndexedSeqLike, IterableLike, immutable}
 import java.util.UUID
 
-object JArray { //extends GenericCompanion[scala.collection.immutable.Iterable] {
-  //def apply(values: IndexedSeq[JValue]): JArray = new JArray(values)
-
-  //def unapply(obj: JArray): Option[IndexedSeq[JValue]] = Some(obj.values)
-
+object JArray/* extends GenericCompanion[scala.collection.immutable.Seq]*/ {
   lazy val empty = apply(IndexedSeq.empty)
 
   def newCanBuildFrom = new CanBuildFrom[TraversableOnce[JValue], JValue, JArray] {
@@ -41,7 +37,6 @@ object JArray { //extends GenericCompanion[scala.collection.immutable.Iterable] 
 
   def apply(seq: TraversableOnce[JValue]): JArray = new JArray(seq.toIndexedSeq)
   def apply(seq: JValue*) = new JArray(seq.toIndexedSeq)
-  //def apply[T <: JValue](x: T, xN: T*): JArray = apply(x +: xN)
 
   class JArrayBuilder extends Builder[JValue, JArray] {
     val builder = new VectorBuilder[JValue]
@@ -60,21 +55,19 @@ object JArray { //extends GenericCompanion[scala.collection.immutable.Iterable] 
     }
   }
 
-  def newBuilder[A]: Builder[A, immutable.Iterable[A]] =
-    newJArrayBuilder.asInstanceOf[Builder[A, immutable.Iterable[A]]]
+  def newBuilder[A]: Builder[A, immutable.IndexedSeq[A]] =
+    newJArrayBuilder.asInstanceOf[Builder[A, immutable.IndexedSeq[A]]]
 }
 
-final case class JArray(override val values: IndexedSeq[JValue]) extends JValue with scala.collection.immutable.Iterable[JValue] with IterableLike[JValue, JArray] with VM.Context.JArrayBase {
+final case class JArray(override val values: immutable.IndexedSeq[JValue]) extends JValue
+    with immutable.IndexedSeq[JValue] with IndexedSeqLike[JValue, JArray] with VM.Context.JArrayBase {
   lazy val uuid = UUID.randomUUID.toString
 
   def toJString: JString = JString("array " + uuid) //this... should be different
   def toJNumber: JNumber = JNaN
   def toJBoolean: JBoolean = JTrue
-  //override def toObject
 
   def length = values.length
-
-  def iterator: Iterator[JValue] = values.iterator
 
   def value = values.map(_.value)
 
@@ -82,11 +75,13 @@ final case class JArray(override val values: IndexedSeq[JValue]) extends JValue 
   override def newBuilder = JArray.newJArrayBuilder
 
   override def toSeq = values
+  override def toIndexedSeq = values
   override def seq = this
 
   override def jValue = this
   override def toJArray: JArray = this
-  //override def keys = (0 until values.length).map(JNumber(_)).toSet
+
+  override def keys = (0 until values.length).map(JNumber(_))
 
   override def jObject: JObject = throw GenericJSONException("Expected JObject")
   override def jArray: JArray = this
@@ -114,17 +109,15 @@ final case class JArray(override val values: IndexedSeq[JValue]) extends JValue 
   def ++(that: JArray): JArray =
     JArray(values ++ that.values)
 
-  def toJSONStringBuilder(settings: JSONBuilderSettings,
-    lvl: Int): StringBuilder = {
-    val out = new StringBuilder
-
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+      out: StringBuilder, lvl: Int): StringBuilder = {
     out.append("[")
 
     var isFirst = true
     values foreach { v =>
       if (!isFirst) out.append("," + settings.spaceString)
 
-      out append v.toJSONStringBuilder(settings, lvl)
+      v.appendJSONStringBuilder(settings, out, lvl)
 
       isFirst = false
     }

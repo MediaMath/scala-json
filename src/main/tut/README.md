@@ -72,6 +72,11 @@ try JObject("a".js -> "badint".js).toObject[TestClass] catch {
     }.mkString
 }
 ```
+* JArrays as scala collections
+```tut
+JArray(1, 2, 3, 4).map(x => x.toJString)
+JArray(1, 2, 3, 4).map(_.num)
+```
 
 [Accessors](./ACCESSORS.md)
 ---

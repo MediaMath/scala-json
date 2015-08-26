@@ -28,7 +28,7 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="JNumber$.html" title="See companion object"><img src="../lib/class_to_object_big.png" /></a>
+        <a href="JNumber$.html" title="See companion object"><img src="../lib/trait_to_object_big.png" /></a>
         <p id="owner"><a href="package.html" class="extype" name="json">json</a></p>
         <h1><a href="JNumber$.html" title="See companion object">JNumber</a></h1><h3><span class="morelinks"><div>
             Related Docs:
@@ -43,17 +43,17 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">case class</span>
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">JNumber</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="json.shadow.VMContext.JNumberBase">JNumberBase</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">JNumber</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="json.shadow.VMContext.JNumberBase">JNumberBase</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="json.shadow.VMContext.JNumberBase">JNumberBase</span>, <a href="JValue.html" class="extype" name="json.JValue">JValue</a>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="json.shadow.VMContext.JValueBase">JValueBase</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="json.shadow.VMContext.JNumberBase">JNumberBase</span>, <a href="JValue.html" class="extype" name="json.JValue">JValue</a>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="json.shadow.VMContext.JValueBase">JValueBase</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -71,7 +71,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="json.JNumber"><span>JNumber</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="json.shadow.VMContext.JNumberBase"><span>JNumberBase</span></li><li class="in" name="json.JValue"><span>JValue</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="json.shadow.VMContext.JValueBase"><span>JValueBase</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="json.JNumber"><span>JNumber</span></li><li class="in" name="json.shadow.VMContext.JNumberBase"><span>JNumberBase</span></li><li class="in" name="json.JValue"><span>JValue</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="json.shadow.VMContext.JValueBase"><span>JValueBase</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -89,34 +89,51 @@
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="json.JNumber#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(value:Double):json.JNumber"></a>
-      <a id="&lt;init&gt;:JNumber"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
-      </span>
-      <span class="symbol">
-        <span class="name">JNumber</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#json.JNumber@&lt;init&gt;(value:Double):json.JNumber" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li></ol>
-            </div>
-
         
 
         
 
         <div id="values" class="values members">
-              <h3>Value Members</h3>
+              <h3>Abstract Value Members</h3>
+              <ol><li name="scala.Equals#canEqual" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="canEqual(that:Any):Boolean"></a>
+      <a id="canEqual(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">canEqual</span><span class="params">(<span name="that">that: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.JNumber@canEqual(that:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Equals</dd></dl></div>
+    </li><li name="json.JNumber#value" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="value:Double"></a>
+      <a id="value:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">value</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.JNumber@value:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">underlying scala value for this JValue</p><div class="fullcomment"><div class="comment cmt"><p>underlying scala value for this JValue</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JNumber">JNumber</a> → JNumberBase → <a href="JValue.html" class="extype" name="json.JValue">JValue</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Concrete Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
@@ -253,6 +270,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JValue.html" class="extype" name="json.JValue">JValue</a></dd></dl></div>
+    </li><li name="json.JNumber#appendJSONStringBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="appendJSONStringBuilder(settings:json.JSONBuilderSettings,out:StringBuilder,lvl:Int):StringBuilder"></a>
+      <a id="appendJSONStringBuilder(JSONBuilderSettings,StringBuilder,Int):StringBuilder"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appendJSONStringBuilder</span><span class="params">(<span name="settings">settings: <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">JSONBuilderSettings</a> = <span class="symbol"><span class="name"><a href="JSONBuilderSettings$.html">JSONBuilderSettings.pretty</a></span></span></span>, <span name="out">out: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>, <span name="lvl">lvl: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.JNumber@appendJSONStringBuilder(settings:json.JSONBuilderSettings,out:StringBuilder,lvl:Int):StringBuilder" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JNumber">JNumber</a> → <a href="JValue.html" class="extype" name="json.JValue">JValue</a></dd></dl></div>
     </li><li name="json.JNumber#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(key:json.JValue):json.JValue"></a>
       <a id="apply(JValue):JValue"></a>
@@ -395,6 +429,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.JNumber@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="json.JValue#fields" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="fields:Map[json.JString,json.JValue]"></a>
       <a id="fields:Map[JString,JValue]"></a>
@@ -448,6 +499,23 @@
       </span>
       </h4><span class="permalink">
       <a href="../index.html#json.JNumber@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.JNumber@hashCode():Int" title="Permalink" target="_top">
         <img src="../lib/permalink.png" />
       </a>
     </span>
@@ -1153,7 +1221,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JValue.html" class="extype" name="json.JValue">JValue</a></dd></dl></div>
-    </li><li name="json.JNumber#toJSONStringBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="json.JValue#toJSONStringBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toJSONStringBuilder(settings:json.JSONBuilderSettings,lvl:Int):StringBuilder"></a>
       <a id="toJSONStringBuilder(JSONBuilderSettings,Int):StringBuilder"></a>
       <h4 class="signature">
@@ -1162,14 +1230,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toJSONStringBuilder</span><span class="params">(<span name="settings">settings: <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">JSONBuilderSettings</a></span>, <span name="lvl">lvl: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>
+        <span class="name">toJSONStringBuilder</span><span class="params">(<span name="settings">settings: <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">JSONBuilderSettings</a> = <span class="symbol"><span class="name"><a href="JSONBuilderSettings$.html">JSONBuilderSettings.pretty</a></span></span></span>, <span name="lvl">lvl: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="result">: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#json.JNumber@toJSONStringBuilder(settings:json.JSONBuilderSettings,lvl:Int):StringBuilder" title="Permalink" target="_top">
         <img src="../lib/permalink.png" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JNumber">JNumber</a> → <a href="JValue.html" class="extype" name="json.JValue">JValue</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JValue.html" class="extype" name="json.JValue">JValue</a></dd></dl></div>
     </li><li name="json.JNumber#toJString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toJString:json.JString"></a>
       <a id="toJString:JString"></a>
@@ -1323,23 +1391,6 @@
       </a>
     </span>
       <p class="shortcomment cmt">Boolean <i>not</i> according to JS boolean logic</p><div class="fullcomment"><div class="comment cmt"><p>Boolean <i>not</i> according to JS boolean logic</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JValue.html" class="extype" name="json.JValue">JValue</a></dd></dl></div>
-    </li><li name="json.JNumber#value" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="value:Double"></a>
-      <a id="value:Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">value</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#json.JNumber@value:Double" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">underlying scala value for this JValue</p><div class="fullcomment"><div class="comment cmt"><p>underlying scala value for this JValue</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JNumber">JNumber</a> → JNumberBase → <a href="JValue.html" class="extype" name="json.JValue">JValue</a></dd></dl></div>
     </li><li name="json.JValue#values" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="values:Iterable[json.JValue]"></a>
       <a id="values:Iterable[JValue]"></a>
@@ -1469,13 +1520,7 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
-            </div><div class="parent" name="json.shadow.VMContext.JNumberBase">
+        <div class="parent" name="json.shadow.VMContext.JNumberBase">
               <h3>Inherited from <span class="extype" name="json.shadow.VMContext.JNumberBase">JNumberBase</span></h3>
             </div><div class="parent" name="json.JValue">
               <h3>Inherited from <a href="JValue.html" class="extype" name="json.JValue">JValue</a></h3>
