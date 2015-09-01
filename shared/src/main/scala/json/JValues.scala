@@ -16,7 +16,58 @@
 
 package json
 
-import scala.collection.immutable.StringOps
+import json.internal._
+
+import scala.collection.generic.{CanBuildFrom, GenericCompanion}
+import scala.collection.mutable.Builder
+import scala.collection.{IterableLike, immutable}
+import scala.collection.immutable.{VectorBuilder, StringOps}
+
+object JValue extends JValueLikeCompanion {
+  def fromString(str: String): JValue = {
+    VM.Context.fromString(str)
+  }
+
+  type JValueBase = VM.Context.JValueBase
+}
+
+sealed trait JValue extends AnyRef with JValueLike with JValue.JValueBase {
+  /** Boolean OR using [[toJBoolean]] */
+  def ||[T >: this.type <: JValue](other: T): T = if (this.toJBoolean.bool) this else other
+  override def toString: String = toJSONString
+}
+
+object JObject extends GenericCompanion[scala.collection.immutable.Iterable] with JObjectCompanion {
+  type Pair = (JString, JValue)
+
+  val empty = apply()
+
+  implicit def canBuildFrom: CanBuildFrom[TraversableOnce[Pair], Pair, JObject] =
+    newCanBuildFrom
+}
+
+final case class JObject(override val fields: Map[JString, JValue])(
+    val iterable: Iterable[JObject.Pair] = fields)
+    extends JValue with JObjectLike with Iterable[JObject.Pair]
+      with IterableLike[JObject.Pair, JObject] with VM.Context.JObjectBase {
+
+  override def toString = toJSONString
+
+  override def newBuilder = JObject.newJObjectBuilder
+  override def companion: GenericCompanion[scala.collection.immutable.Iterable] = JObject
+}
+
+object JArray extends JArrayCompanion {
+  val empty = apply(IndexedSeq.empty)
+
+  implicit def canBuildFrom: CanBuildFrom[TraversableOnce[JValue], JValue, JArray] =
+    newCanBuildFrom
+}
+
+final case class JArray(override val values: immutable.IndexedSeq[JValue])
+    extends JValue with JArrayLike with VM.Context.JArrayBase {
+  override def toString = toJSONString
+}
 
 object JBoolean {
   def apply(b: Boolean) = if (b) JTrue else JFalse
@@ -37,11 +88,6 @@ sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
 
   def toJBoolean: JBoolean = this
   override def isBoolean: Boolean = true
-
-  override def jObject: JObject = throw GenericJSONException("Expected JObject")
-  override def jArray: JArray = throw GenericJSONException("Expected JArray")
-  override def jNumber: JNumber = throw GenericJSONException("Expected JNumber")
-  override def jString: JString = throw GenericJSONException("Expected JString")
   override def jBoolean: JBoolean = this
 
   def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
@@ -54,6 +100,7 @@ final case object JTrue extends JBoolean {
   def toJNumber: JNumber = JNumber.one
   def toJString: JString = Constants.trueString
 }
+
 final case object JFalse extends JBoolean {
   def value = false
   def not = JTrue
@@ -65,51 +112,7 @@ object JString {
   implicit def stringToJValue(v: String): JString = JString(v)
 }
 
-final case class JString(value: String) extends JValue with Iterable[JString] with VM.Context.JStringBase { //with IterableLike[JString, JString] {
-  def iterator: Iterator[JString] =
-    (new StringOps(str)).toIterator.map(c => JString(c.toString))
-
-  //override def newBuilder: Builder[JValue, JString] = ??? //JValue.newBuilder
-
-  def toJBoolean: JBoolean = if (str.isEmpty) JFalse else JTrue
-  def toJNumber: JNumber =
-    if (str.trim.isEmpty) JNumber(0)
-    else try JNumber(str.trim.toDouble) catch {
-      case x: Throwable => JNaN
-    }
-  def toJString: JString = this
-  override def toString = toJSONString
-
-  override def apply(x: JValue): JString =
-    str.charAt(x.toJNumber.value.toInt).toString.js
-
-  override def jObject: JObject = throw GenericJSONException("Expected JObject")
-  override def jArray: JArray = throw GenericJSONException("Expected JArray")
-  override def jNumber: JNumber = throw GenericJSONException("Expected JNumber")
-  override def jString: JString = this
-  override def jBoolean: JBoolean = throw GenericJSONException("Expected JBoolean")
-
-  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
-      out: StringBuilder, lvl: Int): StringBuilder = JValue.Context.quoteJSONString(str, out)
-
-  override def jValue = this
-
-  override def hashCode = str.hashCode
-
-  override def canEqual(that: Any) = that match {
-    case _: String  => true
-    case _: JString => true
-    case _          => false
-  }
-
-  override def equals(that: Any) = that match {
-    case x: String  => x == str
-    case JString(x) => x == str
-    case _          => false
-  }
-
-  def ->>[T <: JValue](other: T): (JString, T) = this -> other
-}
+final case class JString(value: String) extends JValue with Iterable[JString] with JStringLike with VM.Context.JStringBase
 
 object JNumber {
   implicit def ItoJValue(x: Int): JNumber = apply(x)
@@ -157,11 +160,7 @@ sealed trait JNumber extends JValue with VM.Context.JNumberBase {
   def toDouble = num
   def toFloat = num.toFloat
 
-  override def jObject: JObject = throw GenericJSONException("Expected JObject")
-  override def jArray: JArray = throw GenericJSONException("Expected JArray")
   override def jNumber: JNumber = this
-  override def jString: JString = throw GenericJSONException("Expected JString")
-  override def jBoolean: JBoolean = throw GenericJSONException("Expected JBoolean")
 
   def toJNumber: JNumber = this
 
@@ -182,12 +181,6 @@ sealed trait JNumber extends JValue with VM.Context.JNumberBase {
 final case object JNull extends JValue with VM.Context.JNullBase {
   def iterator: Iterator[JValue] = sys.error("Cannot iterate null!")
 
-  override def jObject: JObject = throw GenericJSONException("Expected JObject")
-  override def jArray: JArray = throw GenericJSONException("Expected JArray")
-  override def jNumber: JNumber = throw GenericJSONException("Expected JNumber")
-  override def jString: JString = throw GenericJSONException("Expected JString")
-  override def jBoolean: JBoolean = throw GenericJSONException("Expected JBoolean")
-
   def value = null
   override def jValue = this
   def toJBoolean: JBoolean = JFalse
@@ -202,12 +195,6 @@ final case object JNull extends JValue with VM.Context.JNullBase {
 
 final case object JUndefined extends JValue with VM.Context.JUndefinedBase {
   def iterator: Iterator[JValue] = throw JUndefinedException("Cannot iterate undefined!")
-
-  override def jObject: JObject = throw GenericJSONException("Expected JObject")
-  override def jArray: JArray = throw GenericJSONException("Expected JArray")
-  override def jNumber: JNumber = throw GenericJSONException("Expected JNumber")
-  override def jString: JString = throw GenericJSONException("Expected JString")
-  override def jBoolean: JBoolean = throw GenericJSONException("Expected JBoolean")
 
   def value = throw JUndefinedException("Cannot access JUndefined")
   override def jValue = this

@@ -188,6 +188,8 @@ trait Accessors {
     def fromJSON(js: JValue): java.util.Date = js match {
       case str: JString =>
         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(str.toString)
+      case x => throw InputTypeException("",
+        "date", x.getClass.getName, x)
     }
   }
 
