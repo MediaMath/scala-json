@@ -64,11 +64,9 @@ trait AccessorRegistry {
       case None =>
         val head = accessors.filter(_._1.isAssignableFrom(clz)).headOption
 
-        head match {
-          case None => None
-          case Some((_, acc)) =>
-            addAccessor(clz, acc)
-            Some(acc)
+        head map { case (_, acc) =>
+          addAccessor(clz, acc)
+          acc
         }
       case x => x
     }
