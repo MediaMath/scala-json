@@ -48,13 +48,13 @@ object EpochDeadline extends Ordering[EpochDeadline] {
       { x: EpochDeadline =>
         val mils = x.time.toMillis
 
-        JNumber(math.max(mils / 1000.0, 0.0))
+        JNumber(mils / 1000.0)
       },
       { x: JValue =>
         val num = x.toJNumber
         require(!num.isNaN, "bad number " + x)
 
-        EpochDeadline.from(math.max(num.num, 0.0))
+        EpochDeadline.from(num.num)
       }
     )
 
