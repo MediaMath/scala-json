@@ -64,7 +64,7 @@ object JArray { //extends GenericCompanion[scala.collection.immutable.Iterable] 
     newJArrayBuilder.asInstanceOf[Builder[A, immutable.Iterable[A]]]
 }
 
-final case class JArray(override val values: IndexedSeq[JValue]) extends JValue with scala.collection.immutable.Iterable[JValue] with IterableLike[JValue, JArray] {
+final case class JArray(override val values: IndexedSeq[JValue]) extends JValue with scala.collection.immutable.Iterable[JValue] with IterableLike[JValue, JArray] with VM.Context.JArrayBase {
   lazy val uuid = UUID.randomUUID.toString
 
   def toJString: JString = JString("array " + uuid) //this... should be different
@@ -96,16 +96,19 @@ final case class JArray(override val values: IndexedSeq[JValue]) extends JValue 
 
   override def toString = toJSONString
 
-  def apply(key: JNumber): JValue = apply(key: JValue)
+  def apply(key: JNumber): JValue = apply(key.num)
+  def apply(key: Int): JValue = values(key)
 
-  override def apply(key: JValue): JValue = {
-    val jNum = key.toJNumber
-    val jInt = jNum.num.toInt
+  override def apply(key: JValue): JValue = key match {
+    case JString("length") => JNumber(length)
+    case _ =>
+      val jNum = key.toJNumber
+      val jInt = jNum.num.toInt
 
-    if (jNum.num != jInt) JUndefined
-    else if (jInt < 0) JUndefined
-    else if (jInt >= values.length) JUndefined
-    else values(jInt)
+      if (jNum.num != jInt) JUndefined
+      else if (jInt < 0) JUndefined
+      else if (jInt >= values.length) JUndefined
+      else values(jInt)
   }
 
   def ++(that: JArray): JArray =
@@ -121,7 +124,7 @@ final case class JArray(override val values: IndexedSeq[JValue]) extends JValue 
     values foreach { v =>
       if (!isFirst) out.append("," + settings.spaceString)
 
-      out append v.toJSONStringBuilder(settings, lvl + 1)
+      out append v.toJSONStringBuilder(settings, lvl)
 
       isFirst = false
     }

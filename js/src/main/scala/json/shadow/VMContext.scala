@@ -17,7 +17,7 @@
 package json.shadow
 
 import json.internal.BaseVMContext
-import json.{JSONAccessorProducer, JSJValue, JValue}
+import json._
 import scalajs.js.{JSON => NativeJSON}
 import scala.scalajs.js.annotation.JSExport
 import scalajs.js
@@ -25,7 +25,7 @@ import scalajs.js
 object VMContext extends BaseVMContext {
   def fromString(str: String): JValue = {
     def reviver = (key: js.Any, value: js.Any) =>
-      (JSJValue from value).asInstanceOf[js.Any]
+      (JSJValue fromNativeJS value).asInstanceOf[js.Any]
     val parsed = NativeJSON.parse(str, reviver)
 
     //run it again incase the reviver didnt work
@@ -39,14 +39,62 @@ object VMContext extends BaseVMContext {
       val clazz = classOf[JValue]
 
       def createJSON(obj: js.Any): JValue = JValue from obj
-      def fromJSON(jValue: JValue): js.Any = JSJValue toJS jValue
+      def fromJSON(jValue: JValue): js.Any = jValue.toNativeJS
     }
   }
 
-  trait JValueBase { _: JValue =>
+  trait JValueBase {
     //this adds JSON.stringify support
-    @JSExport def toJSON: js.Any = JSJValue toJS this
+    @JSExport final def toJSON: js.Any = toNativeJS
+
+    def toNativeJS: js.Any
   }
+
+  trait JBooleanBase { 
+    def value: Boolean
+    
+    def toNativeJS: js.Any = value 
+  }
+  
+  trait JNumberBase {
+    def value: Double
+    
+    def toNativeJS: js.Any = value
+  }
+
+  trait JArrayBase {
+    def values: Seq[JValue]
+
+    def toNativeJS: js.Array[js.Any] =
+      new js.Array[js.Any] ++ values.iterator.map(_.toNativeJS)
+  }
+
+  trait JObjectBase {
+    def iterator: Iterator[JObject.Pair]
+
+    def toNativeJS: js.Any = {
+      val result = js.Dictionary.empty[js.Any]
+      iterator.foreach { pair =>
+        result(pair._1.str) = pair._2.toNativeJS
+      }
+      result
+    }
+  }
+
+  trait JUndefinedBase {
+    def toNativeJS: js.Any = js.undefined
+  }
+
+  trait JNullBase {
+    def toNativeJS: js.Any = null
+  }
+
+  trait JStringBase {
+    def value: String
+
+    def toNativeJS: js.Any = value
+  }
+
 
   def quoteJSONString(string: String): StringBuilder =
     new StringBuilder(NativeJSON.stringify(string))

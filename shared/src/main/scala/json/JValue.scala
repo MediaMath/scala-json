@@ -42,7 +42,7 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
   def apply[T](v: T) /*(implicit acc: JSONProducer[T, JValue] = null)*/ : JValue =
     VM.Context.fromAny(v)
 
-  private[json] def fromAnyInternalPF: PartialFunction[Any, JValue] = {
+  private[json] def fromAnyInternal(default: => JValue)(x: Any): JValue = x match {
     //case x if acc == null => v.js
     case x: JValue => x
     case x: String => JString(x)
@@ -50,7 +50,6 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
     case null      => JNull
     case true      => JTrue
     case false     => JFalse
-    case x: Double => JNumber(x)
     case x: Iterable[Any] =>
       val seq = x.toSeq
       if (seq.isEmpty) (x: @unchecked) match {
@@ -66,13 +65,16 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
         case (v: Any) =>
           JArray(x.map(JValue.from).toIndexedSeq)
       }
+    case x: Double => JNumber(x)
     case x: Int   => JNumber(x)
     case x: Short => JNumber(x)
     case x: Long  => JNumber(x)
     case x: Float => JNumber(x)
+    case _ => default
   }
 
-  private[json] def fromAnyInternal(value: Any): JValue = fromAnyInternalPF(value)
+  private[json] def fromAnyInternal(value: Any): JValue =
+    fromAnyInternal(sys.error(s"Cannot convert $value to JValue"))(value)
 
   //implicit def anyToJVal[T, U <: JValue](x: T)(implicit acc: JSONProducer[T, U]): U = x.js
   //implicit def anyToJVal[T](x: T)(implicit acc: JSONProducer[T, JValue]): JValue = x.js
@@ -81,6 +83,8 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
 
   implicit def stringToJValue(v: String): JString = JString(v)
   implicit def intToJValue(v: Int): JNumber = JNumber(v)
+
+  //implicit def toDynamic(value: JValue): JDynamic = JDynamic(value)
 
   def fromString(str: String): JValue = {
     VM.Context.fromString(str)
@@ -92,14 +96,16 @@ object JValue extends Accessors with VM.Context.JValueCompanionBase /* extends G
 trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JValue, JValue] {
   def toJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty, lvl: Int = 0): StringBuilder
 
+  /** JS-like string representation of this value. */
   def toJString: JString
+  /** JS-like numeric representation of this value. */
   def toJNumber: JNumber //can return JNaN
+  /** JS-like boolean representation of this value. */
   def toJBoolean: JBoolean
+  /** underlying scala value for this JValue */
   def value: Any
 
   def toJValue: JValue = jValue
-
-  def apply(x: JValue): JValue = JUndefined
 
   def jValue = this
 
@@ -114,44 +120,78 @@ trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JV
 
   def isDefinedAt(x: JValue): Boolean = apply(x).isDefined
 
+  /** keys for this JValue. Either iterable array indexes from [[JArray]] or iterable keys from a [[JObject]] */
   def keys: Iterable[JValue] = Nil
+  def dynamic = JDynamic(this)
 
+  def d = dynamic
+
+  /** convert this JValue into an object if possible */
   def toJObject: JObject = throw GenericJSONException("Cannot create JObject from " + getClass.getName)
+  /** convert this JValue into an array if possible */
   def toJArray: JArray = throw GenericJSONException("Cannot create JArray from " + getClass.getName)
 
+  /** quickly cast to and object or throw a [[GenericJSONException]] otherwise. */
   def jObject: JObject = throw GenericJSONException("Expected JObject")
+  /** quickly cast to and array or throw a [[GenericJSONException]] otherwise. */
   def jArray: JArray = throw GenericJSONException("Expected JArray")
+  /** quickly cast to a number or throw a [[GenericJSONException]] otherwise. */
   def jNumber: JNumber = throw GenericJSONException("Expected JNumber")
+  /** quickly cast to a string or throw a [[GenericJSONException]] otherwise. */
   def jString: JString = throw GenericJSONException("Expected JString")
+  /** quickly cast to a boolean or throw a [[GenericJSONException]] otherwise. */
   def jBoolean: JBoolean = throw GenericJSONException("Expected JBoolean")
 
+  /** gets the string value using [[jString]] */
   def str: String = jString.value
+  /** gets the number value using [[jNumber]] */
   def num: Double = jNumber.value
+  /** gets the boolean value using [[jBoolean]] */
   def bool: Boolean = jBoolean.value
+  /** gets the Map[String, JValue] value using [[jObject]] */
   def fields: Map[JString, JValue] = jObject.toMap
+  /** gets the iterable JValues using [[jArray]] or the object values if [[JObject]] */
   def values: Iterable[JValue] = jArray.values
 
+  /** converts this JValue into the desired type using the implicit JSON Accessor of type [[JSONReader]] */
   def to[T](implicit acc: JSONReader[T]): T = toObject[T]
+  /** alternate and recommended form of [[to]] */
   def toObject[T](implicit acc: JSONReader[T]): T = acc.fromJSON(toJValue)
 
+  /** select a key from this JValue using a JValue. Equivalent to bracket selects in JS. */
+  def apply(x: JValue): JValue = JUndefined
+
+  /** select a key from this JValue. Equivalent to bracket selects in JS. */
   def apply(key: String): JValue = apply(JString(key))
 
+  /**
+   * select from a value with a '.' delimited string
+   * @param seqStr period delimited string
+   * @param safe if true, you will get back [[JUndefined]] instead of an exception for ''undefined'' access
+   * @return
+   */
   def select(seqStr: String, safe: Boolean): JValue = {
     val seq = seqStr.split(".").toSeq.map(_.trim).filter(_ != "")
 
     select(seq, safe)
   }
+
+  /** select from a value with a sequence of keys */
   def select(seq: Seq[String], safe: Boolean): JValue =
     if (seq.isEmpty) toJValue
     else if (isUndefined && safe) JUndefined
     else apply(JString(seq.head)).select(seq.tail, safe)
 
+  /** select from a value with a '.' delimited string */
   def select(seqStr: String): JValue = select(seqStr, false)
 
+  /** alternate operator form of [[json.JValue#apply(key:String):json\.JValue* apply(String)]] */
   def /(key: String): JValue = select(List(key), true)
 
+  /** Boolean OR using [[toJBoolean]] */
   def ||[T >: this.type <: JValue](other: T): T = if (this.toJBoolean.bool) this else other
 
+  /** equivalent to javascript ''delete object[field]'' */
   def -(key: Any): JValue = this match {
     case JNumber(d) =>
       (d - JValue(key).toJNumber.value).js
@@ -159,6 +199,7 @@ trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JV
       x - JValue(key).toJString
   }
 
+  /** concats another JObject or JArray onto this value. Must be the same type! */
   def ++(that: JValue): JValue =
     (this, that) match {
       case _ if isObject && that.isObject =>
@@ -167,10 +208,7 @@ trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JV
       case _                      => throw GenericJSONException("Can only append 2 objs or 2 arrs")
     }
 
-  /*def +(pair: (String, JValue)): JValue =
-		this + (JString(pair._1) -> pair._2)*/
-
-  //http://bclary.com/2004/11/07/#a-11.9.3
+  /** This operator implements the JavaScript-like equality logic according to the [[http://bclary.com/2004/11/07/#a-11.9.3 JS Spec]] */
   def ~~(to: JValue): Boolean = (this: Any, to: Any) match {
     case _ if isNaN || to.isNaN          => false
     case _ if this === to                => true
@@ -198,12 +236,16 @@ trait JValue extends JValue.JValueBase with Equals { //} with PartialFunction[JV
   def ===(x: JValue) = equals(x)
   def !==(to: JValue) = !(this === to)
 
+  /** Boolean ''not'' according to JS boolean logic */
   def unary_!(): JBoolean = toJBoolean.not
 
+  /** toString method that uses a specific [[json.JSONBuilderSettings]] and specific indent level to generate JSON */
   def toString(settings: JSONBuilderSettings,
     lvl: Int = 0): String = toJSONStringBuilder(settings).toString
 
+  /** toString method that uses the ''dense'' builder settings */
   def toDenseString = toString(JSONBuilderSettings.dense)
+  /** toString method that uses the ''pretty'' builder settings */
   def toPrettyString = toString(JSONBuilderSettings.pretty)
 
   def toJSONString = toPrettyString

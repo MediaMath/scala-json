@@ -1,9 +1,9 @@
-version in ThisBuild := "0.2-RC1"
+version in ThisBuild := "0.2-SNAPSHOT"
 
 lazy val json = crossProject.in(file("."))
     .settings(ScalaJSON.commonSettings: _*)
     .jvmSettings(ScalaJSON.jvmSettings: _*)
-    .jsSettings()
+    .jsSettings(ScalaJSON.jsSettings: _*)
 
 lazy val jsonJVM = json.jvm
 lazy val jsonJS = json.js

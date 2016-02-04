@@ -21,37 +21,40 @@ import scalajs.js.{JSON => NativeJSON}
 import js.JSConverters._
 
 object JSJValue {
-  def from(v: Any): JValue = v match {
-    case x if js.isUndefined(x) => JUndefined
+  def fromNativeJS(default: => JValue)(v: Any): JValue = v match {
     case x: JValue => x
+    case x if js.isUndefined(x) => JUndefined
+    case x: String => JString(x)
     case seq0 if js.Array.isArray(seq0.asInstanceOf[js.Any]) =>
-      val seq: Seq[Any] = seq0.asInstanceOf[js.Array[_]]
-      val jvals: Seq[JValue] = seq.map(JSJValue.from)
+      val seq = seq0.asInstanceOf[js.Array[js.Any]]
+      val jvals: IndexedSeq[JValue] = seq map JSJValue.safeReverseFromNativeJS
 
       JArray(jvals)
-    //TODO: look into re-implementing PF inline in this match
-    case x: String => JString(x)
-    case x if JValue.fromAnyInternalPF.isDefinedAt(x) => JValue.fromAnyInternal(x)
+    case null      => JNull
+    case true      => JTrue
+    case false     => JFalse
+    case x: Double => JNumber(x)
     case x0: js.Object =>
       val x = x0.asInstanceOf[js.Dynamic]
-      val seq = (js.Object keys x0).toSeq.map { key =>
-        val value = JSJValue from x.selectDynamic(key)
+      val seq = (js.Object keys x0).map { key =>
+        val value: JValue = JSJValue safeReverseFromNativeJS x.selectDynamic(key)
         JString(key) -> value
       }
       JObject(seq: _*)
-    case x         => sys.error(s"cannot turn $x into a JValue")
+    case _ => default
   }
 
-  def toJS(from: JValue): js.Any = from match {
-    case x: JObject =>
-      val vals = for ((JString(key), value) <- x.iterator)
-        yield key -> toJS(value)
+  def fromNativeJS(x: Any): JValue =
+    fromNativeJS(sys.error(s"cannot turn $x into a JValue from native JS value"))(x)
 
-      vals.toMap.toJSDictionary
-    case JArray(values) =>
-      values.map(toJS).toJSArray
-    case JUndefined => js.undefined
-    case JNull      => null
-    case x          => x.value.asInstanceOf[js.Any] //assumed to be a primitive here
+  def from(v: Any): JValue =
+    JValue.fromAnyInternal(fromNativeJS(v))(v)
+
+  def toJS(x: JValue): js.Any = x.toNativeJS
+
+  //this method simply reverses the order of the pattern match for performance sake
+  private def safeReverseFromNativeJS(x: Any): JValue = {
+    def err = sys.error(s"cannot turn $x into a JValue from non-native JS value")
+    fromNativeJS(JValue.fromAnyInternal(err)(x))(x)
   }
 }
