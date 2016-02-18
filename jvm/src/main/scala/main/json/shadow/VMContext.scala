@@ -22,9 +22,6 @@ import json.internal.{BaseVMContext, JValueObjectDeserializer}
 import scala.collection.immutable.StringOps
 
 object VMContext extends BaseVMContext {
-  trait JValueCompanionBase
-
-  trait JValueBase
 
   val localMapper = new ThreadLocal[JValueObjectDeserializer] {
     override protected def initialValue: JValueObjectDeserializer =
@@ -44,14 +41,13 @@ object VMContext extends BaseVMContext {
   def fromAny(value: Any): JValue = JValue.fromAnyInternal(value)
 
   //modified some escaping for '/'
-  final def quoteJSONString(string: String): StringBuilder = {
+  final def quoteJSONString(string: String, sb: StringBuilder): StringBuilder = {
     require(string != null)
 
-    val len = string.length
-    val sb = new StringBuilder(len + 4)
+    sb.ensureCapacity(string.length)
 
     sb.append('"')
-    for (i <- 0 until len) {
+    for (i <- 0 until string.length) {
       string.charAt(i) match {
         case c if c == '"' || c == '\\' => //Set('"', '\\') contains c =>
           sb.append('\\')

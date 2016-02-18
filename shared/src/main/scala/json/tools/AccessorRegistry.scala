@@ -23,10 +23,10 @@ import scala.reflect.ClassTag
 case class Pickle(data: JValue, className: String)
 object Pickle {
   implicit val acc = ObjectAccessor.create[Pickle]({ x =>
-    JObject("data".js -> x.data, "clazz".js -> x.className.js)
+    JObject("data".js -> x.data, "class".js -> x.className.js)
   },{
     case obj: JObject =>
-      Pickle(obj("data"), obj("clazz").jString.str)
+      Pickle(obj("data"), obj("class").jString.str)
     case x => sys.error("expected pickle, got " + x)
   })
 }

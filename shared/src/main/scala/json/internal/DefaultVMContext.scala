@@ -21,22 +21,36 @@ import json._
 trait BaseVMContext {
   def fromString(str: String): JValue
   def fromAny(value: Any): JValue
-  def quoteJSONString(string: String): StringBuilder
+  def quoteJSONString(string: String, builder: StringBuilder): StringBuilder
 
-  type JValueCompanionBase
+  private[json] trait JValueCompanionBase
 
-  type JValueBase
+  private[json] trait JValueBase
+  private[json] trait JBooleanBase
+  private[json] trait JNumberBase
+  private[json] trait JArrayBase
+  private[json] trait JObjectBase
+  private[json] trait JUndefinedBase
+  private[json] trait JNullBase
+  private[json] trait JStringBase
 }
 
 object DefaultVMContext {
   //to be replaced via shadowing by build for proper VM
   object VMContext extends BaseVMContext {
-    trait JValueCompanionBase
+    private[json] trait JValueCompanionBase
 
-    trait JValueBase
+    private[json] trait JValueBase
+    private[json] trait JBooleanBase
+    private[json] trait JNumberBase
+    private[json] trait JArrayBase
+    private[json] trait JObjectBase
+    private[json] trait JUndefinedBase
+    private[json] trait JNullBase
+    private[json] trait JStringBase
 
     def fromString(str: String): JValue = ???
     def fromAny(value: Any): JValue = ???
-    def quoteJSONString(string: String): StringBuilder = ???
+    def quoteJSONString(string: String, builder: StringBuilder): StringBuilder = ???
   }
 }

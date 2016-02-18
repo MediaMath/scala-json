@@ -20,9 +20,6 @@ import json._
 
 import scala.reflect.{ClassTag, classTag}
 
-/**
- * Created by crgodsey on 7/21/15.
- */
 object JSONAccessor {
   def of[T](implicit acc: json.JSONAccessor[T]) = acc
 

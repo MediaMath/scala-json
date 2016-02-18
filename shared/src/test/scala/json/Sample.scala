@@ -77,21 +77,19 @@ object SampleTest extends TestSuite {
     }
   }
 
-  def runTest() {
+  def runTest(): Unit = {
     val foo = Foo("a", 1)
     val fw = FooWrapper("b", Set(foo))
-
-    println(foo.js.toString)
 
     //append untype JValue with JObject
     val foo2 = foo.js ++ JObject("newfield".js -> 4.js)
 
     //append an object or new field
-    require(foo2 == foo.js + ("newfield".js -> 4.js))
+    assert(foo2 == foo.js + ("newfield".js -> 4.js))
 
     //respects ordering
     val reverseAddFoo2 = JObject("newfield".js -> 4.js) ++ foo.js
-    require(foo2.headOption != reverseAddFoo2.headOption)
+    assert(foo2.headOption != reverseAddFoo2.headOption)
 
     //map over objects
     val mappedJs = foo.js.jObject map {
@@ -101,22 +99,20 @@ object SampleTest extends TestSuite {
     }
 
     //direct key reference
-    require(mappedJs("prefix_foo").str == "a")
+    assert(mappedJs("prefix_foo").str == "a")
 
     //null for none
     val fooJs = foo.js
-    require(fooJs("optField") == JNull)
-
-    println(mappedJs.toString)
+    assert(fooJs("optField") == JNull)
 
     //undefined for all other keys
-    require(mappedJs("no_field") == JUndefined)
+    assert(mappedJs("no_field") == JUndefined)
 
     val fb: FooBase = fw
 
     //using custom accessor to handle super-type
-    require(fb.js == (fw.js + ("type".js -> "foowrapper".js)))
-    require(fb.js.toObject[FooBase] == fw)
+    assert(fb.js == (fw.js + ("type".js -> "foowrapper".js)))
+    assert(fb.js.toObject[FooBase] == fw)
 
     val annoSet = (for {
       field <- ObjectAccessor.of[Foo].fields
@@ -124,14 +120,14 @@ object SampleTest extends TestSuite {
     } yield anno).toSet
 
     //creates actual instances of case class annotation objects
-    require(annoSet(NumAnnoGeneric(11)))
+    assert(annoSet(NumAnnoGeneric(11)))
 
     val testCase = TestObjectCase(camelCase1 = "hi")
 
-    println(testCase.js.toString)
-    require(testCase.js.jObject("CAMELCASE1") == "hi".js)
-    require(testCase.js.toObject[TestObjectCase] == testCase)
+    assert(testCase.js.jObject("CAMELCASE1") == "hi".js)
+    assert(testCase.js.toObject[TestObjectCase] == testCase)
   }
+
 
   /*it should "allow new accessor types" in {
 	}*/

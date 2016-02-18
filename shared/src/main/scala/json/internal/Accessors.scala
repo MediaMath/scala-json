@@ -21,105 +21,112 @@ import java.text.SimpleDateFormat
 import json._
 
 import scala.collection.generic.CanBuildFrom
+import scala.reflect.{classTag, ClassTag}
 
 trait Accessors {
   def accessorFor[T](implicit acc: JSONAccessor[T]) = acc
 
-  implicit def optionAccessor[T, U <: Option[T]](
-    implicit acc: JSONAccessor[T]) =
-    new JSONAccessorProducer[Option[T], JValue] {
-      lazy val clazz = classOf[Option[Any]]
+  implicit def optionAccessor[T, U <: Option[T]](implicit acc: JSONAccessor[T]) =
+    new OptionAccessor[T, U]
 
-      def createJSON(obj: Option[T]): JValue = obj match {
-        case Some(x) => x.js
-        case _       => JNull
-      }
+  class OptionAccessor[T, U <: Option[T]](implicit val acc: JSONAccessor[T])
+      extends JSONAccessorProducer[Option[T], JValue] {
+    lazy val clazz = classOf[Option[Any]]
 
-      def fromJSON(js: JValue): Option[T] = js match {
-        case JUndefined => None
-        case JNull      => None
-        case x          => Some(x.to(acc))
-      }
+    def createJSON(obj: Option[T]): JValue = obj match {
+      case Some(x) => x.js
+      case _       => JNull
+    }
 
-      override def createSwaggerProperty: JObject = {
-        acc.createSwaggerProperty + (JString("required") -> JFalse)
-      }
+    def fromJSON(js: JValue): Option[T] = js match {
+      case JUndefined => None
+      case JNull      => None
+      case x          => Some(x.to(acc))
+    }
 
-      override def extraSwaggerModels: Seq[JObject] = acc match {
+    override def createSwaggerProperty: JObject = {
+      acc.createSwaggerProperty + (JString("required") -> JFalse)
+    }
+
+    override def extraSwaggerModels: Seq[JObject] = acc match {
+      case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
+      case _                             => Nil
+    }
+  }
+
+  implicit def mapAccessor[K, T](implicit valueAcc: JSONAccessor[T], keyAcc: JSONProducer[K, JString] with JSONReader[K]) =
+    new MapAccessor[K, T]
+
+  class MapAccessor[K, T](implicit val valueAcc: JSONAccessor[T], val keyAcc: JSONProducer[K, JString]
+      with JSONReader[K]) extends JSONAccessorProducer[Map[K, T], JObject] {
+    lazy val clazz = classOf[Map[Any, Any]]
+
+    val swaggerModelName = s"Map[String,${valueAcc.clazz.getSimpleName}]"
+
+    def createJSON(obj: Map[K, T]): JObject = JObject(obj map {
+      case (k, v) =>
+        k.js -> v.js
+    })
+
+    def fromJSON(js: JValue): Map[K, T] = js match {
+      case JObject(fields) =>
+        var exceptions = List[InputFormatException]()
+
+        val res = fields flatMap {
+          case (k, v) =>
+            try Seq(k.toObject[K] -> v.to[T]) catch {
+              case e: InputFormatException =>
+                exceptions ::= e.prependFieldName(k.str)
+                Nil
+            }
+        }
+
+        if (!exceptions.isEmpty)
+          throw InputFormatsException(exceptions.flatMap(_.getExceptions).toSet[InputFormatException])
+
+        res
+      case x => throw InputTypeException("",
+        "object", x.getClass.getName, x)
+    }
+
+    override def extraSwaggerModels: Seq[JObject] = {
+      val typ = valueAcc.clazz.getSimpleName
+
+      val jstr = s"""{
+        "id": "$swaggerModelName",
+        "description": "Key value pair of String -> $typ",
+        "properties": {
+          "{key}": {
+            "type": "string",
+            "required": true,
+            "defaultValue": false
+          },
+          "{value}": {
+            "type": "$typ",
+            "required": true,
+            "defaultValue": false
+          }
+        }
+      }"""
+
+      JObject(swaggerModelName ->> jstr.jValue.toJObject) +: (valueAcc match {
         case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
         case _                             => Nil
-      }
-    }
-
-  implicit def mapAccessor[K, T](implicit acc: JSONAccessor[T],
-    keyAcc: JSONProducer[K, JString] with JSONReader[K]) =
-    new JSONAccessorProducer[Map[K, T], JObject] {
-      lazy val clazz = classOf[Map[Any, Any]]
-
-      val swaggerModelName = s"Map[String,${acc.clazz.getSimpleName}]"
-
-      def createJSON(obj: Map[K, T]): JObject = JObject(obj map {
-        case (k, v) =>
-          k.js -> v.js
       })
-
-      def fromJSON(js: JValue): Map[K, T] = js match {
-        case JObject(fields) =>
-          var exceptions = List[InputFormatException]()
-
-          val res = fields flatMap {
-            case (k, v) =>
-              try Seq(k.toObject[K] -> v.to[T]) catch {
-                case e: InputFormatException =>
-                  exceptions ::= e.prependFieldName(k.str)
-                  Nil
-              }
-          }
-
-          if (!exceptions.isEmpty)
-            throw InputFormatsException(exceptions.flatMap(_.getExceptions).toSet[InputFormatException])
-
-          res
-        case x => throw InputTypeException("",
-          "object", x.getClass.getName, x)
-      }
-
-      override def extraSwaggerModels: Seq[JObject] = {
-
-        val typ = acc.clazz.getSimpleName
-
-        val jstr = s"""{
-					"id": "$swaggerModelName",
-					"description": "Key value pair of String -> $typ",
-					"properties": {
-						"{key}": {
-							"type": "string",
-							"required": true,
-							"defaultValue": false
-						},
-						"{value}": {
-							"type": "$typ",
-							"required": true,
-							"defaultValue": false
-						}
-					}
-				}"""
-        //println(jstr)
-        JObject(swaggerModelName ->> jstr.jValue.toJObject) +: (acc match {
-          case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
-          case _                             => Nil
-        })
-      }
-
-      override def createSwaggerProperty: JObject = {
-        JValue(Map("type" -> swaggerModelName)).toJObject
-      }
     }
+
+    override def createSwaggerProperty: JObject = {
+      JValue(Map("type" -> swaggerModelName)).toJObject
+    }
+  }
 
   implicit def iterableAccessor[T, U[T] <: Iterable[T]](
-    implicit acc: JSONAccessor[T],
-    cbf: CanBuildFrom[Nothing, T, U[T]]) = new JSONAccessorProducer[U[T], JArray] {
-    val clazz = classOf[Iterable[Any]]
+      implicit acc: JSONAccessor[T], cbf: CanBuildFrom[Nothing, T, U[T]], ctag: ClassTag[U[T]]) =
+    new IterableAccessor[T, U]
+
+  class IterableAccessor[T, U[T] <: Iterable[T]](implicit val acc: JSONAccessor[T],
+      val cbf: CanBuildFrom[Nothing, T, U[T]], val ctag: ClassTag[U[T]]) extends JSONAccessorProducer[U[T], JArray] {
+    def clazz = ctag.runtimeClass
 
     def createJSON(obj: U[T]): JArray = JArray(obj.map(_.js))
 
@@ -173,6 +180,7 @@ trait Accessors {
     }
   }
 
+  //TODO: needs to be rethought, moved or removed
   implicit case object DateAccessor extends JSONAccessorProducer[java.util.Date, JString] {
     val clazz = classOf[java.util.Date]
 
@@ -180,6 +188,8 @@ trait Accessors {
     def fromJSON(js: JValue): java.util.Date = js match {
       case str: JString =>
         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(str.toString)
+      case x => throw InputTypeException("",
+        "date", x.getClass.getName, x)
     }
   }
 

@@ -1,6 +1,6 @@
 scala-json
 ==========
-Compile time JSON marshalling of primitive values and basic collections.
+Compile time JSON marshalling for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js)
 
 Goals
 -----
@@ -101,16 +101,26 @@ res12: json.JValue =
   "blah": 1
 }
 
-scala> Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
-res13: json.JArray =
+scala> val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+seqJson: json.JArray =
 [{
-    "a": 1,
-    "c": ""
-  }, {
-    "a": 1,
-    "b": 10,
-    "c": "hihi"
-  }]
+  "a": 1,
+  "c": ""
+}, {
+  "a": 1,
+  "b": 10,
+  "c": "hihi"
+}]
+```
+* Dynamic field access
+```scala
+scala> seqJson.dynamic(1).c.value
+res13: json.JValue = "hihi"
+
+scala> seqJson.dynamic.length
+res14: json.JDynamic = 2
+
+scala> require(seqJson.d == seqJson.dynamic)
 ```
 * Typed exceptions with field data
 ```scala
@@ -122,13 +132,28 @@ scala> try JObject("a".js -> "badint".js).toObject[TestClass] catch {
      |       case _ => ""
      |     }.mkString
      | }
-res14: java.io.Serializable = numeric expected but found json.JString (of value "badint")
+res16: java.io.Serializable = numeric expected but found json.JString (of value "badint")
+```
+* JArrays as scala collections
+```scala
+scala> JArray(1, 2, 3, 4).map(x => x.toJString)
+res17: json.JArray = ["1", "2", "3", "4"]
+
+scala> JArray(1, 2, 3, 4).map(_.num)
+res18: scala.collection.immutable.IndexedSeq[Double] = Vector(1.0, 2.0, 3.0, 4.0)
 ```
 
 [Accessors](./ACCESSORS.md)
 ---
 
+Accessors are the compile-time constructs that allow you to marshal scala types.
+
 [Registry](./REGISTRY.md)
+---
+
+The Accessor Registry allows you to pickle registered types from untyped (Any) data.
+
+[Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
 ---
 
 SBT
@@ -139,7 +164,7 @@ SBT
 resolvers += "mmreleases" at
     "https://artifactory.mediamath.com/artifactory/libs-release-global"
 
-libraryDependencies += "com.mediamath" %% "scala-json" % "0.2-RC1"
+libraryDependencies += "com.mediamath" %% "scala-json" % "0.2-SNAPSHOT"
 
 ```
 
@@ -147,7 +172,7 @@ and for Scala.js
 
 ```scala
 
-libraryDependencies += "com.mediamath" %%% "scala-json" % "0.2-RC1"
+libraryDependencies += "com.mediamath" %%% "scala-json" % "0.2-SNAPSHOT"
 
 ```
 

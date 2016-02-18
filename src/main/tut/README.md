@@ -1,6 +1,6 @@
 scala-json
 ==========
-Compile time JSON marshalling of primitive values and basic collections.
+Compile time JSON marshalling for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js)
 
 Goals
 -----
@@ -53,7 +53,13 @@ val testClassJsString = testClassJs.toDenseString
 JValue.fromString(testClassJsString).toObject[TestClass]
 JObject("a".js -> 23.js).toObject[TestClass]
 TestClass(1, None).js + ("blah".js -> 1.js) - "a"
-Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+```
+* Dynamic field access
+```tut
+seqJson.dynamic(1).c.value
+seqJson.dynamic.length
+require(seqJson.d == seqJson.dynamic)
 ```
 * Typed exceptions with field data
 ```tut
@@ -66,11 +72,23 @@ try JObject("a".js -> "badint".js).toObject[TestClass] catch {
     }.mkString
 }
 ```
+* JArrays as scala collections
+```tut
+JArray(1, 2, 3, 4).map(x => x.toJString)
+JArray(1, 2, 3, 4).map(_.num)
+```
 
 [Accessors](./ACCESSORS.md)
 ---
 
+Accessors are the compile-time constructs that allow you to marshal scala types.
+
 [Registry](./REGISTRY.md)
+---
+
+The Accessor Registry allows you to pickle registered types from untyped (Any) data.
+
+[Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
 ---
 
 SBT
