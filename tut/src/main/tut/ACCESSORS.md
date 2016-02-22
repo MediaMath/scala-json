@@ -21,11 +21,11 @@ Accessors come in 3 types:
   * Produces JValue
   * Produces T from JValue
 * ```JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.CreateJSON[T, JV]```
-  * Produces specific subclass of JValue from T
+  * Produces specific type of JValue (JV) from T
   * Produces T from JValue
   * Useful in places where JValue type must be explicit (such as the key in a Map needing to be a JString)
 * ```JSONAccessorProducer.CreateJSON[-T, +JV <: JValue]```
-  * Produces specific subclass of JValue from T and any subclass of T
+  * Produces specific type of JValue (JV) from T
 
 Accessors chain together implicitly to build the compile-time procedure used for marshalling JSON. These chains
 can be very deep and extend across several types of accessors.

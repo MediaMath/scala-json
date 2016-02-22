@@ -19,8 +19,8 @@ Features
 -----
 Compile time JSON marshalling of primitive values, case-classes, basic collections, and whatever you can imagine
 for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js).
-* Extensible Accessor API. Serialize any type you want.
-* Provide a usable JS-like DSL for intermediate JSON data.
+* Extensible accessor API. Serialize any type you want.
+* Provides a usable JS-like DSL for intermediate JSON data.
 * Create implicit [accessors](./ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
 * Produce normal looking Scala structures from any existing JSON API.
 * Support [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
@@ -122,11 +122,12 @@ testClassJs: json.JObject =
   "FIELD_A": 1,
   "b": null,
   "c": "",
-  "d": null
+  "d": null,
+  "concat": "1NoneNone"
 }
 
 scala> val testClassJsString = testClassJs.toDenseString
-testClassJsString: String = {"FIELD_A":1,"b":null,"c":"","d":null}
+testClassJsString: String = {"FIELD_A":1,"b":null,"c":"","d":null,"concat":"1NoneNone"}
 
 scala> JValue.fromString(testClassJsString).toObject[TestClass]
 res14: TestClass = TestClass(1,None,,None)
@@ -140,6 +141,7 @@ res16: json.JObject =
   "b": null,
   "c": "",
   "d": null,
+  "concat": "1NoneNone",
   "blah": 1
 }
 
@@ -149,12 +151,14 @@ seqJson: json.JArray =
   "FIELD_A": 1,
   "b": null,
   "c": "",
-  "d": null
+  "d": null,
+  "concat": "1NoneNone"
 }, {
   "FIELD_A": 1,
   "b": 10,
   "c": "hihi",
-  "d": null
+  "d": null,
+  "concat": "1Some(10)hihiNone"
 }]
 ```
 * Streamlined compile-time case class marshalling (requires [macro-paradise](#dependencies))
@@ -196,7 +200,7 @@ scala> try JObject("a" -> "badint".js).toObject[TestClass] catch {
      |       case _ => ""
      |     }.mkString
      | }
-res23: java.io.Serializable = ""
+res23: java.io.Serializable = TestClass(0,None,,None)
 ```
 
 [Accessors](./ACCESSORS.md)

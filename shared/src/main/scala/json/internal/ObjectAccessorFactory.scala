@@ -234,7 +234,7 @@ object ObjectAccessorFactory {
         field = anno.tree.children.tail(0)
       } yield name -> field).toMap
 
-      val ephemeralFields: List[Symbol] = for {
+      val ephemeralFieldsEnclosed: List[Symbol] = for {
         unit <- c.enclosingRun.units.toList
         classDef <- unit.body.collect {
           case x: ClassDef if x.name == typ0.typeSymbol.name => x //println(showRaw(x)); x
@@ -244,10 +244,22 @@ object ObjectAccessorFactory {
         }
         //method annotations arent always available yet, so we have to search the tree
         if theDef.mods.annotations exists {
-          case Apply(Select(New(Ident(TypeName("transient"))), termNames.CONSTRUCTOR), Nil) => true
+          case Apply(Select(New(Ident(TypeName("ephemeral"))), termNames.CONSTRUCTOR), Nil) => true
+          case Apply(Select(New(Ident(TypeName("EphemeralGeneric"))), termNames.CONSTRUCTOR), Nil) => true
+          case Apply(Select(New(Select(Ident(TermName("json")), TypeName("ephemeral"))), termNames.CONSTRUCTOR), Nil) => true
+          case Apply(Select(New(Select(Ident(TermName("json")), TypeName("EphemeralGeneric"))), termNames.CONSTRUCTOR), Nil) => true
           case _ => false
         }
       } yield typ0.member(theDef.name)
+
+      val ephemeralFieldNames: List[Symbol] = for {
+        mem <- typ0.members.toList
+        anno <- mem.annotations
+        if anno.tree.tpe =:= typeOf[EphemeralGeneric]
+      } yield mem
+
+      //de-dup
+      val ephemeralFields = (ephemeralFieldNames ++ ephemeralFieldsEnclosed).toSet.toList
 
       val memberInfo: Seq[MemberInfo] = {
         def defaultFor(idx: Int): Option[Tree] = {
@@ -271,7 +283,7 @@ object ObjectAccessorFactory {
             case NullaryMethodType(tpe) => tpe //reduce out nullary methods
             case x => x
           }
-          ephemeral = symbol.annotations.exists(x => x.tree.tpe =:= typeOf[EphemeralGeneric])
+          ephemeral = ephemeralFields contains symbol
           getExpr = c.Expr[Any](Select(objXpr.tree, originalName))
         } yield MemberInfo(convdNameExpr, nameExpr, getExpr, default, typeSig, originalName, ephemeral = ephemeral)
       }
