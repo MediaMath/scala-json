@@ -60,6 +60,16 @@ require(testMapJs("nokey") == JUndefined)
 ```tut
 if(testMapJs("nokey")) sys.error("unexpected")
 ```
+* JArrays as scala collections
+```tut
+JArray(1, 2, 3, 4).map(x => x.toJString)
+JArray(1, 2, 3, 4).map(_.num)
+JArray(1, 2, 3, 4) ++ JArray(5)
+```
+* JObjects as scala collections
+```tut
+JObject("foo" -> 1.js, "a" -> false.js) ++ Map("bar" -> true).js - "a"
+```
 * Compile-time case class marshalling
 ```tut
 case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
@@ -94,11 +104,6 @@ try JObject("a" -> "badint".js).toObject[TestClass] catch {
       case _ => ""
     }.mkString
 }
-```
-* JArrays as scala collections
-```tut
-JArray(1, 2, 3, 4).map(x => x.toJString)
-JArray(1, 2, 3, 4).map(_.num)
 ```
 
 [Accessors](./ACCESSORS.md)

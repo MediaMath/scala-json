@@ -53,7 +53,7 @@ be used dynamically but it can cause serious code bloat as the macro code
 is inlined per usage.
 
 ```tut
-case class TestClass(a: Int)
+case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
 implicit val testClassAcc = ObjectAccessor.create[TestClass]
 ```
 

@@ -34,8 +34,6 @@ trait Accessors {
       extends JSONAccessorProducer[Option[T], JValue] {
     def clazz = classOf[Option[Any]]
 
-    final override def toString = s"OptionAccessor[$acc]"
-
     def createJSON(obj: Option[T]): JValue = obj match {
       case Some(x) => x.js
       case _       => JNull
@@ -55,6 +53,11 @@ trait Accessors {
       case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
       case _                             => Nil
     }
+
+    def describe = baseDescription ++ Map(
+      "types" -> Seq("T").js,
+      "T" -> acc.describe
+    ).js
   }
 
   implicit def mapAccessor[K, T](implicit valueAcc: JSONAccessor[T], keyAcc: JSONAccessorProducer[K, JString]) =
@@ -66,7 +69,11 @@ trait Accessors {
 
     val swaggerModelName = s"Map[String,${valueAcc.clazz.getSimpleName}]"
 
-    final override def toString = s"MapAccessor[$keyAcc, $valueAcc]"
+    def describe = baseDescription ++ Map(
+      "types" -> Seq("K", "T").js,
+      "K" -> keyAcc.describe,
+      "T" -> valueAcc.describe
+    ).js
 
     def createJSON(obj: Map[K, T]): JObject = JObject(obj map {
       case (k, v) => keyAcc.toString(k) -> v.js
@@ -135,7 +142,11 @@ trait Accessors {
       val specialBuilder: SpecialBuilders[U]) extends JSONAccessorProducer[U[T], JArray] {
     def clazz = ctag.runtimeClass
 
-    final override def toString = s"IterableAccessor[${ctag.runtimeClass.getSimpleName}, $acc]"
+    def describe = baseDescription ++ Map(
+      "types" -> Seq("T").js,
+      "repr" -> ctag.runtimeClass.getName.js,
+      "T" -> acc.describe
+    ).js
 
     def createJSON(obj: U[T]): JArray = {
       if(primitive.isPrimitive) primitive.createJSON(obj)
@@ -179,7 +190,7 @@ trait Accessors {
       else JObject.empty
 
       JObject("type" -> JString("array"), "items" -> JObject(
-        "$ref" -> JString(acc.clazz.getSimpleName)
+        ("$" + "ref") -> JString(acc.clazz.getSimpleName)
       )) ++ unique
     }
 
@@ -193,6 +204,8 @@ trait Accessors {
   implicit case object BigDecimalAccessor extends JSONAccessorProducer[BigDecimal, JNumber] {
     val clazz = classOf[BigDecimal]
 
+    def describe = baseDescription
+
     def createJSON(obj: BigDecimal): JNumber = JNumber(obj.toDouble)
     def fromJSON(js: JValue): BigDecimal = js.toJNumber match {
       case jn @ JNumber(d) if jn.isValid => BigDecimal(d)
@@ -205,6 +218,8 @@ trait Accessors {
   implicit case object DateAccessor extends JSONAccessorProducer[java.util.Date, JString] {
     val clazz = classOf[java.util.Date]
 
+    def describe = baseDescription
+
     def createJSON(obj: java.util.Date): JString = JString(obj.toString)
     def fromJSON(js: JValue): java.util.Date = js match {
       case str: JString =>
@@ -216,6 +231,8 @@ trait Accessors {
 
   implicit case object StringAccessor extends JSONAccessorProducer[String, JString] {
     val clazz = classOf[String]
+
+    def describe = baseDescription
 
     //optimized str to str passthrough for object keys
     override def fromString(str: String): String = str
@@ -233,10 +250,14 @@ trait Accessors {
   implicit case object BooleanAccessor extends JSONAccessorProducer[Boolean, JBoolean] {
     val clazz = classOf[Boolean]
 
+    def describe = baseDescription
+
     def createJSON(obj: Boolean): JBoolean = JBoolean(obj)
     def fromJSON(js: JValue): Boolean = js match {
       case JFalse       => false
       case JTrue        => true
+      case JNumber(1.0) => true
+      case JNumber(0.0) => false
       case JString("0") => false
       case JString("1") => true
       case x => throw InputTypeException("",
@@ -246,6 +267,8 @@ trait Accessors {
 
   implicit case object IntAccessor extends JSONAccessorProducer[Int, JNumber] {
     val clazz = classOf[Int]
+
+    def describe = baseDescription
 
     def createJSON(obj: Int): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Int = js match {
@@ -263,6 +286,8 @@ trait Accessors {
   implicit case object LongAccessor extends JSONAccessorProducer[Long, JNumber] {
     val clazz = classOf[Long]
 
+    def describe = baseDescription
+
     def createJSON(obj: Long): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Long = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -279,6 +304,8 @@ trait Accessors {
   implicit case object DoubleAccessor extends JSONAccessorProducer[Double, JNumber] {
     val clazz = classOf[Double]
 
+    def describe = baseDescription
+
     def createJSON(obj: Double): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Double = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -291,6 +318,8 @@ trait Accessors {
 
   implicit case object FloatAccessor extends JSONAccessorProducer[Float, JNumber] {
     val clazz = classOf[Float]
+
+    def describe = baseDescription
 
     def createJSON(obj: Float): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Float = js match {
@@ -308,6 +337,8 @@ trait Accessors {
   implicit case object ShortAccessor extends JSONAccessorProducer[Short, JNumber] {
     val clazz = classOf[Short]
 
+    def describe = baseDescription
+
     def createJSON(obj: Short): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Short = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -323,6 +354,8 @@ trait Accessors {
 
   implicit case object ByteAccessor extends JSONAccessorProducer[Byte, JNumber] {
     val clazz = classOf[Byte]
+
+    def describe = baseDescription
 
     def createJSON(obj: Byte): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Byte = js match {
@@ -340,9 +373,10 @@ trait Accessors {
   implicit case object JValueAccessor extends JSONAccessorProducer[JValue, JValue] {
     val clazz = classOf[JValue]
 
+    def describe = baseDescription
+
     def createJSON(obj: JValue): JValue = obj
     def fromJSON(js: JValue): JValue = js
   }
-
 }
 

@@ -44,8 +44,27 @@ res0: json.JObject =
 }
 
 scala> accessorFor(complexValue)
-res1: json.JSONAccessor[scala.collection.immutable.Map[String,Seq[scala.collection.immutable.Set[Option[Boolean]]]]] = MapAccessor[StringAccessor, IterableAccessor[Seq, IterableAccessor[Set, OptionAccessor[BooleanAccessor]]]]
-```
+res1: json.JSONAccessor[scala.collection.immutable.Map[String,Seq[scala.collection.immutable.Set[Option[Boolean]]]]] =
+{
+  "accessorClass": "json.internal.Accessors$MapAccessor",
+  "valueClass": "scala.collection.immutable.Map",
+  "accessorType": "MapAccessor",
+  "types": ["K", "T"],
+  "K": {
+    "accessorClass": "json.internal.Accessors$StringAccessor$",
+    "valueClass": "java.lang.String",
+    "accessorType": "StringAccessor$"
+  },
+  "T": {
+    "accessorClass": "json.internal.Accessors$IterableAccessor",
+    "valueClass": "scala.collection.Seq",
+    "accessorType": "IterableAccessor",
+    "types": ["T"],
+    "repr": "scala.collection.Seq",
+    "T": {
+      "accessorClass": "json.internal.Accessors$IterableAccessor",
+      "valueClass": "scala.collection.immutable.Set",
+      "accesso...```
 
 The one partial exception to this is the treatment of Option. Normally
 defaults of a case class are used if there is either a null or undefined present.
@@ -60,12 +79,37 @@ be used dynamically but it can cause serious code bloat as the macro code
 is inlined per usage.
 
 ```scala
-scala> case class TestClass(a: Int)
+scala> case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
 defined class TestClass
 
 scala> implicit val testClassAcc = ObjectAccessor.create[TestClass]
-testClassAcc: json.internal.CaseClassObjectAccessor[TestClass] = ObjectAccessor[TestClass]
-```
+testClassAcc: json.internal.CaseClassObjectAccessor[TestClass] =
+{
+  "accessorClass": "json.internal.CaseClassObjectAccessor",
+  "valueClass": "TestClass",
+  "accessorType": "CaseClassObjectAccessor",
+  "fields": {
+    "a": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$IntAccessor$",
+        "valueClass": "int",
+        "accessorType": "IntAccessor$"
+      }
+    },
+    "b": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$StringAccessor$",
+        "valueClass": "java.lang.String",
+        "accessorType": "StringAccessor$"
+      },
+      "default": "foo"
+    },
+    "c": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$MapAccessor",
+        "valueClass": "scala.collection.immutable.Map",
+        "accessorType": "MapAccessor",
+   ...```
 
 Custom types
 ```scala
@@ -81,7 +125,12 @@ scala> val fooAccessor = JSONAccessor.create[Foo, JString](
      |         case x => sys.error("Cannot parse" + x)
      |       }
      |     )
-fooAccessor: json.JSONAccessorProducer[Foo,json.JString] = json.JSONAccessorProducer$$anon$1@315b65cc
+fooAccessor: json.JSONAccessorProducer[Foo,json.JString] =
+{
+  "accessorClass": "json.JSONAccessorProducer$$anon$1",
+  "valueClass": "Foo",
+  "accessorType": "JSONAccessor.create"
+}
 ```
 
 Sub-classes

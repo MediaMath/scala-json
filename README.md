@@ -86,14 +86,61 @@ scala> require(testMapJs("nokey") == JUndefined)
 ```scala
 scala> if(testMapJs("nokey")) sys.error("unexpected")
 ```
+* JArrays as scala collections
+```scala
+scala> JArray(1, 2, 3, 4).map(x => x.toJString)
+res10: json.JArray = ["1", "2", "3", "4"]
+
+scala> JArray(1, 2, 3, 4).map(_.num)
+res11: scala.collection.immutable.IndexedSeq[Double] = Vector(1.0, 2.0, 3.0, 4.0)
+
+scala> JArray(1, 2, 3, 4) ++ JArray(5)
+res12: json.JArray = [1, 2, 3, 4, 5]
+```
+* JObjects as scala collections
+```scala
+scala> JObject("foo" -> 1.js, "a" -> false.js) ++ Map("bar" -> true).js - "a"
+res13: json.JObject =
+{
+  "foo": 1,
+  "bar": true
+}
+```
 * Compile-time case class marshalling
 ```scala
 scala> case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
 defined class TestClass
 
 scala> implicit val acc = ObjectAccessor.create[TestClass]
-acc: json.internal.CaseClassObjectAccessor[TestClass] = ObjectAccessor[TestClass]
-
+acc: json.internal.CaseClassObjectAccessor[TestClass] =
+{
+  "accessorClass": "json.internal.CaseClassObjectAccessor",
+  "valueClass": "TestClass",
+  "accessorType": "CaseClassObjectAccessor",
+  "fields": {
+    "a": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$IntAccessor$",
+        "valueClass": "int",
+        "accessorType": "IntAccessor$"
+      }
+    },
+    "b": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$OptionAccessor",
+        "valueClass": "scala.Option",
+        "accessorType": "OptionAccessor",
+        "types": ["T"],
+        "T": {
+          "accessorClass": "json.internal.Accessors$IntAccessor$",
+          "valueClass": "int",
+          "accessorType": "IntAccessor$"
+        }
+      }
+    },
+    "c": {
+      "type": {
+        "acc...
 scala> val testClassJs = TestClass(1, None).js
 testClassJs: json.JObject =
 {
@@ -107,13 +154,13 @@ scala> val testClassJsString = testClassJs.toDenseString
 testClassJsString: String = {"a":1,"b":null,"c":"","d":null}
 
 scala> JValue.fromString(testClassJsString).toObject[TestClass]
-res10: TestClass = TestClass(1,None,,None)
+res14: TestClass = TestClass(1,None,,None)
 
 scala> JObject("a" -> 23.js).toObject[TestClass]
-res11: TestClass = TestClass(23,None,,None)
+res15: TestClass = TestClass(23,None,,None)
 
 scala> TestClass(1, None).js + ("blah" -> 1.js) - "a"
-res12: json.JObject =
+res16: json.JObject =
 {
   "b": null,
   "c": "",
@@ -142,25 +189,67 @@ defined object SomeModel
 defined class SomeModel
 
 scala> SomeModel("foo", 22).js
-res13: json.JObject =
+res17: json.JObject =
 {
   "a": "foo",
   "other": 22
 }
 
 scala> implicitly[JSONAccessor[SomeModel]]
-res14: json.JSONAccessor[SomeModel] = ObjectAccessor[SomeModel]
+res18: json.JSONAccessor[SomeModel] =
+{
+  "accessorClass": "json.internal.CaseClassObjectAccessor",
+  "valueClass": "SomeModel",
+  "accessorType": "CaseClassObjectAccessor",
+  "fields": {
+    "a": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$StringAccessor$",
+        "valueClass": "java.lang.String",
+        "accessorType": "StringAccessor$"
+      }
+    },
+    "other": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$IntAccessor$",
+        "valueClass": "int",
+        "accessorType": "IntAccessor$"
+      }
+    }
+  }
+}
 
 scala> json.accessorOf[SomeModel]
-res15: json.JSONAccessor[SomeModel] = ObjectAccessor[SomeModel]
+res19: json.JSONAccessor[SomeModel] =
+{
+  "accessorClass": "json.internal.CaseClassObjectAccessor",
+  "valueClass": "SomeModel",
+  "accessorType": "CaseClassObjectAccessor",
+  "fields": {
+    "a": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$StringAccessor$",
+        "valueClass": "java.lang.String",
+        "accessorType": "StringAccessor$"
+      }
+    },
+    "other": {
+      "type": {
+        "accessorClass": "json.internal.Accessors$IntAccessor$",
+        "valueClass": "int",
+        "accessorType": "IntAccessor$"
+      }
+    }
+  }
+}
 ```
 * Dynamic field access
 ```scala
 scala> seqJson.dynamic(1).c.value
-res16: json.JValue = "hihi"
+res20: json.JValue = "hihi"
 
 scala> seqJson.dynamic.length
-res17: json.JDynamic = 2
+res21: json.JDynamic = 2
 
 scala> require(seqJson.d == seqJson.dynamic)
 ```
@@ -174,15 +263,7 @@ scala> try JObject("a" -> "badint".js).toObject[TestClass] catch {
      |       case _ => ""
      |     }.mkString
      | }
-res19: java.io.Serializable = numeric expected but found json.JString (of value "badint")
-```
-* JArrays as scala collections
-```scala
-scala> JArray(1, 2, 3, 4).map(x => x.toJString)
-res20: json.JArray = ["1", "2", "3", "4"]
-
-scala> JArray(1, 2, 3, 4).map(_.num)
-res21: scala.collection.immutable.IndexedSeq[Double] = Vector(1.0, 2.0, 3.0, 4.0)
+res23: java.io.Serializable = numeric expected but found json.JString (of value "badint")
 ```
 
 [Accessors](./ACCESSORS.md)

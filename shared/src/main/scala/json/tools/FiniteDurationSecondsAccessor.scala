@@ -38,5 +38,7 @@ trait FiniteDurationSecondsAccessor extends JSONAccessorProducer[FiniteDuration,
   //use int here so we can get a numeric swagger type
   def clazz: Class[_] = classOf[Int]
 
+  def describe = baseDescription
+
   implicit def acc: JSONAccessorProducer[FiniteDuration, JNumber] = this
 }

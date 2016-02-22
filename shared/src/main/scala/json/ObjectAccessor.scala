@@ -39,7 +39,6 @@ trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
     case _                    => false
   }
 
-  override def toString = s"ObjectAccessor[${clazz.getName}]"
   override def hashCode = clazz.hashCode
 }
 
@@ -53,6 +52,8 @@ object ObjectAccessor {
     override def canEqual(that: Any) = that.isInstanceOf[this.type]
 
     def apply[T] = NoAccessor.asInstanceOf[ObjectAccessor[T]]
+
+    def describe = baseDescription
   }
 
   def create[T]: CaseClassObjectAccessor[T] = macro ObjectAccessorFactory.impl[T]

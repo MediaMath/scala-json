@@ -62,7 +62,7 @@ object EpochDeadline extends Ordering[EpochDeadline] {
 
   def apply(tsSeconds: Double): EpochDeadline = from(tsSeconds)
 
-  def from(tsSeconds: Double) = epoch + (tsSeconds * 1000).millis
+  def from(tsSeconds: Double): EpochDeadline = epoch + (tsSeconds * 1000).millis
 
   implicit def ordering: Ordering[EpochDeadline] = this
 

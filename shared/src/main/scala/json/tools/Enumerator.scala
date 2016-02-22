@@ -55,13 +55,17 @@ abstract class TypedEnumerator[K, T <: TypedEnumerator[K, T, J]#Value: ClassTag,
   def apply(k: K) = keyMap.getOrElse(k, default(k.js))
 
   implicit lazy val accessor: JSONAccessorProducer[T, J] = new JSONAccessorProducer[T, J] {
-    def createJSON(from: T): J = from.toJSON// from.toJSON.toJString    dislikee
+    val jsValues = values.toSeq.map(_.toJSON)
+
+    def createJSON(from: T): J = from.toJSON
     def fromJSON(from: JValue): T = keyMap.getOrElse(from.to[K], default(from))
     def clazz = classTag[T].runtimeClass
 
-    val jsValues = values.toSeq.map(_.toJSON)
-
     override def createSwaggerProperty: JObject =
       super.createSwaggerProperty ++ JObject("enum" -> JArray(jsValues))
+
+    def describe: JValue = baseDescription ++ Map(
+      "values" -> keyMap.keySet.map(_.js.toJValue)
+    ).js
   }
 }

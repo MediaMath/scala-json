@@ -56,14 +56,11 @@ package object json extends JSONAnnotations with Implicits {
     val nullString = JString("null")
   }
 
-  def fromJSON[T](jval: JValue)(implicit acc: JSONAccessor[T]) =
-    acc.fromJSON(jval)
+  def fromJSON[T](jval: JValue)(implicit acc: JSONAccessor[T]) = acc.fromJSON(jval)
+  def toJSONString[T: JSONAccessor](obj: T) = obj.js.toString
 
-  def toJSONString[T](obj: T)(implicit acc: JSONAccessor[T]) =
-    obj.js.toString
-
-  def accessorOf[T](implicit acc: JSONAccessor[T]): JSONAccessor[T] = acc
-  def accessorFor[T](x: T)(implicit acc: JSONAccessor[T]): JSONAccessor[T] = acc
+  def accessorOf[T](implicit acc: JSONAccessor[T]) = acc
+  def accessorFor[T](x: T)(implicit acc: JSONAccessor[T]) = acc
 
   /** Create a simple [[JValue]] [[JSONAccessor]] out of 'to' and 'from' lambdas. */
   def createAccessor[T: ClassTag](toJ: T => JValue, fromJ: JValue => T): JSONAccessor[T] =
