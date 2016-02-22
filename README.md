@@ -27,10 +27,10 @@ for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/sc
 * Produce pretty and human readable JSON.
 * Enable you to create readable APIs that match existing/specific structure.
 * Uses defaults correctly.
-* Extensible annotation API to make your accessors more dynamic.
 * Use existing scala collection CanBuildFrom factories to support buildable collections.
 * Provide support for unknown types (Any) via 'pickling' with a class [registry](./REGISTRY.md).
-* Support for Scala 2.12.0-M3
+* Support for scala 2.10.x, 2.11.x, 2.12.0-M3.
+* Support for scala-js 0.6.x.
 
 Getting Started
 ---------------
@@ -112,35 +112,8 @@ scala> case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[In
 defined class TestClass
 
 scala> implicit val acc = ObjectAccessor.create[TestClass]
-acc: json.internal.CaseClassObjectAccessor[TestClass] =
-{
-  "accessorClass": "json.internal.CaseClassObjectAccessor",
-  "valueClass": "TestClass",
-  "accessorType": "CaseClassObjectAccessor",
-  "fields": {
-    "a": {
-      "type": {
-        "accessorClass": "json.internal.Accessors$IntAccessor$",
-        "valueClass": "int",
-        "accessorType": "IntAccessor$"
-      }
-    },
-    "b": {
-      "type": {
-        "accessorClass": "json.internal.Accessors$OptionAccessor",
-        "valueClass": "scala.Option",
-        "accessorType": "OptionAccessor",
-        "types": ["T"],
-        "T": {
-          "accessorClass": "json.internal.Accessors$IntAccessor$",
-          "valueClass": "int",
-          "accessorType": "IntAccessor$"
-        }
-      }
-    },
-    "c": {
-      "type": {
-        "acc...
+acc: json.internal.CaseClassObjectAccessor[TestClass] = JSONAccessorProducer[...]
+
 scala> val testClassJs = TestClass(1, None).js
 testClassJs: json.JObject =
 {
@@ -196,52 +169,10 @@ res17: json.JObject =
 }
 
 scala> implicitly[JSONAccessor[SomeModel]]
-res18: json.JSONAccessor[SomeModel] =
-{
-  "accessorClass": "json.internal.CaseClassObjectAccessor",
-  "valueClass": "SomeModel",
-  "accessorType": "CaseClassObjectAccessor",
-  "fields": {
-    "a": {
-      "type": {
-        "accessorClass": "json.internal.Accessors$StringAccessor$",
-        "valueClass": "java.lang.String",
-        "accessorType": "StringAccessor$"
-      }
-    },
-    "other": {
-      "type": {
-        "accessorClass": "json.internal.Accessors$IntAccessor$",
-        "valueClass": "int",
-        "accessorType": "IntAccessor$"
-      }
-    }
-  }
-}
+res18: json.JSONAccessor[SomeModel] = JSONAccessorProducer[...]
 
 scala> json.accessorOf[SomeModel]
-res19: json.JSONAccessor[SomeModel] =
-{
-  "accessorClass": "json.internal.CaseClassObjectAccessor",
-  "valueClass": "SomeModel",
-  "accessorType": "CaseClassObjectAccessor",
-  "fields": {
-    "a": {
-      "type": {
-        "accessorClass": "json.internal.Accessors$StringAccessor$",
-        "valueClass": "java.lang.String",
-        "accessorType": "StringAccessor$"
-      }
-    },
-    "other": {
-      "type": {
-        "accessorClass": "json.internal.Accessors$IntAccessor$",
-        "valueClass": "int",
-        "accessorType": "IntAccessor$"
-      }
-    }
-  }
-}
+res19: json.JSONAccessor[SomeModel] = JSONAccessorProducer[...]
 ```
 * Dynamic field access
 ```scala

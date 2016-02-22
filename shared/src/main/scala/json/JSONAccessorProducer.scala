@@ -57,7 +57,8 @@ trait JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.Create
     "accessorType" -> getClass.getSimpleName
   ).js
 
-  final override def toString = describe.toString
+  //final override def toString = describe.toString
+  final override def toString = "JSONAccessorProducer[...]"
 
   /** This is a special override for optimized versions that work with raw String keys */
   def fromString(value: String): T = fromJSON(JString(value))

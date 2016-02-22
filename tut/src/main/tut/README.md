@@ -27,10 +27,10 @@ for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/sc
 * Produce pretty and human readable JSON.
 * Enable you to create readable APIs that match existing/specific structure.
 * Uses defaults correctly.
-* Extensible annotation API to make your accessors more dynamic.
 * Use existing scala collection CanBuildFrom factories to support buildable collections.
 * Provide support for unknown types (Any) via 'pickling' with a class [registry](./REGISTRY.md).
-* Support for Scala 2.12.0-M3
+* Support for scala 2.10.x, 2.11.x, 2.12.0-M3.
+* Support for scala-js 0.6.x.
 
 Getting Started
 ---------------

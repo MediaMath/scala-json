@@ -52,21 +52,7 @@ scala> implicit val envAccessor = {
      |   import AccessorRegistry.anyAccessor //or MyRegistry.anyAccessor if using your own registry
      |   ObjectAccessor.create[Envelope]
      | }
-envAccessor: json.internal.CaseClassObjectAccessor[Envelope] =
-{
-  "accessorClass": "json.internal.CaseClassObjectAccessor",
-  "valueClass": "Envelope",
-  "accessorType": "CaseClassObjectAccessor",
-  "fields": {
-    "msg": {
-      "type": {
-        "accessorClass": "json.JSONAccessorProducer$$anon$1",
-        "valueClass": "java.lang.Object",
-        "accessorType": "JSONAccessor.create"
-      }
-    }
-  }
-}
+envAccessor: json.internal.CaseClassObjectAccessor[Envelope] = JSONAccessorProducer[...]
 
 scala> AccessorRegistry.add[Envelope]
 

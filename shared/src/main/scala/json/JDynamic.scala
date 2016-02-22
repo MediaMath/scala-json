@@ -18,10 +18,6 @@ package json
 
 import language.dynamics
 
-object JDynamic {
-  //implicit def toJValue(dynamic: JDynamic): JValue = dynamic.value
-}
-
 case class JDynamic(value: JValue) extends Dynamic {
   def applyDynamic(method: String)(idx: Int): JDynamic = value(method).jArray(idx).dynamic
 
@@ -30,11 +26,6 @@ case class JDynamic(value: JValue) extends Dynamic {
   def selectDynamic(field: String): JDynamic = value(field).dynamic
 
   def apply(idx: Int): JDynamic = value.jArray(idx).dynamic
-
-  def length: JDynamic = value match {
-    case x: JArray => JNumber(x.length).dynamic
-    case _ => selectDynamic("length")
-  }
 
   override def toString = value.toString
 

@@ -29,6 +29,12 @@ object JValue extends JValueLikeCompanion {
   type JValueBase = VM.Context.JValueBase
 }
 
+/** This is the base type for all JSON values. JValue includes JS-like methods
+  * for handling data in generic JS type. Like JS, some of these methods are
+  * convenient but definitely not type safe, and some may result in odd
+  * type conversion or exceptions. For type-safe handling of JValues, consider
+  * using pattern matching the good ol' scala way.
+  */
 sealed trait JValue extends AnyRef with JValueLike with JValue.JValueBase {
   /** Boolean OR using [[toJBoolean]] */
   def ||[T >: this.type <: JValue](other: T): T = if (this.toJBoolean.bool) this else other
@@ -44,7 +50,8 @@ object JObject extends /*GenericCompanion[scala.collection.immutable.Iterable] w
     newCanBuildFrom
 }
 
-final case class JObject(override val fields: Map[String, JValue])(
+/** JSON object as ordered pairs of String -> JValue */
+final case class JObject private[json] (override val fields: Map[String, JValue])(
     val iterable: Iterable[JObject.Pair] = fields)
     extends JValue with Iterable[JObject.Pair] with IterableLike[JObject.Pair, JObject]
     with JObjectLike with VM.Context.JObjectBase {
@@ -65,6 +72,7 @@ object JArray extends JArrayCompanion {
   def unapply(x: JArray): Option[IndexedSeq[JValue]] = Some(x.values.toIndexedSeq)
 }
 
+/** JSON array as ordered sequence of JValues */
 abstract class JArray private[json] extends JValue with JArrayLike with VM.Context.JArrayBase {
   override def toString = toJSONString
 
@@ -81,6 +89,7 @@ object JBoolean {
   def unapply(x: JBoolean): Option[Boolean] = Some(x.value)
 }
 
+/** Base type for JSON primitives [[JTrue]] and [[JFalse]] */
 sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
   def value: Boolean
   def not: JBoolean
@@ -113,6 +122,7 @@ final case object JFalse extends JBoolean {
   def toJString: JString = constants.falseString
 }
 
+/** JSON String value */
 final case class JString(value: String) extends JValue with Iterable[JString] with JStringLike with VM.Context.JStringBase
 
 object JNumber {
@@ -125,15 +135,13 @@ object JNumber {
     case x => JNumberImpl(x)
   }
 
-  def unapply(x: JNumber): Option[Double] = x match {
-    case x: JNumberImpl => Some(x.value)
-    case _ => None
-  }
+  def unapply(x: JNumber): Option[Double] = Some(x.value)
 }
 
 private[json] final case class JNumberImpl(value: Double) extends JNumber
 
-sealed trait JNumber extends JValue with VM.Context.JNumberBase {
+/** JSON numeric value (stored as 64-bit double) */
+sealed trait JNumber extends JValue with VM.Context.JNumberBase { _: JNumberImpl =>
   val value: Double
 
   def iterator: Iterator[JValue] = sys.error("Cannot iterate a number!")
@@ -175,6 +183,7 @@ sealed trait JNumber extends JValue with VM.Context.JNumberBase {
   def -(other: JNumber) = JNumber(value - other.value)
 }
 
+/** JSON null primitive */
 final case object JNull extends JValue with VM.Context.JNullBase {
   def iterator: Iterator[JValue] = sys.error("Cannot iterate null!")
 
@@ -190,6 +199,7 @@ final case object JNull extends JValue with VM.Context.JNullBase {
       out: StringBuilder, lvl: Int): StringBuilder = out append "null"
 }
 
+/** JS undefined primitive (not actually a JSON primitive) */
 final case object JUndefined extends JValue with VM.Context.JUndefinedBase {
   def iterator: Iterator[JValue] = throw JUndefinedException("Cannot iterate undefined!")
 

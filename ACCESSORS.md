@@ -43,8 +43,8 @@ res0: json.JObject =
   "key": [[false, null], [false, null], [false, null]]
 }
 
-scala> accessorFor(complexValue)
-res1: json.JSONAccessor[scala.collection.immutable.Map[String,Seq[scala.collection.immutable.Set[Option[Boolean]]]]] =
+scala> accessorFor(complexValue).describe
+res1: json.JValue =
 {
   "accessorClass": "json.internal.Accessors$MapAccessor",
   "valueClass": "scala.collection.immutable.Map",
@@ -64,7 +64,10 @@ res1: json.JSONAccessor[scala.collection.immutable.Map[String,Seq[scala.collecti
     "T": {
       "accessorClass": "json.internal.Accessors$IterableAccessor",
       "valueClass": "scala.collection.immutable.Set",
-      "accesso...```
+      "accessorType": "IterableAccessor",
+      "types": ["T"],
+      "repr": "scala.collection.immutable.Set",
+ ...```
 
 The one partial exception to this is the treatment of Option. Normally
 defaults of a case class are used if there is either a null or undefined present.
@@ -83,7 +86,10 @@ scala> case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolea
 defined class TestClass
 
 scala> implicit val testClassAcc = ObjectAccessor.create[TestClass]
-testClassAcc: json.internal.CaseClassObjectAccessor[TestClass] =
+testClassAcc: json.internal.CaseClassObjectAccessor[TestClass] = JSONAccessorProducer[...]
+
+scala> testClassAcc.describe
+res2: json.JValue =
 {
   "accessorClass": "json.internal.CaseClassObjectAccessor",
   "valueClass": "TestClass",
@@ -109,7 +115,9 @@ testClassAcc: json.internal.CaseClassObjectAccessor[TestClass] =
         "accessorClass": "json.internal.Accessors$MapAccessor",
         "valueClass": "scala.collection.immutable.Map",
         "accessorType": "MapAccessor",
-   ...```
+        "types": ["K", "T"],
+        "K": {
+    ...```
 
 Custom types
 ```scala
@@ -125,12 +133,7 @@ scala> val fooAccessor = JSONAccessor.create[Foo, JString](
      |         case x => sys.error("Cannot parse" + x)
      |       }
      |     )
-fooAccessor: json.JSONAccessorProducer[Foo,json.JString] =
-{
-  "accessorClass": "json.JSONAccessorProducer$$anon$1",
-  "valueClass": "Foo",
-  "accessorType": "JSONAccessor.create"
-}
+fooAccessor: json.JSONAccessorProducer[Foo,json.JString] = JSONAccessorProducer[...]
 ```
 
 Sub-classes
