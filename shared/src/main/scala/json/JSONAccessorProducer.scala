@@ -32,9 +32,9 @@ object JSONAccessorProducer {
     def fromJSON(from: JValue): T = fromJ(from)
     def clazz = classTag[T].runtimeClass
 
-    def describe = baseDescription ++ Map(
-      "accessorType" -> "JSONAccessor.create"
-    ).js
+    override def toString = "JSONAccessor.create"
+
+    def describe = baseDescription
   }
 
   /** helper JSON producer trait used for contravariant type T */
@@ -54,11 +54,8 @@ trait JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.Create
   final protected def baseDescription: JObject = Map(
     "accessorClass" -> getClass.getName,
     "valueClass" -> clazz.getName,
-    "accessorType" -> getClass.getSimpleName
+    "accessorType" -> toString()
   ).js
-
-  //final override def toString = describe.toString
-  final override def toString = "JSONAccessorProducer[...]"
 
   /** This is a special override for optimized versions that work with raw String keys */
   def fromString(value: String): T = fromJSON(JString(value))

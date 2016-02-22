@@ -38,6 +38,8 @@ trait CaseClassObjectAccessor[T] extends ObjectAccessor[T] {
     field.name -> field.getJValue(obj)
   }): _*)
 
+  override def toString = "CaseClassObjectAccessor"
+
   def describe = baseDescription ++ JObject(
     "fields" -> fieldMap.map {
       case (name, fieldAcc) => name -> JObject(
@@ -45,7 +47,6 @@ trait CaseClassObjectAccessor[T] extends ObjectAccessor[T] {
         "default" -> fieldAcc.defOpt.map(_.toString.js).getOrElse(JUndefined)
       ).toJValue
     }.toMap.js,
-    "accessorType" -> "CaseClassObjectAccessor".js,
     "accessorClass" -> "json.internal.CaseClassObjectAccessor".js
   ).js
 

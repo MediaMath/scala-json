@@ -34,6 +34,8 @@ trait Accessors {
       extends JSONAccessorProducer[Option[T], JValue] {
     def clazz = classOf[Option[Any]]
 
+    override def toString = "OptionAccessor"
+
     def createJSON(obj: Option[T]): JValue = obj match {
       case Some(x) => x.js
       case _       => JNull
@@ -68,6 +70,8 @@ trait Accessors {
     def clazz = classOf[Map[Any, Any]]
 
     val swaggerModelName = s"Map[String,${valueAcc.clazz.getSimpleName}]"
+
+    override def toString = "MapAccessor"
 
     def describe = baseDescription ++ Map(
       "types" -> Seq("K", "T").js,
@@ -141,6 +145,8 @@ trait Accessors {
       val primitive: PrimitiveAccessor[T],
       val specialBuilder: SpecialBuilders[U]) extends JSONAccessorProducer[U[T], JArray] {
     def clazz = ctag.runtimeClass
+
+    override def toString = "IterableAccessor"
 
     def describe = baseDescription ++ Map(
       "types" -> Seq("T").js,

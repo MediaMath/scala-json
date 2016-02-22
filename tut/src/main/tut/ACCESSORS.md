@@ -53,13 +53,15 @@ be used dynamically but it can cause serious code bloat as the macro code
 is inlined per usage.
 
 ```tut
+
 case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
-implicit val testClassAcc = ObjectAccessor.create[TestClass]
-testClassAcc.describe
+ObjectAccessor.create[TestClass].describe
+
 ```
 
 Custom types
 ```tut
+
 class Foo(val bar: String)
 val fooAccessor = JSONAccessor.create[Foo, JString](
       { x: Foo =>
@@ -70,19 +72,24 @@ val fooAccessor = JSONAccessor.create[Foo, JString](
         case x => sys.error("Cannot parse" + x)
       }
     )
+
 ```
 
 Sub-classes
 ```tut
+
 class Bar(s: String) extends Foo(s)
+
 ```
 
 Putting the implicit under a companion object of the same name provides
 the implicit in any scope.
 
 ```scala
+
 object TestClass {
   implicit val acc = ObjectAccessor.create[TestClass]
+
 }
 ```
 
@@ -95,7 +102,9 @@ to gain the advanced functionality needed. The remaining functionality (ObjectAc
 will work without macro-paradise, it is only required for the optional @accessor annotation.
 
 ```scala
+
 @json.accessor case class TestClass(a: Int)
+
 ```
 
 Proxying between types can be tricky, but its verbose nature allows you to implement

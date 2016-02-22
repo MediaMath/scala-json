@@ -53,7 +53,7 @@ res1: json.JValue =
   "K": {
     "accessorClass": "json.internal.Accessors$StringAccessor$",
     "valueClass": "java.lang.String",
-    "accessorType": "StringAccessor$"
+    "accessorType": "StringAccessor"
   },
   "T": {
     "accessorClass": "json.internal.Accessors$IterableAccessor",
@@ -67,7 +67,7 @@ res1: json.JValue =
       "accessorType": "IterableAccessor",
       "types": ["T"],
       "repr": "scala.collection.immutable.Set",
- ...```
+  ...```
 
 The one partial exception to this is the treatment of Option. Normally
 defaults of a case class are used if there is either a null or undefined present.
@@ -85,10 +85,7 @@ is inlined per usage.
 scala> case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
 defined class TestClass
 
-scala> implicit val testClassAcc = ObjectAccessor.create[TestClass]
-testClassAcc: json.internal.CaseClassObjectAccessor[TestClass] = JSONAccessorProducer[...]
-
-scala> testClassAcc.describe
+scala> ObjectAccessor.create[TestClass].describe
 res2: json.JValue =
 {
   "accessorClass": "json.internal.CaseClassObjectAccessor",
@@ -99,14 +96,14 @@ res2: json.JValue =
       "type": {
         "accessorClass": "json.internal.Accessors$IntAccessor$",
         "valueClass": "int",
-        "accessorType": "IntAccessor$"
+        "accessorType": "IntAccessor"
       }
     },
     "b": {
       "type": {
         "accessorClass": "json.internal.Accessors$StringAccessor$",
         "valueClass": "java.lang.String",
-        "accessorType": "StringAccessor$"
+        "accessorType": "StringAccessor"
       },
       "default": "foo"
     },
@@ -117,7 +114,7 @@ res2: json.JValue =
         "accessorType": "MapAccessor",
         "types": ["K", "T"],
         "K": {
-    ...```
+      ...```
 
 Custom types
 ```scala
@@ -133,7 +130,7 @@ scala> val fooAccessor = JSONAccessor.create[Foo, JString](
      |         case x => sys.error("Cannot parse" + x)
      |       }
      |     )
-fooAccessor: json.JSONAccessorProducer[Foo,json.JString] = JSONAccessorProducer[...]
+fooAccessor: json.JSONAccessorProducer[Foo,json.JString] = JSONAccessor.create
 ```
 
 Sub-classes
@@ -146,8 +143,10 @@ Putting the implicit under a companion object of the same name provides
 the implicit in any scope.
 
 ```scala
+
 object TestClass {
   implicit val acc = ObjectAccessor.create[TestClass]
+
 }
 ```
 
@@ -160,7 +159,9 @@ to gain the advanced functionality needed. The remaining functionality (ObjectAc
 will work without macro-paradise, it is only required for the optional @accessor annotation.
 
 ```scala
+
 @json.accessor case class TestClass(a: Int)
+
 ```
 
 Proxying between types can be tricky, but its verbose nature allows you to implement

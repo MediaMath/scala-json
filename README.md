@@ -108,31 +108,33 @@ res13: json.JObject =
 ```
 * Compile-time case class marshalling
 ```scala
-scala> case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
+scala> case class TestClass(@name("FIELD_A") a: Int, b: Option[Int], c: String = "", d: Option[Int] = None) {
+     |     @ephemeral def concat = a.toString + b + c + d
+     | }
 defined class TestClass
 
 scala> implicit val acc = ObjectAccessor.create[TestClass]
-acc: json.internal.CaseClassObjectAccessor[TestClass] = JSONAccessorProducer[...]
+acc: json.internal.CaseClassObjectAccessor[TestClass] = CaseClassObjectAccessor
 
 scala> val testClassJs = TestClass(1, None).js
 testClassJs: json.JObject =
 {
-  "a": 1,
+  "FIELD_A": 1,
   "b": null,
   "c": "",
   "d": null
 }
 
 scala> val testClassJsString = testClassJs.toDenseString
-testClassJsString: String = {"a":1,"b":null,"c":"","d":null}
+testClassJsString: String = {"FIELD_A":1,"b":null,"c":"","d":null}
 
 scala> JValue.fromString(testClassJsString).toObject[TestClass]
 res14: TestClass = TestClass(1,None,,None)
 
-scala> JObject("a" -> 23.js).toObject[TestClass]
+scala> JObject("FIELD_A" -> 23.js).toObject[TestClass]
 res15: TestClass = TestClass(23,None,,None)
 
-scala> TestClass(1, None).js + ("blah" -> 1.js) - "a"
+scala> TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A"
 res16: json.JObject =
 {
   "b": null,
@@ -144,12 +146,12 @@ res16: json.JObject =
 scala> val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 seqJson: json.JArray =
 [{
-  "a": 1,
+  "FIELD_A": 1,
   "b": null,
   "c": "",
   "d": null
 }, {
-  "a": 1,
+  "FIELD_A": 1,
   "b": 10,
   "c": "hihi",
   "d": null
@@ -169,10 +171,10 @@ res17: json.JObject =
 }
 
 scala> implicitly[JSONAccessor[SomeModel]]
-res18: json.JSONAccessor[SomeModel] = JSONAccessorProducer[...]
+res18: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
 
 scala> json.accessorOf[SomeModel]
-res19: json.JSONAccessor[SomeModel] = JSONAccessorProducer[...]
+res19: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
 ```
 * Dynamic field access
 ```scala
@@ -194,7 +196,7 @@ scala> try JObject("a" -> "badint".js).toObject[TestClass] catch {
      |       case _ => ""
      |     }.mkString
      | }
-res23: java.io.Serializable = numeric expected but found json.JString (of value "badint")
+res23: java.io.Serializable = ""
 ```
 
 [Accessors](./ACCESSORS.md)

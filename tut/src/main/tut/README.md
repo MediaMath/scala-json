@@ -72,13 +72,15 @@ JObject("foo" -> 1.js, "a" -> false.js) ++ Map("bar" -> true).js - "a"
 ```
 * Compile-time case class marshalling
 ```tut
-case class TestClass(a: Int, b: Option[Int], c: String = "", d: Option[Int] = None)
+case class TestClass(@name("FIELD_A") a: Int, b: Option[Int], c: String = "", d: Option[Int] = None) {
+    @ephemeral def concat = a.toString + b + c + d
+}
 implicit val acc = ObjectAccessor.create[TestClass]
 val testClassJs = TestClass(1, None).js
 val testClassJsString = testClassJs.toDenseString
 JValue.fromString(testClassJsString).toObject[TestClass]
-JObject("a" -> 23.js).toObject[TestClass]
-TestClass(1, None).js + ("blah" -> 1.js) - "a"
+JObject("FIELD_A" -> 23.js).toObject[TestClass]
+TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A"
 val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 ```
 * Streamlined compile-time case class marshalling (requires [macro-paradise](#dependencies))
