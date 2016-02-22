@@ -1,0 +1,53 @@
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+._*
+
+
+# java specific
+*.class
+*.jar
+
+# sbt specific
+target/
+.target
+project/boot
+lib_managed/*
+src_managed/
+project/build/target
+project/build/lib_managed
+project/build/src_managed
+project/plugins/lib_managed
+project/plugins/target
+project/plugins/src_managed
+project/plugins/project
+project/hidden.plugins.sbt
+dist
+.history
+test-output
+
+# eclipse specific
+.metadata
+jrebel.lic
+.settings
+.classpath
+.project
+
+.ensime*
+*.sublime-*
+.cache
+
+# intellij
+*.eml
+*.iml
+*.ipr
+*.iws
+.*.sw?
+.idea/
+/.idea_modules
+
+
+.smbdelete*
