@@ -62,9 +62,11 @@ if(testMapJs("nokey")) sys.error("unexpected")
 ```
 * JArrays as scala collections
 ```tut
-JArray(1, 2, 3, 4).map(x => x.toJString)
+JArray(1, 2, 3, 4).map(_.toJString)
 JArray(1, 2, 3, 4).map(_.num)
 JArray(1, 2, 3, 4) ++ JArray(5)
+JArray(1, 2, 3, 4) ++ Seq(JNumber(5))
+JArray(JObject.empty, JArray.empty) ++ Seq("nonjval")
 ```
 * JObjects as scala collections
 ```tut

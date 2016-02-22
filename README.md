@@ -88,7 +88,7 @@ scala> if(testMapJs("nokey")) sys.error("unexpected")
 ```
 * JArrays as scala collections
 ```scala
-scala> JArray(1, 2, 3, 4).map(x => x.toJString)
+scala> JArray(1, 2, 3, 4).map(_.toJString)
 res10: json.JArray = ["1", "2", "3", "4"]
 
 scala> JArray(1, 2, 3, 4).map(_.num)
@@ -96,11 +96,17 @@ res11: scala.collection.immutable.IndexedSeq[Double] = Vector(1.0, 2.0, 3.0, 4.0
 
 scala> JArray(1, 2, 3, 4) ++ JArray(5)
 res12: json.JArray = [1, 2, 3, 4, 5]
+
+scala> JArray(1, 2, 3, 4) ++ Seq(JNumber(5))
+res13: json.JArray = [1, 2, 3, 4, 5]
+
+scala> JArray(JObject.empty, JArray.empty) ++ Seq("nonjval")
+res14: scala.collection.immutable.IndexedSeq[Object] = Vector({}, [], nonjval)
 ```
 * JObjects as scala collections
 ```scala
 scala> JObject("foo" -> 1.js, "a" -> false.js) ++ Map("bar" -> true).js - "a"
-res13: json.JObject =
+res15: json.JObject =
 {
   "foo": 1,
   "bar": true
@@ -130,13 +136,13 @@ scala> val testClassJsString = testClassJs.toDenseString
 testClassJsString: String = {"FIELD_A":1,"b":null,"c":"","d":null,"concat":"1NoneNone"}
 
 scala> JValue.fromString(testClassJsString).toObject[TestClass]
-res14: TestClass = TestClass(1,None,,None)
+res16: TestClass = TestClass(1,None,,None)
 
 scala> JObject("FIELD_A" -> 23.js).toObject[TestClass]
-res15: TestClass = TestClass(23,None,,None)
+res17: TestClass = TestClass(23,None,,None)
 
 scala> TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A"
-res16: json.JObject =
+res18: json.JObject =
 {
   "b": null,
   "c": "",
@@ -168,25 +174,25 @@ defined object SomeModel
 defined class SomeModel
 
 scala> SomeModel("foo", 22).js
-res17: json.JObject =
+res19: json.JObject =
 {
   "a": "foo",
   "other": 22
 }
 
 scala> implicitly[JSONAccessor[SomeModel]]
-res18: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
+res20: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
 
 scala> json.accessorOf[SomeModel]
-res19: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
+res21: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
 ```
 * Dynamic field access
 ```scala
 scala> seqJson.dynamic(1).c.value
-res20: json.JValue = "hihi"
+res22: json.JValue = "hihi"
 
 scala> seqJson.dynamic.length
-res21: json.JDynamic = 2
+res23: json.JDynamic = 2
 
 scala> require(seqJson.d == seqJson.dynamic)
 ```
@@ -200,7 +206,7 @@ scala> try JObject("a" -> "badint".js).toObject[TestClass] catch {
      |       case _ => ""
      |     }.mkString
      | }
-res23: java.io.Serializable = TestClass(0,None,,None)
+res25: java.io.Serializable = TestClass(0,None,,None)
 ```
 
 [Accessors](./ACCESSORS.md)

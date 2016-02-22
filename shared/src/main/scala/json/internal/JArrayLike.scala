@@ -35,8 +35,9 @@ trait JArrayCompanion/* extends GenericCompanion[scala.collection.immutable.Seq]
   def newJArrayBuilder: Builder[JValue, JArray] = new JArrayBuilder
 
   def apply(values: immutable.IndexedSeq[JValue]): JArray = new JArraySeqImpl(values)
-  def apply(seq: TraversableOnce[JValue]): JArray = JArray(seq.toIndexedSeq)
-  def apply(seq: JValue*): JArray = JArray(seq.toIndexedSeq)
+  def apply(seq: TraversableOnce[JValue]): JArray = apply(seq.toIndexedSeq)
+  def apply(seq: JValue*): JArray = apply(seq.toIndexedSeq)
+  def apply[T: JSONAccessor](seq: T*): JArray = apply(seq.iterator.map(_.js).toIndexedSeq)
 
   class JArrayBuilder extends Builder[JValue, JArray] {
     val builder = new VectorBuilder[JValue]
@@ -46,9 +47,7 @@ trait JArrayCompanion/* extends GenericCompanion[scala.collection.immutable.Seq]
       this
     }
 
-    def result: JArray = {
-      JArray(builder.result)
-    }
+    def result: JArray = JArray(builder.result)
 
     def clear() {
       builder.clear

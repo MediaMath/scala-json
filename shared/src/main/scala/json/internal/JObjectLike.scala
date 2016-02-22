@@ -164,24 +164,28 @@ trait JObjectLike { _: JObject =>
 
     def tabs = out append settings.nTabs(lvl)
 
-    out append ("{" + nl)
+    if(isEmpty) out append "{}"
+    else {
+      out append ("{" + nl)
 
-    var isFirst = true
-    keyIterator foreach { key =>
-      val v = apply(key)
-      if (v !== JUndefined) {
-        if (!isFirst) out.append("," + settings.spaceString + nl)
+      var isFirst = true
+      keyIterator foreach { key =>
+        val v = apply(key)
 
-        tabs append tab
-        JString(key).appendJSONStringBuilder(settings, out, lvl + 1)
-        out append (":" + settings.spaceString)
-        v.appendJSONStringBuilder(settings, out, lvl + 1)
+        if (v !== JUndefined) {
+          if (!isFirst) out.append("," + settings.spaceString + nl)
 
-        isFirst = false
+          tabs append tab
+          JString(key).appendJSONStringBuilder(settings, out, lvl + 1)
+          out append (":" + settings.spaceString)
+          v.appendJSONStringBuilder(settings, out, lvl + 1)
+
+          isFirst = false
+        }
       }
-    }
 
-    out append nl
-    tabs append "}"
+      out append nl
+      tabs append "}"
+    }
   }
 }

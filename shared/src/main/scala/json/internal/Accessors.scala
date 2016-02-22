@@ -27,8 +27,7 @@ import scala.reflect.{classTag, ClassTag}
 trait Accessors {
   def accessorFor[T](implicit acc: JSONAccessor[T]) = acc
 
-  implicit def optionAccessor[T, U <: Option[T]](implicit acc: JSONAccessor[T]) =
-    new OptionAccessor[T, U]
+  implicit def optionAccessor[T: JSONAccessor, U <: Option[T]] = new OptionAccessor[T, U]
 
   final class OptionAccessor[T, U <: Option[T]](implicit val acc: JSONAccessor[T])
       extends JSONAccessorProducer[Option[T], JValue] {
