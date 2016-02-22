@@ -387,7 +387,7 @@ object ObjectAccessorFactory {
       def deSerFrom(jval: c.Expr[JValue]): c.Expr[T] = {
         require(!memberInfo.isEmpty, "memberinfo empty for " + typ0)
 
-        val lastInfo = memberInfo(memberInfo.length - 1)
+        val lastInfo = memberInfo.filter(_.ephemeral == false).last
         //only deser non-ephemeral fields
         val trees = memberInfo.toList.filter(_.ephemeral == false) map { info =>
           val isLast = info == lastInfo

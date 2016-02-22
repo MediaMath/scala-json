@@ -95,10 +95,10 @@ trait JValueLike extends Equals { _: JValue =>
   def isNaN = false
   def isBoolean = false
   def isObject = false
-  def isUndefined = this === JUndefined
-  def isNull = this === JNull
-  def isNullOrUndefined = isNull || isUndefined
-  def isDefined = !isUndefined
+  final def isUndefined = this === JUndefined
+  final def isNull = this === JNull
+  final def isNullOrUndefined = isNull || isUndefined
+  final def isDefined = !isUndefined
 
   def isDefinedAt(x: JValue): Boolean = apply(x).isDefined
 
@@ -136,7 +136,7 @@ trait JValueLike extends Equals { _: JValue =>
   def values: Iterable[JValue] = jArray.values
 
   /** converts this JValue into the desired type using the implicit [[JSONAccessor]] */
-  def to[T](implicit acc: JSONAccessor[T]): T = toObject[T]
+  def to[T: JSONAccessor]: T = toObject[T]
   /** alternate and recommended form of [[to]] */
   def toObject[T](implicit acc: JSONAccessor[T]): T = acc.fromJSON(toJValue)
 

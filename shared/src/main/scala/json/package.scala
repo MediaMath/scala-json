@@ -38,7 +38,7 @@ import scala.reflect.ClassTag
  */
 package object json extends JSONAnnotations with Implicits {
   /** Special NaN JNumber value */
-  val JNaN = JNumber(Double.NaN)
+  lazy val JNaN = JNumber(Double.NaN)
 
   /** JSONAccessor is shorthand for a [[JSONAccessorProducer]] of generic JValue type */
   @implicitNotFound(msg = "No implicit JSONAccessor for ${T} in scope. Did you define/import one? https://github.com/MediaMath/scala-json/blob/master/ACCESSORS.md")

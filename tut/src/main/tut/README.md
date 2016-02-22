@@ -100,12 +100,15 @@ require(seqJson.d == seqJson.dynamic)
 ```
 * Typed exceptions with field data
 ```tut
-try JObject("a" -> "badint".js).toObject[TestClass] catch {
+try {
+  JObject("FIELD_A" -> "badint".js).toObject[TestClass]
+  sys.error("should fail before")
+} catch {
   case e: InputFormatException =>
     e.getExceptions.map {
-      case fieldEx: InputFieldException if fieldEx.fieldName == "a" =>
+      case fieldEx: InputFieldException if fieldEx.fieldName == "FIELD_A" =>
         fieldEx.getMessage
-      case _ => ""
+      case x => sys.error("unexpected error " + x)
     }.mkString
 }
 ```

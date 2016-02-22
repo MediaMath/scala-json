@@ -198,15 +198,18 @@ scala> require(seqJson.d == seqJson.dynamic)
 ```
 * Typed exceptions with field data
 ```scala
-scala> try JObject("a" -> "badint".js).toObject[TestClass] catch {
+scala> try {
+     |   JObject("FIELD_A" -> "badint".js).toObject[TestClass]
+     |   sys.error("should fail before")
+     | } catch {
      |   case e: InputFormatException =>
      |     e.getExceptions.map {
-     |       case fieldEx: InputFieldException if fieldEx.fieldName == "a" =>
+     |       case fieldEx: InputFieldException if fieldEx.fieldName == "FIELD_A" =>
      |         fieldEx.getMessage
-     |       case _ => ""
+     |       case x => sys.error("unexpected error " + x)
      |     }.mkString
      | }
-res25: java.io.Serializable = TestClass(0,None,,None)
+res25: String = numeric expected but found json.JString (of value "badint")
 ```
 
 [Accessors](./ACCESSORS.md)
