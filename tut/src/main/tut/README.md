@@ -63,7 +63,7 @@ Dependencies
 ---
 
 * [macro-paradise](http://docs.scala-lang.org/overviews/macros/paradise.html) 2.1.0+ required for @accessor annotation
-* [jackson](https://github.com/FasterXML/jackson)
+* [jackson](https://github.com/FasterXML/jackson) for JVM JSON string parsing
 * [µTest](https://github.com/lihaoyi/utest) for testing
 * [tut](https://github.com/tpolecat/tut) for doc building
 
