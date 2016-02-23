@@ -37,7 +37,7 @@ val complexValue = Map("key" -> Seq.fill(3)(Set(Some(false), None)))
 
 complexValue.js
 
-accessorFor(complexValue).describe
+accessorFor(complexValue).describe //JSON pretty formatted description of accessor
 ```
 
 The one partial exception to this is the treatment of Option. Normally

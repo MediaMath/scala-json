@@ -21,112 +21,26 @@ Compile time JSON marshalling of primitive values, case-classes, basic collectio
 for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js).
 * Extensible accessor API. Serialize any type you want.
 * Provides a usable JS-like DSL for intermediate JSON data.
-* Create implicit [accessors](./ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
-* Produce normal looking Scala structures from any existing JSON API.
-* Support [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
-* Produce pretty and human readable JSON.
-* Enable you to create readable APIs that match existing/specific structure.
+* Implicit [accessors](./ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
+* Enables use of normal looking scala structures with any existing JSON API.
+* Produces pretty and human readable JSON from normal scala types.
+* Supports [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
+* Enables you to create readable APIs that match existing/specific class structure.
 * Uses defaults correctly.
-* Use existing scala collection CanBuildFrom factories to support buildable collections.
-* Provide support for unknown types (Any) via 'pickling' with a class [registry](./REGISTRY.md).
+* Uses existing scala collection CanBuildFrom factories to support buildable collections.
+* Provides support for unknown types (Any) via 'pickling' with a class [registry](./REGISTRY.md).
 * Support for scala 2.10.x, 2.11.x, 2.12.0-M3.
 * Support for scala-js 0.6.x.
 
-Getting Started
----------------
 
-* Import the json package
-```tut
-import json._
-JValue fromString "[1,2,3,4,5]"
-```
-* Implicit conversion to JValue types
-```tut
-"hello".js
-true.js
-1.7.js
-def testMap = Map("hey" -> "there")
-val testMapJs = testMap.js
-Map("key" -> Seq.fill(3)(Set(Some(false), None))).js
-testMap.keySet.headOption.js
-testMap.get("nokey").js
-testMap.js.toDenseString
-```
-* JS-like dynamic select
-```tut
-require(testMapJs("nokey") == JUndefined)
-```
-* JS-like boolean conditions
-```tut
-if(testMapJs("nokey")) sys.error("unexpected")
-```
-* JArrays as scala collections
-```tut
-JArray(1, 2, 3, 4).map(_.toJString)
-JArray(1, 2, 3, 4).map(_.num)
-JArray(1, 2, 3, 4) ++ JArray(5)
-JArray(1, 2, 3, 4) ++ Seq(JNumber(5))
-JArray(JObject.empty, JArray.empty) ++ Seq("nonjval")
-```
-* JObjects as scala collections
-```tut
-JObject("foo" -> 1.js, "a" -> false.js) ++ Map("bar" -> true).js - "a"
-```
-* Compile-time case class marshalling
-```tut
-case class TestClass(@name("FIELD_A") a: Int, b: Option[Int], c: String = "", d: Option[Int] = None) {
-    @ephemeral def concat = a.toString + b + c + d
-}
-implicit val acc = ObjectAccessor.create[TestClass]
-val testClassJs = TestClass(1, None).js
-require(testClassJs("concat") != JUndefined)
-val testClassJsString = testClassJs.toDenseString
-JValue.fromString(testClassJsString).toObject[TestClass]
-JObject("FIELD_A" -> 23.js).toObject[TestClass]
-TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A"
-val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
-```
-* Streamlined compile-time case class marshalling (requires [macro-paradise](#dependencies))
-```tut
-@json.accessor case class SomeModel(a: String, other: Int)
-SomeModel("foo", 22).js
-implicitly[JSONAccessor[SomeModel]]
-```
-* Dynamic field access
-```tut
-seqJson.dynamic(1).c.value
-seqJson.dynamic.length
-require(seqJson.d == seqJson.dynamic)
-```
-* Typed exceptions with field data
-```tut
-try {
-  JObject("FIELD_A" -> "badint".js).toObject[TestClass]
-  sys.error("should fail before")
-} catch {
-  case e: InputFormatException =>
-    e.getExceptions.map {
-      case fieldEx: InputFieldException if fieldEx.fieldName == "FIELD_A" =>
-        fieldEx.getMessage
-      case x => sys.error("unexpected error " + x)
-    }.mkString
-}
-```
-
-[Accessors](./ACCESSORS.md)
+Docs
 ---
 
-Accessors are the compile-time constructs that allow you to marshal scala types.
-
-Tools
----
-
+* [Usage and Examples](./USAGE.md) - Getting started with basic usage and examples.
+* [Accessors](./ACCESSORS.md) - Accessors are the compile-time constructs that allow you to go from a JValue to a scala type and back.
 * [Registry](./REGISTRY.md) - The Accessor Registry allows you to pickle registered types from untyped (Any) data.
 * [Enumerator](./ENUMERATOR.md) - Allows enumerated case object values of a sealed trait.
-
-
-[Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
----
+* [Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
 
 SBT
 ---

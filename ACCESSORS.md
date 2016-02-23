@@ -43,7 +43,7 @@ res0: json.JObject =
   "key": [[false, null], [false, null], [false, null]]
 }
 
-scala> accessorFor(complexValue).describe
+scala> accessorFor(complexValue).describe //JSON pretty formatted description of accessor
 res1: json.JValue =
 {
   "accessorClass": "json.internal.Accessors$MapAccessor",
