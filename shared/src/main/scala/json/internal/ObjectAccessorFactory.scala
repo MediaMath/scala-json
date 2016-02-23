@@ -349,26 +349,16 @@ object ObjectAccessorFactory {
           anno.tree.children.tail
         )
 
-        val accSeqTrees = (info.typ match {
-          case TypeRef(_, _, args) => args
-        }) map { pt =>
-          getAccessorFor(pt).tree
-        }
-
         val pTypeManifestExpr = c.Expr[IndexedSeq[Manifest[_]]](
           Apply(seqApply, pTypeManifests.toList))
         //create seq of field accessor annotations
         val annosSeqExpr = c.Expr[Seq[FieldAccessorAnnotation]](Apply(seqApply, annoArgs.toList))
-        val accSeqExpr = c.Expr[IndexedSeq[JSONAccessor[Any]]](
-          Apply(seqApply, accSeqTrees.toList))
 
         (reify {
           new FieldAccessor[T] {
             val name: String = info.name.splice
 
-            val annos: Set[FieldAccessorAnnotation] = annosSeqExpr.splice.toSet
-
-            val pTypeAccessors = accSeqExpr.splice.map(Some(_))
+            val annos: Set[JSONAnnotation] = annosSeqExpr.splice.toSet
 
             def defOpt: Option[Any] = defOptExpr.splice
 
@@ -376,10 +366,9 @@ object ObjectAccessorFactory {
 
             c.Expr(goodGetter).splice
 
-            val objClass: Class[T] =
-              objMfExpr.splice.asInstanceOf[Class[T]]
+            val objClass: Class[T] = objMfExpr.splice.asInstanceOf[Class[T]]
 
-            val fieldAccessor = accExpr.splice.asInstanceOf[JSONAccessor[T]]
+            val fieldAccessor = accExpr.splice.asInstanceOf[JSONAccessor[Any]]
           }
         }).tree
       }

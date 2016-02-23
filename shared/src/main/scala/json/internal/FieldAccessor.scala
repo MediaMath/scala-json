@@ -25,8 +25,7 @@ trait FieldAccessor[T] extends Product2[Class[T], String] {
   def getJValue(obj: T): JValue
 
   def annos: Set[FieldAccessorAnnotation]
-  def pTypeAccessors: IndexedSeq[Option[JSONAccessor[_]]]
-  def fieldAccessor: JSONAccessor[T]
+  def fieldAccessor: JSONAccessor[Any]
   def objClass: Class[T]
 
   def default: Any = defOpt.get

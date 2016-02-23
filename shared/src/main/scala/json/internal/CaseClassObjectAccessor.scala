@@ -44,7 +44,7 @@ trait CaseClassObjectAccessor[T] extends ObjectAccessor[T] {
     "fields" -> fieldMap.map {
       case (name, fieldAcc) => name -> JObject(
         "type" -> fieldAcc.fieldAccessor.describe,
-        "default" -> fieldAcc.defOpt.map(_.toString.js).getOrElse(JUndefined)
+        "default" -> fieldAcc.defOpt.map(_.js(fieldAcc.fieldAccessor)).getOrElse(JUndefined)
       ).toJValue
     }.toMap.js,
     "accessorClass" -> "json.internal.CaseClassObjectAccessor".js
