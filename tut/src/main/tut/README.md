@@ -79,6 +79,7 @@ case class TestClass(@name("FIELD_A") a: Int, b: Option[Int], c: String = "", d:
 }
 implicit val acc = ObjectAccessor.create[TestClass]
 val testClassJs = TestClass(1, None).js
+require(testClassJs("concat") != JUndefined)
 val testClassJsString = testClassJs.toDenseString
 JValue.fromString(testClassJsString).toObject[TestClass]
 JObject("FIELD_A" -> 23.js).toObject[TestClass]
@@ -90,7 +91,6 @@ val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 @json.accessor case class SomeModel(a: String, other: Int)
 SomeModel("foo", 22).js
 implicitly[JSONAccessor[SomeModel]]
-json.accessorOf[SomeModel]
 ```
 * Dynamic field access
 ```tut

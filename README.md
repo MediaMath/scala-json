@@ -132,17 +132,19 @@ testClassJs: json.JObject =
   "concat": "1NoneNone"
 }
 
+scala> require(testClassJs("concat") != JUndefined)
+
 scala> val testClassJsString = testClassJs.toDenseString
 testClassJsString: String = {"FIELD_A":1,"b":null,"c":"","d":null,"concat":"1NoneNone"}
 
 scala> JValue.fromString(testClassJsString).toObject[TestClass]
-res16: TestClass = TestClass(1,None,,None)
+res17: TestClass = TestClass(1,None,,None)
 
 scala> JObject("FIELD_A" -> 23.js).toObject[TestClass]
-res17: TestClass = TestClass(23,None,,None)
+res18: TestClass = TestClass(23,None,,None)
 
 scala> TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A"
-res18: json.JObject =
+res19: json.JObject =
 {
   "b": null,
   "c": "",
@@ -174,16 +176,13 @@ defined object SomeModel
 defined class SomeModel
 
 scala> SomeModel("foo", 22).js
-res19: json.JObject =
+res20: json.JObject =
 {
   "a": "foo",
   "other": 22
 }
 
 scala> implicitly[JSONAccessor[SomeModel]]
-res20: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
-
-scala> json.accessorOf[SomeModel]
 res21: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
 ```
 * Dynamic field access

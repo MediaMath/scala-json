@@ -30,11 +30,12 @@ object VMContext extends BaseVMContext {
   def fromString(str: String): JValue = {
     val deser = localMapper.get
 
-    val res = deser.mapper.readValue[JValue](str, classOf[JValue])
+    //may return null, wrap in Option
+    val res = Option(deser.mapper.readValue[JValue](str, classOf[JValue]))
 
     deser.reset()
 
-    res
+    res getOrElse JUndefined
   }
 
   def fromAny(value: Any): JValue = JValue.fromAnyInternal(value)
