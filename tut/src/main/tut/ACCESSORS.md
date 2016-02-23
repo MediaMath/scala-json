@@ -38,6 +38,8 @@ val complexValue = Map("key" -> Seq.fill(3)(Set(Some(false), None)))
 complexValue.js
 
 accessorFor(complexValue).describe //JSON pretty formatted description of accessor
+
+//
 ```
 
 The one partial exception to this is the treatment of Option. Normally
@@ -57,6 +59,7 @@ is inlined per usage.
 case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
 ObjectAccessor.create[TestClass].describe
 
+//
 ```
 
 Custom types

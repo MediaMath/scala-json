@@ -67,7 +67,9 @@ res1: json.JValue =
       "accessorType": "IterableAccessor",
       "types": ["T"],
       "repr": "scala.collection.immutable.Set",
-  ...```
+  ...
+scala> //
+```
 
 The one partial exception to this is the treatment of Option. Normally
 defaults of a case class are used if there is either a null or undefined present.
@@ -82,11 +84,11 @@ be used dynamically but it can cause serious code bloat as the macro code
 is inlined per usage.
 
 ```scala
-scala> case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
+     | case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
 defined class TestClass
 
 scala> ObjectAccessor.create[TestClass].describe
-res2: json.JValue =
+res3: json.JValue =
 {
   "accessorClass": "json.internal.CaseClassObjectAccessor",
   "valueClass": "TestClass",
@@ -114,11 +116,13 @@ res2: json.JValue =
         "accessorType": "MapAccessor",
         "types": ["K", "T"],
         "K": {
-      ...```
+      ...
+scala> //
+```
 
 Custom types
 ```scala
-scala> class Foo(val bar: String)
+     | class Foo(val bar: String)
 defined class Foo
 
 scala> val fooAccessor = JSONAccessor.create[Foo, JString](

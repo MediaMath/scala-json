@@ -1,6 +1,8 @@
-Enumerators are another handy tool provided in this library. They allow you to use an enumerated type
-with case objects. The default enumerator works with String types, but the typed enumerator can work with
-any result type.
+The [Enumerator](http://mediamath.github.io/scala-json/doc/index.html#json.tools.Enumerator)
+is another handy tool provided in this library. It allows you to use an enumerated value
+for instances of a scala type. The default enumerator works with String types, but the
+[TypedEnumerator](http://mediamath.github.io/scala-json/doc/index.html#json.tools.TypedEnumerator)
+can work with any result type.
 
 ```tut
 import json._
