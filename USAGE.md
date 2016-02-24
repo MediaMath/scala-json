@@ -94,7 +94,7 @@ res16: json.JObject =
 * Compile-time case class marshalling
 ```scala
 scala> case class TestClass(@name("FIELD_A") a: Int, b: Option[Int], c: String = "", d: Option[Int] = None) {
-     |     @ephemeral def concat = a.toString + b + c + d //ephemeral fields get written but never read
+     |     @ephemeral def aString = a.toString //ephemeral fields get written but never read
      | }
 defined class TestClass
 
@@ -108,37 +108,37 @@ testClassJs: json.JObject =
   "b": null,
   "c": "",
   "d": null,
-  "concat": "1NoneNone"
+  "aString": "1"
 }
 
 scala> val testClassJsString = testClassJs.toDenseString
-testClassJsString: String = {"FIELD_A":1,"b":null,"c":"","d":null,"concat":"1NoneNone"}
+testClassJsString: String = {"FIELD_A":1,"b":null,"c":"","d":null,"aString":"1"}
 
 scala> JValue.fromString(testClassJsString).toObject[TestClass] //go from JSON string directly to object
 res17: TestClass = TestClass(1,None,,None)
 ```
+* JSON field annotations
+```scala
+scala> require(testClassJs("aString") != JUndefined) //ephemeral field exists
+
+scala> JObject("FIELD_A" -> 23.js).toObject[TestClass] //using FIELD_A as renamed via @name annotation
+res19: TestClass = TestClass(23,None,,None)
+```
 * Streamlined compile-time case class marshalling (requires [macro-paradise](#dependencies))
 ```scala
-scala> @json.accessor case class SomeModel(a: String, other: Int)
+scala> @accessor case class SomeModel(a: String, other: Int)
 defined object SomeModel
 defined class SomeModel
 
-scala> implicitly[JSONAccessor[SomeModel]] //accessor available in scope via hidden implicit
-res18: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
+scala> accessorOf[SomeModel] //accessor available in scope via hidden implicit
+res20: json.JSONAccessor[SomeModel] = CaseClassObjectAccessor
 
 scala> SomeModel("foo", 22).js
-res19: json.JObject =
+res21: json.JObject =
 {
   "a": "foo",
   "other": 22
 }
-```
-* JSON field annotations
-```scala
-scala> require(TestClass(1, None).js.apply("concat") != JUndefined) //ephemeral field exists
-
-scala> JObject("FIELD_A" -> 23.js).toObject[TestClass] //using FIELD_A as renamed via @name annotation
-res21: TestClass = TestClass(23,None,,None)
 ```
 * Intermediate JObject from case class
 ```scala
@@ -148,7 +148,7 @@ res22: json.JObject =
   "b": null,
   "c": "",
   "d": null,
-  "concat": "1NoneNone",
+  "aString": "1",
   "blah": 1
 }
 ```
@@ -161,13 +161,13 @@ seqJson: json.JArray =
   "b": null,
   "c": "",
   "d": null,
-  "concat": "1NoneNone"
+  "aString": "1"
 }, {
   "FIELD_A": 1,
   "b": 10,
   "c": "hihi",
   "d": null,
-  "concat": "1Some(10)hihiNone"
+  "aString": "1"
 }]
 
 scala> seqJson.dynamic(1).c.value

@@ -61,7 +61,7 @@ JValue.fromString(testClassJsString).toObject[TestClass] //go from JSON string d
 ```
 * JSON field annotations
 ```tut
-require(testClassJs("concat") != JUndefined) //ephemeral field exists
+require(testClassJs("aString") != JUndefined) //ephemeral field exists
 JObject("FIELD_A" -> 23.js).toObject[TestClass] //using FIELD_A as renamed via @name annotation
 ```
 * Streamlined compile-time case class marshalling (requires [macro-paradise](#dependencies))
