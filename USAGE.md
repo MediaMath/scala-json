@@ -140,19 +140,30 @@ res21: json.JObject =
   "other": 22
 }
 ```
-* Intermediate JObject from case class
+*Typed exceptions with field data
+
 ```scala
-scala> TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A" //JObject supports MapLike operations
-res22: json.JObject =
-{
-  "b": null,
-  "c": "",
-  "d": null,
-  "aString": "1",
-  "blah": 1
-}
+scala> try {
+     |   JObject("FIELD_A" -> "badint".js).toObject[TestClass]
+     |   sys.error("should fail before")
+     | } catch {
+     |   case e: InputFormatException =>
+     |     //returns all field exceptions for a parse, not just the first one!
+     |     e.getExceptions.map {
+     |       //detailed exception classes very useful for form validation
+     |       case fieldEx: InputFieldException if fieldEx.fieldName == "FIELD_A" =>
+     |         fieldEx.getMessage
+     |       case x => sys.error("unexpected error " + x)
+     |     }.mkString
+     | }
+res22: String = numeric expected but found json.JString (of value "badint")
 ```
-* Dynamic field access
+
+### Dynamic field access ###
+
+This allows 'dynamic member' access. Generally not needed but can be useful if doing lots of operations
+on the intermediary untyped JValues and provides a syntax very similar to JS.
+
 ```scala
 scala> val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
 seqJson: json.JArray =
@@ -177,22 +188,5 @@ scala> seqJson.dynamic.length
 res24: json.JDynamic = 2
 
 scala> require(seqJson.d == seqJson.dynamic)
-```
-* Typed exceptions with field data
-```scala
-scala> try {
-     |   JObject("FIELD_A" -> "badint".js).toObject[TestClass]
-     |   sys.error("should fail before")
-     | } catch {
-     |   case e: InputFormatException =>
-     |     //returns all field exceptions for a parse, not just the first one!
-     |     e.getExceptions.map {
-     |       //detailed exception classes very useful for form validation
-     |       case fieldEx: InputFieldException if fieldEx.fieldName == "FIELD_A" =>
-     |         fieldEx.getMessage
-     |       case x => sys.error("unexpected error " + x)
-     |     }.mkString
-     | }
-res26: String = numeric expected but found json.JString (of value "badint")
 ```
 

@@ -26,7 +26,7 @@ testMap.keySet.headOption.js
 testMap.get("nokey").js
 testMap.js.toDenseString
 ```
-* JS-like dynamic select
+* JS-like select
 ```tut
 require(testMapJs("nokey") == JUndefined)
 ```
@@ -70,18 +70,8 @@ JObject("FIELD_A" -> 23.js).toObject[TestClass] //using FIELD_A as renamed via @
 accessorOf[SomeModel] //accessor available in scope via hidden implicit
 SomeModel("foo", 22).js
 ```
-* Intermediate JObject from case class
-```tut
-TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A" //JObject supports MapLike operations
-```
-* Dynamic field access
-```tut
-val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
-seqJson.dynamic(1).c.value
-seqJson.dynamic.length
-require(seqJson.d == seqJson.dynamic)
-```
-* Typed exceptions with field data
+*Typed exceptions with field data
+
 ```tut
 try {
   JObject("FIELD_A" -> "badint".js).toObject[TestClass]
@@ -96,4 +86,16 @@ try {
       case x => sys.error("unexpected error " + x)
     }.mkString
 }
+```
+
+### Dynamic field access ###
+
+This allows 'dynamic member' access. Generally not needed but can be useful if doing lots of operations
+on the intermediary untyped JValues and provides a syntax very similar to JS.
+
+```tut
+val seqJson = Seq(TestClass(1, None), TestClass(1, Some(10), c = "hihi")).js
+seqJson.dynamic(1).c.value
+seqJson.dynamic.length
+require(seqJson.d == seqJson.dynamic)
 ```
