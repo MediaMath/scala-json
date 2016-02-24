@@ -358,7 +358,7 @@ object ObjectAccessorFactory {
           new FieldAccessor[T] {
             val name: String = info.name.splice
 
-            val annos: Set[JSONAnnotation] = annosSeqExpr.splice.toSet
+            val annos: Set[FieldAccessorAnnotation] = annosSeqExpr.splice.toSet
 
             def defOpt: Option[Any] = defOptExpr.splice
 

@@ -6,13 +6,15 @@ JValue types can be serialized to a JSON string by just using [JValue#toString](
 [JValue.fromString](http://mediamath.github.io/scala-json/doc/index.html#json.JValue$@fromString(str:String):json.JValue)
 is used to create a JValue from a JSON string.
 
+### Basic JValue types ###
+
 * Import the json package
 ```tut
 import json._
 JValue fromString "[1,2,3,4,5]" //parse JSON
 JArray(JNull, JTrue) //create JSON
 ```
-* Implicit conversion to JValue types
+* Implicit conversion to JValue types using built-in accessors for base scala types
 ```tut
 "hello".js
 true.js
@@ -44,26 +46,32 @@ JArray(JObject.empty, JArray.empty) ++ Seq("nonjval") //adding a non JValue resu
 ```tut
 JObject("foo" -> 1.js, "a" -> false.js) ++ Map("bar" -> true).js - "a" //extends MapLike
 ```
+
+### Case Class Usage ###
+
 * Compile-time case class marshalling
 ```tut
 case class TestClass(@name("FIELD_A") a: Int, b: Option[Int], c: String = "", d: Option[Int] = None) {
-    @ephemeral def concat = a.toString + b + c + d //ephemeral fields get written but never read
+    @ephemeral def aString = a.toString //ephemeral fields get written but never read
 }
 implicit val acc = ObjectAccessor.create[TestClass] //macro expands here to create the accessor
-val testClassJs = TestClass(1, None).js
+val testClassJs = TestClass(1, None).js //implicit accessor allows us to use '.js' here to produce a JValue
 val testClassJsString = testClassJs.toDenseString
-JValue.fromString(testClassJsString).toObject[TestClass]
+JValue.fromString(testClassJsString).toObject[TestClass] //go from JSON string directly to object
+```
+* JSON field annotations
+```tut
+require(testClassJs("concat") != JUndefined) //ephemeral field exists
+JObject("FIELD_A" -> 23.js).toObject[TestClass] //using FIELD_A as renamed via @name annotation
 ```
 * Streamlined compile-time case class marshalling (requires [macro-paradise](#dependencies))
 ```tut
-@json.accessor case class SomeModel(a: String, other: Int)
-implicitly[JSONAccessor[SomeModel]] //accessor available in scope via hidden implicit
+@accessor case class SomeModel(a: String, other: Int)
+accessorOf[SomeModel] //accessor available in scope via hidden implicit
 SomeModel("foo", 22).js
 ```
 * Intermediate JObject from case class
 ```tut
-require(testClassJs("concat") != JUndefined) //ephemeral field exists
-JObject("FIELD_A" -> 23.js).toObject[TestClass] //using FIELD_A as renamed via @name annotation
 TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A" //JObject supports MapLike operations
 ```
 * Dynamic field access

@@ -6,6 +6,8 @@ JValue types can be serialized to a JSON string by just using [JValue#toString](
 [JValue.fromString](http://mediamath.github.io/scala-json/doc/index.html#json.JValue$@fromString(str:String):json.JValue)
 is used to create a JValue from a JSON string.
 
+### Basic JValue types ###
+
 * Import the json package
 ```scala
 scala> import json._
@@ -17,7 +19,7 @@ res0: json.JValue = [1, 2, 3, 4, 5]
 scala> JArray(JNull, JTrue) //create JSON
 res1: json.JArray = [null, true]
 ```
-* Implicit conversion to JValue types
+* Implicit conversion to JValue types using built-in accessors for base scala types
 ```scala
 scala> "hello".js
 res2: json.JString = "hello"
@@ -86,6 +88,9 @@ res16: json.JObject =
   "bar": true
 }
 ```
+
+### Case Class Usage ###
+
 * Compile-time case class marshalling
 ```scala
 scala> case class TestClass(@name("FIELD_A") a: Int, b: Option[Int], c: String = "", d: Option[Int] = None) {
@@ -96,7 +101,7 @@ defined class TestClass
 scala> implicit val acc = ObjectAccessor.create[TestClass] //macro expands here to create the accessor
 acc: json.internal.CaseClassObjectAccessor[TestClass] = CaseClassObjectAccessor
 
-scala> val testClassJs = TestClass(1, None).js
+scala> val testClassJs = TestClass(1, None).js //implicit accessor allows us to use '.js' here to produce a JValue
 testClassJs: json.JObject =
 {
   "FIELD_A": 1,
@@ -109,7 +114,7 @@ testClassJs: json.JObject =
 scala> val testClassJsString = testClassJs.toDenseString
 testClassJsString: String = {"FIELD_A":1,"b":null,"c":"","d":null,"concat":"1NoneNone"}
 
-scala> JValue.fromString(testClassJsString).toObject[TestClass]
+scala> JValue.fromString(testClassJsString).toObject[TestClass] //go from JSON string directly to object
 res17: TestClass = TestClass(1,None,,None)
 ```
 * Streamlined compile-time case class marshalling (requires [macro-paradise](#dependencies))
@@ -128,13 +133,15 @@ res19: json.JObject =
   "other": 22
 }
 ```
-* Intermediate JObject from case class
+* JSON field annotations
 ```scala
-scala> require(testClassJs("concat") != JUndefined) //ephemeral field exists
+scala> require(TestClass(1, None).js.apply("concat") != JUndefined) //ephemeral field exists
 
 scala> JObject("FIELD_A" -> 23.js).toObject[TestClass] //using FIELD_A as renamed via @name annotation
 res21: TestClass = TestClass(23,None,,None)
-
+```
+* Intermediate JObject from case class
+```scala
 scala> TestClass(1, None).js + ("blah" -> 1.js) - "FIELD_A" //JObject supports MapLike operations
 res22: json.JObject =
 {
