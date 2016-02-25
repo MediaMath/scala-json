@@ -87,11 +87,11 @@ Option treats null and undefined differently. When parsing, if an Option field i
 is used regardless of the default. If the field is undefined, the default is used
 or else it resolves to null.
 
-|               	| Option[T] 	| Option[T] w/ default 	| other                	| other w/ default 	|
-|---------------	|-----------	|----------------------	|----------------------	|------------------	|
-| JNull         	| None      	| None                 	| InputFormatException 	| default          	|
-| JUndefined    	| None      	| default              	| InputFormatException 	| default          	|
-| Useful JValue 	| Some[T]   	| Some[T]              	| x: T                 	| x: T             	|
+|                   	| Option[T] 	| Option[T] w/ default 	| other                	| other w/ default 	|
+|-------------------	|-----------	|----------------------	|----------------------	|------------------	|
+| **JNull**         	| None      	| None                 	| InputFormatException 	| default          	|
+| **JUndefined**    	| None      	| default              	| InputFormatException 	| default          	|
+| **Useful JValue** 	| Some[T]   	| Some[T]              	| x: T                 	| x: T             	|
 
 Scala macros are used to create accessors for case classes automatically.
 It's best to put these under a val or lazy val in a static scope. They could
@@ -152,11 +152,6 @@ scala> val fooAccessor = JSONAccessor.create[Foo, JString](
 fooAccessor: json.JSONAccessorProducer[Foo,json.JString] = JSONAccessor.create
 ```
 
-Sub-classes
-```scala
-scala> class Bar(s: String) extends Foo(s)
-defined class Bar
-```
 
 Putting the implicit under a companion object of the same name provides
 the implicit in any scope.
@@ -178,11 +173,7 @@ will work without macro-paradise, it is only required for the optional @accessor
 
 ```scala
 
-@json.accessor case class TestClass(a: Int)
+@accessor case class TestClass(a: Int)
 
 ```
-
-Proxying between types can be tricky, but its verbose nature allows you to implement
-whatever sub-classing format you want for your JSON serialization using custom accessor
-implementations.
 

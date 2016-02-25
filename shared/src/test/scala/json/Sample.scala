@@ -113,7 +113,7 @@ object SampleTest extends TestSuite {
     assert(fb.js.toObject[FooBase] == fw)
 
     val annoSet = (for {
-      field <- ObjectAccessor.of[Foo].fields
+      field <- implicitly[ObjectAccessor[Foo]].fields
       anno <- field.annos
     } yield anno).toSet
 

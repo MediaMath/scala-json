@@ -22,8 +22,6 @@ import scala.reflect.{ClassTag, classTag}
 //TODO: add describe() to accessors, and default toString = describe.toString
 
 object JSONAccessorProducer {
-  def of[T](obj: T)(implicit acc: JSONAccessor[T]): JSONAccessor[T] = acc
-
   def of[T, U <: JValue](implicit acc: json.JSONAccessorProducer[T, U]) = acc
 
   def create[T: ClassTag, U <: JValue](toJ: T => U,

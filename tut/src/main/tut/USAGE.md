@@ -70,7 +70,7 @@ JObject("FIELD_A" -> 23.js).toObject[TestClass] //using FIELD_A as renamed via @
 accessorOf[SomeModel] //accessor available in scope via hidden implicit
 SomeModel("foo", 22).js
 ```
-*Typed exceptions with field data
+* Typed exceptions with field data
 
 ```tut
 try {

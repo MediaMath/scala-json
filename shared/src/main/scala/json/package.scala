@@ -19,6 +19,7 @@ import json.internal.JSONAnnotations
 
 import scala.annotation.implicitNotFound
 import scala.reflect.ClassTag
+import scala.util.control.NonFatal
 
 /**
  * ==Overview==
@@ -62,14 +63,14 @@ package object json extends JSONAnnotations with Implicits {
   def accessorOf[T](implicit acc: JSONAccessor[T]) = acc
   def accessorFor[T](x: T)(implicit acc: JSONAccessor[T]) = acc
 
-  /** Create a simple [[JValue]] [[JSONAccessor]] out of 'to' and 'from' lambdas. */
+  /** Create a simple [[JValue]] [[JSONAccessor]] out of 'to' and 'from' functions. */
   def createAccessor[T: ClassTag](toJ: T => JValue, fromJ: JValue => T): JSONAccessor[T] =
     JSONAccessorProducer.create[T, JValue](toJ, fromJ)
 
   private[json] def fieldCatch[T](name: String)(f: => T): T = try f catch {
     case e: InputFormatException =>
       throw e.prependFieldName(name)
-    case e: Throwable =>
+    case NonFatal(e) =>
       throw GenericFieldException(name, e)
   }
 }

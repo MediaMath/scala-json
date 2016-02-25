@@ -35,7 +35,8 @@ package json
 /** Base type for all JSON exceptions. All exceptions are based off of case classes. */
 sealed trait JSONException extends Exception with Product
 
-/** Base type for 'input format' exceptions. */
+/** Base type for 'input format' exceptions.
+  * May have multiple exceptions, may be for a single field (see [[InputFieldException]]). */
 sealed trait InputFormatException extends JSONException {
   //def fieldName: String
   def prependFieldName(newField: String): InputFormatException
@@ -43,7 +44,8 @@ sealed trait InputFormatException extends JSONException {
   def getExceptions: Set[InputFormatException]
 }
 
-/** Base type for 'input format' exceptions that can contain exceptions for multiple fields. */
+/** Base type for 'input format' exceptions that happened on a single field.
+  * Contains no other exceptions. */
 sealed trait InputFieldException extends JSONException with InputFormatException {
   def fieldName: String
   override def messageWithField: String = fieldName + ": " + getMessage
@@ -56,7 +58,7 @@ case class JUndefinedException(msg: String = "Cannot access JUndefined") extends
 /** Exception that happens when creating a JObject with ordered pairs that contain duplicate keys */
 case class DuplicateKeyException(msg: String = "Duplicate keys in object!") extends Exception(msg) with JSONException
 
-/** Exception that contains format exceptions for multiple fields */
+/** Exception that contains format exceptions for multiple fields. */
 case class InputFormatsException(set: Set[InputFormatException])
     extends Exception(set.map(_.messageWithField).mkString(", "),
       set.headOption.getOrElse(null))

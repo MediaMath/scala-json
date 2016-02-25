@@ -26,7 +26,7 @@ import scala.annotation.meta._
 /**
  * ObjectAccessor is a [[JSONAccessor]] for objects that have named fields. Generally these
  * are mostly seen as auto-generated [[json.internal.CaseClassObjectAccessor]] case class accessors.
- * The ObjectAccessor base type exists for mostly for the purpose of future extensibility.
+ * Extend this if you need to make a custom accessor that has named fields.
  * @tparam T The base type this accessor is for.
  */
 trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
@@ -56,8 +56,5 @@ object ObjectAccessor {
     def describe = baseDescription
   }
 
-  def create[T]: CaseClassObjectAccessor[T] = macro ObjectAccessorFactory.impl[T]
-
-  @implicitNotFound(msg = "No implicit ObjectAccessor for ${T} in scope. Did you define/import one?")
-  def of[T](implicit acc: ObjectAccessor[T]): ObjectAccessor[T] = acc
+  def create[T]: ObjectAccessor[T] = macro ObjectAccessorFactory.impl[T]
 }

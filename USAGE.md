@@ -54,7 +54,7 @@ res7: json.JValue = null
 scala> testMap.js.toDenseString
 res8: String = {"hey":"there"}
 ```
-* JS-like dynamic select
+* JS-like select
 ```scala
 scala> require(testMapJs("nokey") == JUndefined)
 ```
@@ -140,7 +140,7 @@ res21: json.JObject =
   "other": 22
 }
 ```
-*Typed exceptions with field data
+* Typed exceptions with field data
 
 ```scala
 scala> try {

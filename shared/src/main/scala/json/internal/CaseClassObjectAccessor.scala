@@ -20,12 +20,7 @@ import json._
 
 import scala.annotation.implicitNotFound
 
-object CaseClassObjectAccessor {
-  @implicitNotFound(msg = "No implicit CaseClassObjectAccessor for ${T} in scope. Did you define/import one?")
-  def of[T](implicit acc: CaseClassObjectAccessor[T]): CaseClassObjectAccessor[T] = acc
-}
-
-/** Base trait for macro generated ObjectAccessors */
+/** Base trait for macro generated ObjectAccessors. Not recommended to extend. */
 trait CaseClassObjectAccessor[T] extends ObjectAccessor[T] {
   //function used to create field name from member name
   def nameMap: String => String
