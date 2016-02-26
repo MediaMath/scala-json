@@ -64,8 +64,8 @@ abstract class TypedEnumerator[K, T <: TypedEnumerator[K, T, J]#Value: ClassTag,
     override def createSwaggerProperty: JObject =
       super.createSwaggerProperty ++ JObject("enum" -> JArray(jsValues))
 
-    def describe: JValue = baseDescription ++ Map(
-      "values" -> keyMap.keySet.map(_.js.toJValue)
-    ).js
+    def describe: JValue = baseDescription ++ JObject(
+      "values" -> keyMap.keySet.map(_.js.toJValue).js
+    )
   }
 }

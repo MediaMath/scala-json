@@ -44,40 +44,44 @@ can be very deep and extend across several types of accessors.
 scala> import json._
 import json._
 
-scala> val complexValue = Map("key" -> Seq.fill(3)(Set(Some(false), None)))
-complexValue: scala.collection.immutable.Map[String,Seq[scala.collection.immutable.Set[Option[Boolean]]]] = Map(key -> List(Set(Some(false), None), Set(Some(false), None), Set(Some(false), None)))
+scala> val complexValue = Map("key" -> Seq.fill(3)(Set(Some((1, false, "")), None)))
+complexValue: scala.collection.immutable.Map[String,Seq[scala.collection.immutable.Set[Option[(Int, Boolean, String)]]]] = Map(key -> List(Set(Some((1,false,)), None), Set(Some((1,false,)), None), Set(Some((1,false,)), None)))
 
 scala> complexValue.js
 res0: json.JObject =
 {
-  "key": [[false, null], [false, null], [false, null]]
+  "key": [[[1, false, ""], null], [[1, false, ""], null], [[1, false, ""], null]]
 }
 
 scala> accessorFor(complexValue).describe //JSON pretty formatted description of accessor
 res1: json.JValue =
 {
-  "accessorClass": "json.internal.Accessors$MapAccessor",
   "valueClass": "scala.collection.immutable.Map",
   "accessorType": "MapAccessor",
   "types": ["K", "T"],
   "K": {
-    "accessorClass": "json.internal.Accessors$StringAccessor$",
     "valueClass": "java.lang.String",
     "accessorType": "StringAccessor"
   },
   "T": {
-    "accessorClass": "json.internal.Accessors$IterableAccessor",
     "valueClass": "scala.collection.Seq",
     "accessorType": "IterableAccessor",
     "types": ["T"],
     "repr": "scala.collection.Seq",
     "T": {
-      "accessorClass": "json.internal.Accessors$IterableAccessor",
       "valueClass": "scala.collection.immutable.Set",
       "accessorType": "IterableAccessor",
       "types": ["T"],
       "repr": "scala.collection.immutable.Set",
-  ...
+      "T": {
+        "valueClass": "scala.Option",
+        "accessorType": "OptionAccessor",
+        "types": ["T"],
+        "T": {
+          "valueClass": "scala.Tuple3",
+          "accessorType": "Tuple3Accessor",
+          "types": ["A", "B"],
+         ...
 scala> //
 ```
 
@@ -103,22 +107,19 @@ is inlined per usage.
 defined class TestClass
 
 scala> ObjectAccessor.create[TestClass].describe
-res3: json.JValue =
+res3: json.JObject =
 {
-  "accessorClass": "json.internal.CaseClassObjectAccessor",
   "valueClass": "TestClass",
   "accessorType": "CaseClassObjectAccessor",
   "fields": {
     "a": {
       "type": {
-        "accessorClass": "json.internal.Accessors$IntAccessor$",
         "valueClass": "int",
         "accessorType": "IntAccessor"
       }
     },
     "b": {
       "type": {
-        "accessorClass": "json.internal.Accessors$StringAccessor$",
         "valueClass": "java.lang.String",
         "accessorType": "StringAccessor"
       },
@@ -126,12 +127,18 @@ res3: json.JValue =
     },
     "c": {
       "type": {
-        "accessorClass": "json.internal.Accessors$MapAccessor",
         "valueClass": "scala.collection.immutable.Map",
         "accessorType": "MapAccessor",
         "types": ["K", "T"],
         "K": {
-      ...
+          "valueClass": "java.lang.String",
+          "accessorType": "StringAccessor"
+        },
+        "T": {
+          "valueClass": "scala.collection.immutable.Set",
+          "accessorType": "IterableAccessor",
+          "types": ["T"],
+          "repr": "...
 scala> //
 ```
 

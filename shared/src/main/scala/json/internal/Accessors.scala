@@ -24,12 +24,12 @@ import json.internal.JArrayPrimitive.{SpecialBuilders, PrimitiveAccessor}
 import scala.collection.generic.CanBuildFrom
 import scala.reflect.{classTag, ClassTag}
 
-trait Accessors {
+trait Accessors extends LowPriorityAccessors {
   def accessorFor[T](implicit acc: JSONAccessor[T]) = acc
 
   implicit def optionAccessor[T: JSONAccessor, U <: Option[T]] = new OptionAccessor[T, U]
 
-  final class OptionAccessor[T, U <: Option[T]](implicit val acc: JSONAccessor[T])
+  final class OptionAccessor[T: JSONAccessor, U <: Option[T]]
       extends JSONAccessorProducer[Option[T], JValue] {
     def clazz = classOf[Option[Any]]
 
@@ -41,24 +41,24 @@ trait Accessors {
     }
 
     def fromJSON(js: JValue): Option[T] = js match {
-      case JUndefined => None
+      case JUndefined => None //case class accessor will use defaults here for
       case JNull      => None
-      case x          => Some(x.to(acc))
+      case x          => Some(x.to[T])
     }
 
     override def createSwaggerProperty: JObject = {
-      acc.createSwaggerProperty + ("required" -> JFalse)
+      accessorOf[T].createSwaggerProperty + ("required" -> JFalse)
     }
 
-    override def extraSwaggerModels: Seq[JObject] = acc match {
+    override def extraSwaggerModels: Seq[JObject] = accessorOf[T] match {
       case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
       case _                             => Nil
     }
 
-    def describe = baseDescription ++ Map(
-      "types" -> Seq("T").js,
-      "T" -> acc.describe
-    ).js
+    def describe = baseDescription ++ JObject(
+      "types" -> JArray(JString("T")),
+      "T" -> accessorOf[T].describe
+    )
   }
 
   implicit def mapAccessor[K, T](implicit valueAcc: JSONAccessor[T], keyAcc: JSONAccessorProducer[K, JString]) =
@@ -72,11 +72,11 @@ trait Accessors {
 
     override def toString = "MapAccessor"
 
-    def describe = baseDescription ++ Map(
-      "types" -> Seq("K", "T").js,
+    def describe = baseDescription ++ JObject(
+      "types" -> JArray("K", "T")(StringAccessor),
       "K" -> keyAcc.describe,
       "T" -> valueAcc.describe
-    ).js
+    )
 
     def createJSON(obj: Map[K, T]): JObject = JObject(obj map {
       case (k, v) => keyAcc.toString(k) -> v.js
@@ -130,79 +130,6 @@ trait Accessors {
     }
 
     override def createSwaggerProperty: JObject = JObject("type" -> JString(swaggerModelName))
-  }
-
-  implicit def iterableAccessor[T, U[T] <: Iterable[T]](
-      implicit acc: JSONAccessor[T], cbf: CanBuildFrom[Nothing, T, U[T]],
-      ctag: ClassTag[U[T]],
-      primitive: PrimitiveAccessor[T] = PrimitiveAccessor.NonPrimitive[T],
-      specialBuilder: SpecialBuilders[U] = SpecialBuilders.ForAny[U]) =
-    new IterableAccessor[T, U]
-
-  final class IterableAccessor[T, U[T] <: Iterable[T]](implicit val acc: JSONAccessor[T],
-      val cbf: CanBuildFrom[Nothing, T, U[T]], val ctag: ClassTag[U[T]],
-      val primitive: PrimitiveAccessor[T],
-      val specialBuilder: SpecialBuilders[U]) extends JSONAccessorProducer[U[T], JArray] {
-    def clazz = ctag.runtimeClass
-
-    override def toString = "IterableAccessor"
-
-    def describe = baseDescription ++ Map(
-      "types" -> Seq("T").js,
-      "repr" -> ctag.runtimeClass.getName.js,
-      "T" -> acc.describe
-    ).js
-
-    def createJSON(obj: U[T]): JArray = {
-      if(primitive.isPrimitive) primitive.createJSON(obj)
-      else JArray(obj.map(_.js))
-    }
-
-    def fromJSON(js: JValue): U[T] = js match {
-      case x: JArrayPrimitive[_] if primitive.isPrimitive =>
-        val iterable = primitive.iterableFromJValue(x)
-
-        specialBuilder match {
-          case x if x.isGeneric =>
-            iterable.to[U](cbf)
-          case builder =>
-            builder.buildFrom(iterable)
-        }
-
-      case JArray(vals) =>
-        var exceptions = List[InputFormatException]()
-
-        val res = vals.iterator.zipWithIndex.flatMap {
-          case (x, idx) =>
-            try Seq(x.to[T]) catch {
-              case e: InputFormatException =>
-                exceptions ::= e.prependFieldName(idx.toString)
-                Nil
-            }
-        }.to[U](cbf)
-
-        if (!exceptions.isEmpty)
-          throw InputFormatsException(exceptions.flatMap(_.getExceptions).toSet)
-
-        res
-      case x => throw InputTypeException("",
-        "array", x.getClass.getName, x)
-    }
-
-    override def createSwaggerProperty: JObject = {
-      val unique = if (clazz == classOf[Set[_]])
-        JObject("uniqueItems" -> JTrue)
-      else JObject.empty
-
-      JObject("type" -> JString("array"), "items" -> JObject(
-        ("$" + "ref") -> JString(acc.clazz.getSimpleName)
-      )) ++ unique
-    }
-
-    override def extraSwaggerModels: Seq[JObject] = acc match {
-      case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
-      case _                             => Nil
-    }
   }
 
   //TODO: needs to be rethought, moved or removed
@@ -263,6 +190,8 @@ trait Accessors {
       case JTrue        => true
       case JNumber(1.0) => true
       case JNumber(0.0) => false
+      case JString("false") => false
+      case JString("true") => true
       case JString("0") => false
       case JString("1") => true
       case x => throw InputTypeException("",

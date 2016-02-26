@@ -43,7 +43,7 @@ can be very deep and extend across several types of accessors.
 ```tut
 import json._
 
-val complexValue = Map("key" -> Seq.fill(3)(Set(Some(false), None)))
+val complexValue = Map("key" -> Seq.fill(3)(Set(Some((1, false, "")), None)))
 
 complexValue.js
 

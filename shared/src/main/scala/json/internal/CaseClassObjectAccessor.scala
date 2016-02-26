@@ -35,15 +35,15 @@ trait CaseClassObjectAccessor[T] extends ObjectAccessor[T] {
 
   override def toString = "CaseClassObjectAccessor"
 
-  def describe = baseDescription ++ JObject(
-    "fields" -> fieldMap.map {
+  def describe: JObject = baseDescription ++ Map(
+    "fields" -> (JObject.empty ++ fieldMap.map {
       case (name, fieldAcc) => name -> JObject(
         "type" -> fieldAcc.fieldAccessor.describe,
         "default" -> fieldAcc.defOpt.map(_.js(fieldAcc.fieldAccessor)).getOrElse(JUndefined)
       ).toJValue
-    }.toMap.js,
-    "accessorClass" -> "json.internal.CaseClassObjectAccessor".js
-  ).js
+    }),
+    "accessorClass" -> JString("json.internal.CaseClassObjectAccessor")
+  )
 
   def createSwaggerModels: Seq[JObject] = {
     val properties = fields.map(_.createSwagger.toJObject).foldLeft(JObject())(_ ++ _)

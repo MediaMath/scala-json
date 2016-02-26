@@ -50,7 +50,7 @@ trait JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.Create
   def describe: JValue
 
   final protected def baseDescription: JObject = Map(
-    "accessorClass" -> getClass.getName,
+    //"accessorClass" -> getClass.getName,
     "valueClass" -> clazz.getName,
     "accessorType" -> toString()
   ).js
