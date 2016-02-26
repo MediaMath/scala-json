@@ -12,7 +12,7 @@ object MigratingObjectAccessorTest extends TestSuite {
 
   case class Thingie(name: String, model: TestModel, version: Int)
 
-  val testModelMigrations: Seq[Migration] = Seq(
+  val testModelMigrations: Seq[Migration[Int]] = Seq(
 
     Migration(1) { jObject =>
 
@@ -32,7 +32,7 @@ object MigratingObjectAccessorTest extends TestSuite {
     }
   )
 
-  val thingieMigrations: Seq[Migration] = Seq(Migration(1).removeFieldFromChild("model", "bar"))
+  val thingieMigrations: Seq[Migration[Int]] = Seq(Migration(1).removeFieldFromChild("model", "bar"))
 
   implicit val testModelAcc: ObjectAccessor[TestModel] = new MigratingObjectAccessor(testModelMigrations, "version", ObjectAccessor.create[TestModel])
   implicit val thingieAcc : ObjectAccessor[Thingie] = new MigratingObjectAccessor(thingieMigrations,"version",ObjectAccessor.create[Thingie])
