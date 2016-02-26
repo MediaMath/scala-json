@@ -168,7 +168,11 @@ trait JValueLike extends Equals { _: JValue =>
   def select(seqStr: String): JValue = select(seqStr, false)
 
   /** alternate operator form of [[json.JValue#apply(key:String):json\.JValue]] */
-  def /(key: String): JValue = select(List(key), true)
+  def \(key: String): JValue = select(List(key), true)
+  def \(idx: Int): JValue = apply(JNumber(idx))
+
+  //TODO: deep path \\
+  //def \\(key: String): JValue = ???
 
   /** equivalent to javascript ''delete object[field]'' */
   def -(x: JValue): JValue = this match {

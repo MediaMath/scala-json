@@ -20,15 +20,16 @@ Features
 Compile time JSON marshalling of primitive values, case-classes, basic collections, and whatever you can imagine
 for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js).
 * Extensible accessor API. Serialize any type you want.
-* Provides a usable JS-like DSL for intermediate JSON data.
+* Uses default fields correctly.
+* Provides a useful JS-like AST for intermediate JSON data.
 * Implicit [accessors](./ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
 * Enables use of normal looking scala structures with any existing JSON API.
 * Produces pretty and human readable JSON from normal scala types.
 * Supports [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
 * Enables you to create readable APIs that match existing/specific class structure.
-* Uses defaults correctly.
+* Exposes rich compile-time type info, more run-time type data than reflect could ever provide.
 * Uses existing scala collection CanBuildFrom factories to support buildable collections.
-* Provides support for unknown types (Any) via 'pickling' with a class [registry](./REGISTRY.md).
+* Provides support for unknown types (Any) via 'pickling' with a run-time class [registry](./REGISTRY.md).
 * Support for scala 2.10.x, 2.11.x, 2.12.0-M3.
 * Support for scala-js 0.6.x.
 
