@@ -1,0 +1,283 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>tools - json.tools</title>
+          <meta name="description" content="tools - json.tools" />
+          <meta name="keywords" content="tools json.tools" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../index.html';
+            var hash = 'json.tools.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../lib/package_big.png" />
+        <p id="owner"><a href="../package.html" class="extype" name="json">json</a></p>
+        <h1>tools</h1><span class="permalink">
+      <a href="../../index.html#json.tools.package" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tools</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="json.tools.AccessorRegistry" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="AccessorRegistryextendsAnyRef"></a>
+      <a id="AccessorRegistry:AccessorRegistry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AccessorRegistry.html"><span class="name">AccessorRegistry</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@AccessorRegistryextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Accessor registry is used to create or resolve a <a href="Pickle.html" class="extype" name="json.tools.Pickle">Pickle</a> by using a registry
+of run-time classes associated to their respective accessor.</p><div class="fullcomment"><div class="comment cmt"><p>Accessor registry is used to create or resolve a <a href="Pickle.html" class="extype" name="json.tools.Pickle">Pickle</a> by using a registry
+of run-time classes associated to their respective accessor. These must be registered
+near application startup before use.</p><p>The registry is roughly thread-safe, all operations are idempotent so consistent
+state is observed by all users.
+</p></div></div>
+    </li><li name="json.tools.Enumerator" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Enumerator[T&lt;:json.tools.Enumerator[T]#Value]extendsTypedEnumerator[String,T,json.JString]"></a>
+      <a id="Enumerator[T&lt;:tools.Enumerator.Value]:Enumerator[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Enumerator.html"><span class="name">Enumerator</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Enumerator.html#ValueextendsAnyRef" class="extmbr" name="json.tools.TypedEnumerator.Value">tools.Enumerator.Value</a></span>]</span><span class="result"> extends <a href="TypedEnumerator.html" class="extype" name="json.tools.TypedEnumerator">TypedEnumerator</a>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="json.tools.Enumerator.T">T</span>, <a href="../JString.html" class="extype" name="json.JString">JString</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@Enumerator[T&lt;:json.tools.Enumerator[T]#Value]extendsTypedEnumerator[String,T,json.JString]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="json.tools.EpochDeadline" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="EpochDeadlineextendsOrdered[json.tools.EpochDeadline]withProductwithSerializable"></a>
+      <a id="EpochDeadline:EpochDeadline"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EpochDeadline.html"><span class="name">EpochDeadline</span></a><span class="params">(<span name="time">time: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Ordered">Ordered</span>[<a href="EpochDeadline.html" class="extype" name="json.tools.EpochDeadline">EpochDeadline</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@EpochDeadlineextendsOrdered[json.tools.EpochDeadline]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="json.tools.FiniteDurationSecondsAccessor" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FiniteDurationSecondsAccessorextendsJSONAccessorProducer[scala.concurrent.duration.FiniteDuration,json.JNumber]"></a>
+      <a id="FiniteDurationSecondsAccessor:FiniteDurationSecondsAccessor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="FiniteDurationSecondsAccessor.html"><span class="name">FiniteDurationSecondsAccessor</span></a><span class="result"> extends <a href="../JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a>[<span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span>, <a href="../JNumber.html" class="extype" name="json.JNumber">JNumber</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@FiniteDurationSecondsAccessorextendsJSONAccessorProducer[scala.concurrent.duration.FiniteDuration,json.JNumber]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base trait for <a href="FiniteDurationSecondsAccessor.html" class="extype" name="json.tools.FiniteDurationSecondsAccessor">FiniteDurationSecondsAccessor</a>, useful for extending if needed.</p>
+    </li><li name="json.tools.Pickle" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PickleextendsProductwithSerializable"></a>
+      <a id="Pickle:Pickle"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Pickle.html"><span class="name">Pickle</span></a><span class="params">(<span name="data">data: <a href="../JValue.html" class="extype" name="json.JValue">JValue</a></span>, <span name="className">className: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@PickleextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This is the actual object that is serialized to JSON to represent the 'pickled' data.</p><div class="fullcomment"><div class="comment cmt"><p>This is the actual object that is serialized to JSON to represent the 'pickled' data.</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>- The generic 'pickled' data, to be used by the accessor
+            that is looked up via the registry.</p></dd><dt class="param">className</dt><dd class="cmt"><p>- The class name that is used to look up the accessor via the registry.</p></dd></dl></div>
+    </li><li name="json.tools.TypedEnumerator" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TypedEnumerator[K,T&lt;:json.tools.TypedEnumerator[K,T,J]#Value,+J&lt;:json.JValue]extendsAnyRef"></a>
+      <a id="TypedEnumerator[K,T&lt;:Value,+J&lt;:JValue]:TypedEnumerator[K,T,J]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TypedEnumerator.html"><span class="name">TypedEnumerator</span></a><span class="tparams">[<span name="K">K</span>, <span name="T">T &lt;: <a href="TypedEnumerator$Value.html" class="extype" name="json.tools.TypedEnumerator.Value">Value</a></span>, <span name="J">+J &lt;: <a href="../JValue.html" class="extype" name="json.JValue">JValue</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@TypedEnumerator[K,T&lt;:json.tools.TypedEnumerator[K,T,J]#Value,+J&lt;:json.JValue]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="json.tools.AccessorRegistry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AccessorRegistry"></a>
+      <a id="AccessorRegistry:AccessorRegistry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AccessorRegistry$.html"><span class="name">AccessorRegistry</span></a><span class="result"> extends <a href="AccessorRegistry.html" class="extype" name="json.tools.AccessorRegistry">AccessorRegistry</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@AccessorRegistry" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Global singleton implementation of the registry.</p>
+    </li><li name="json.tools.EpochDeadline" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="EpochDeadline"></a>
+      <a id="EpochDeadline:EpochDeadline"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="EpochDeadline$.html"><span class="name">EpochDeadline</span></a><span class="result"> extends <span class="extype" name="scala.Ordering">Ordering</span>[<a href="EpochDeadline.html" class="extype" name="json.tools.EpochDeadline">EpochDeadline</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@EpochDeadline" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="json.tools.FiniteDurationSecondsAccessor" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FiniteDurationSecondsAccessor"></a>
+      <a id="FiniteDurationSecondsAccessor:FiniteDurationSecondsAccessor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="FiniteDurationSecondsAccessor$.html"><span class="name">FiniteDurationSecondsAccessor</span></a><span class="result"> extends <a href="FiniteDurationSecondsAccessor.html" class="extype" name="json.tools.FiniteDurationSecondsAccessor">FiniteDurationSecondsAccessor</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@FiniteDurationSecondsAccessor" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Serializes FiniteDuration as the floating-point number of seconds with fractional component.</p><div class="fullcomment"><div class="comment cmt"><p>Serializes FiniteDuration as the floating-point number of seconds with fractional component.
+This is not globally implicit because it is use-case dependant and should generally only
+be imported into the specific scope that it's needed.
+</p></div></div>
+    </li><li name="json.tools.Pickle" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Pickle"></a>
+      <a id="Pickle:Pickle"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Pickle$.html"><span class="name">Pickle</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.tools.package@Pickle" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
