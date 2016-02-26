@@ -3,10 +3,29 @@ package json.tools
 import json._
 import json.internal.FieldAccessor
 
+/**
+ * Represents a single migration to a specified version
+ */
 trait Migration {
+  /**
+   *
+   * @return The migration version number
+   */
   def version: Int
+
+  /**
+   * The function that migrates the original JSON object
+   * @param jObject The original JSON object to be migrated
+   * @return The migrated JSON object
+   */
   def procedure(jObject: JObject): JObject
 
+  /**
+   * Used to chain Migration procedures/steps.
+   * @param proc A Migration procedure that will further manipulate the JObject returned
+   *             by this Migration's procedure.
+   * @return The new Migration
+   */
   def apply(proc: (JObject) => JObject): Migration = {
 
     new Migration {
@@ -18,9 +37,17 @@ trait Migration {
     }
   }
 
+  /**
+   * Adds to this Migration, a step that moves a field from the parent JSON object to a child JSON object
+   * and renames it.
+   * @param child The child name
+   * @param field The original field name
+   * @param newField The new field name
+   * @return The new Migration
+   */
   def moveFromParentToChild(child: String,
                             field: String,
-                            newField: String) = this{ jObject =>
+                            newField: String): Migration = this{ jObject =>
 
     jObject.get(field).map { fieldData =>
 
@@ -32,9 +59,17 @@ trait Migration {
     }.getOrElse(jObject)
   }
 
+  /**
+   * Adds to this Migration, a step that moves a field from a child JSON object to the parent JSON object
+   * and renames it.
+   * @param child The child name
+   * @param field The original field name
+   * @param newField The new field name
+   * @return The new Migration
+   */
   def moveFromChildToParent(child: String,
                             field: String,
-                            newField: String) = this{ jObject =>
+                            newField: String): Migration = this{ jObject =>
 
     val updatedRecord = for {
 
@@ -45,10 +80,19 @@ trait Migration {
     updatedRecord.getOrElse(jObject)
   }
 
+  /**
+   * Adds to this Migration, a step that moves a field from a child JSON object to another child JSON object
+   * and renames it.
+   * @param childSrc The source child name
+   * @param childDest The destination child name
+   * @param field The original field name
+   * @param newField The new field name
+   * @return The new Migration
+   */
   def moveFromChildToChild(childSrc: String,
                            childDest: String,
                            field: String,
-                           newField: String) = this{ jObject =>
+                           newField: String): Migration = this{ jObject =>
 
     val updatedRecord = for {
       childSrcObj <- jObject.get(childSrc).map(_.jObject)
@@ -62,7 +106,14 @@ trait Migration {
     updatedRecord.getOrElse(jObject)
   }
 
-  def transformField(field: String, newField: String)(proc: (JValue) => JValue = { jValue => jValue }) = this{ jObject =>
+  /**
+   * Adds to this Migration, a step that performs arbitrary manipulations of a field and renames it.
+   * @param field The field name
+   * @param newField The new field name
+   * @param proc The procedure to perform
+   * @return The new Migration
+   */
+  def transformField(field: String, newField: String)(proc: (JValue) => JValue = { jValue => jValue }): Migration = this{ jObject =>
 
     jObject.get(field) match {
 
@@ -71,8 +122,20 @@ trait Migration {
     }
   }
 
-  def renameField(field: String, newField: String) = transformField(field, newField)()
+  /**
+   * Adds to this Migration, a step that renames a field.
+   * @param field The field name
+   * @param newField The new field name
+   * @return The new Migration
+   */
+  def renameField(field: String, newField: String): Migration = transformField(field, newField)()
 
+  /**
+   * Adds to this Migration, a step that removes a field from a child field.
+   * @param child The child field
+   * @param field The field to be removed from the child field
+   * @return The new Migration
+   */
   def removeFieldFromChild(child: String, field: String) = transformField(child, child) {
     _.jObject.filter {
       case (`field`, _) => false
@@ -80,6 +143,12 @@ trait Migration {
     }
   }
 
+  /**
+   * Adds to this Migration, a step that removes a field from a specified path.
+   * @param path The path to the field
+   * @param field The name of the field to be removed
+   * @return The new Migration
+   */
   def removeFieldFromPath(path: List[String], field: String): Migration = {
     def recur(current: JObject, remaining: List[String]): JObject = remaining match {
       case h :: t => current.get(h) match {
@@ -95,6 +164,11 @@ trait Migration {
 
 object Migration {
 
+  /**
+   * Creates an empty migration with a version number
+   * @param ver The version number
+   * @return A Migration
+   */
   def apply(ver: Int): Migration = {
 
     new Migration {
@@ -105,6 +179,13 @@ object Migration {
   }
 }
 
+/**
+  * [[ObjectAccessor]] that automatically migrates JSON objects using a sequence of [[Migration]]s in order of their version numbers.
+  * @param migrations Seq of [[Migration]]s to perform.
+  * @param versionField The field name that is used in checking the version of the object (must be an integer field).
+  * @param innerAccessor The [[ObjectAccessor]] to use in serializing/de-serializing
+  * @tparam T The base type this migrating accessor is for.
+  */
 class MigratingObjectAccessor[T](migrations: Seq[Migration],
                                  versionField: String,
                                  innerAccessor: ObjectAccessor[T]) extends ObjectAccessor[T] {
