@@ -43,7 +43,6 @@ object MigratingObjectAccessorTest extends TestSuite {
       "Needs 1 Migration" - {
         val json = needsOneMigration
         val result = JValue.fromString(json).toObject[TestModel]
-        println(result)
         assert(result.data  == "Awesome Data-Version 2")
         assert(result.version == 2)
       }

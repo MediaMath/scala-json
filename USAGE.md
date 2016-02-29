@@ -54,7 +54,7 @@ res7: json.JValue = null
 scala> testMap.js.toDenseString
 res8: String = {"hey":"there"}
 ```
-* JS-like dynamic select
+* JS-like select
 ```scala
 scala> require(testMapJs("nokey") == JUndefined)
 ```
