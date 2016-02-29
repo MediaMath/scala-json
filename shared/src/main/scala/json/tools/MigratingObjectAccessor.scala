@@ -181,7 +181,7 @@ object Migration {
  */
 class MigratingObjectAccessor[T,U <% Ordered[U]](migrations: Seq[Migration[U]],
                                  versionField: String,
-                                 innerAccessor: ObjectAccessor[T])(implicit verAcc: JSONAccessor[U]) extends ObjectAccessor[T] {
+                                 innerAccessor: ObjectAccessor[T])(implicit val verAcc: JSONAccessor[U]) extends ObjectAccessor[T] {
 
   override def fromJSON(js: JValue): T = {
 
