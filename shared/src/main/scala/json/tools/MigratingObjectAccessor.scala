@@ -135,19 +135,6 @@ trait Migration[T] {
   def renameField(field: String, newField: String): Migration[T] = transformField(field, newField)()
 
   /**
-   * Adds to this Migration, a step that removes a field from a child field.
-   * @param child The child field
-   * @param field The field to be removed from the child field
-   * @return The new Migration
-   */
-  def removeFieldFromChild(child: String, field: String): Migration[T] = transformField(child, child) {
-    _.jObject.filter {
-      case (`field`, _) => false
-      case _                     => true
-    }
-  }
-
-  /**
    * Adds to this Migration, a step that removes a field from a specified path.
    * @param path The path to the field
    * @param field The name of the field to be removed

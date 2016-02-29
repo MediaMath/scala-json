@@ -10,8 +10,6 @@ object MigratingObjectAccessorTest extends TestSuite {
 
   case class TestModel(version: Int, data: String)
 
-  case class Thingie(name: String, model: TestModel, version: Int)
-
   val testModelMigrations: Seq[Migration[Int]] = Seq(
 
     Migration(1) { jObject =>
@@ -32,10 +30,8 @@ object MigratingObjectAccessorTest extends TestSuite {
     }
   )
 
-  val thingieMigrations: Seq[Migration[Int]] = Seq(Migration(1).removeFieldFromChild("model", "bar"))
 
   implicit val testModelAcc: ObjectAccessor[TestModel] = new MigratingObjectAccessor(testModelMigrations, "version", ObjectAccessor.create[TestModel])
-  implicit val thingieAcc : ObjectAccessor[Thingie] = new MigratingObjectAccessor(thingieMigrations,"version",ObjectAccessor.create[Thingie])
 
   val needsNoMigrations = """{"data": "Data","version": 2}"""
   val needsOneMigration = """{"data": "Awesome Data","version": 1}"""
@@ -68,23 +64,6 @@ object MigratingObjectAccessorTest extends TestSuite {
         val obj = TestModel(2, "Some Data")
         val jsonString = toJSONString(obj)
         assert(JValue.fromString(jsonString).toObject[TestModel] == obj)
-      }
-      "removeChildField" - {
-
-        "handle when field doesn't exist" - {
-
-          val obj = JValue.fromString("""{"name": "bar", "model": {"version": 1, "data": "foo"}, "version": 0}""")
-          val result = obj.toObject[Thingie]
-          assert(result.name == "bar")
-          assert(result.model == TestModel(2, "foo-Version 2"))
-        }
-        "handle when field exists" - {
-
-          val obj = JValue.fromString("""{"name": "bar", "model": {"version": 1, "data": "ah", "bar": "yo"}, "version": 0}""")
-          val result = obj.toObject[Thingie]
-          assert(result.name == "bar")
-          assert(result.model == TestModel(2, "ah-Version 2"))
-        }
       }
     }
   }
