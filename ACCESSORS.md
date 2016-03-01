@@ -54,7 +54,7 @@ res0: json.JObject =
 }
 
 scala> accessorFor(complexValue).describe //JSON pretty formatted description of accessor
-res1: json.JValue =
+res1: json.JObject =
 {
   "accessor": "MapAccessor",
   "types": [{
@@ -105,24 +105,28 @@ is inlined per usage.
 defined class TestClass
 
 scala> ObjectAccessor.create[TestClass].describe
-res3: json.JValue =
+res3: json.JObject =
 {
   "accessor": "CaseClassObjectAccessor",
-  "types": [{
-    "accessor": "IntAccessor"
-  }, {
-    "accessor": "StringAccessor"
-  }, {
-    "accessor": "MapAccessor",
-    "types": [{
+  "fields": {
+    "a": {
+      "accessor": "IntAccessor"
+    },
+    "b": {
       "accessor": "StringAccessor"
-    }, {
-      "accessor": "IterableAccessor",
+    },
+    "c": {
+      "accessor": "MapAccessor",
       "types": [{
-        "accessor": "BooleanAccessor"
+        "accessor": "StringAccessor"
+      }, {
+        "accessor": "IterableAccessor",
+        "types": [{
+          "accessor": "BooleanAccessor"
+        }]
       }]
-    }]
-  }]
+    }
+  }
 }
 
 scala> //

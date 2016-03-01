@@ -50,6 +50,7 @@ complexValue.js
 accessorFor(complexValue).describe //JSON pretty formatted description of accessor
 
 //
+
 ```
 
 Option is treated in a special way in scala-json. Normally field
@@ -75,6 +76,7 @@ case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
 ObjectAccessor.create[TestClass].describe
 
 //
+
 ```
 
 Custom types

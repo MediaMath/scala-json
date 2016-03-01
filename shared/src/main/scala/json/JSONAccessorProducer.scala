@@ -16,8 +16,6 @@
 
 package json
 
-import json.JUndefined
-
 import scala.annotation.implicitNotFound
 import scala.reflect.{ClassTag, classTag}
 
@@ -56,7 +54,7 @@ trait JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.Create
   def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Nil
 
   //emits a JSON description of the accessor and all the others it encounters.
-  final def describe: JValue = JObject(
+  def describe: JObject = JObject(
     "accessor" -> JString(toString),
     "types" -> {
       if(referencedTypes.isEmpty) JUndefined

@@ -49,9 +49,7 @@ trait JArrayCompanion/* extends GenericCompanion[scala.collection.immutable.Seq]
 
     def result: JArray = JArray(builder.result)
 
-    def clear() {
-      builder.clear
-    }
+    def clear() = builder.clear
   }
 
   def newBuilder[A]: Builder[A, immutable.IndexedSeq[A]] =

@@ -36,10 +36,7 @@ abstract class FieldAccessor[T, U] extends Product2[Class[T], String] {
 
   def getJValue(obj: T): JValue = fieldAccessor createJSON getFrom(obj)
 
-  def describe = JObject(
-    "default" -> defaultJs,
-    "type" -> fieldAccessor.describe
-  )
+  def describe: JObject = fieldAccessor.describe + ("default" -> defaultJs)
 
   def defaultJs = defOpt map fieldAccessor.createJSON getOrElse JUndefined
 

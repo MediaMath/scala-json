@@ -41,6 +41,13 @@ trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
     case _                    => false
   }
 
+  override def describe: JObject = super.describe ++ JObject(
+    "types" -> JUndefined,
+    "fields" -> (JObject.empty ++ fields.map { field =>
+      field.name -> field.fieldAccessor.describe
+    })
+  )
+
   override def hashCode = clazz.hashCode
 }
 

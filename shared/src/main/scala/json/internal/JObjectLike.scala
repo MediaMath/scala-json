@@ -34,27 +34,44 @@ trait JObjectCompanion {
   def newBuilder[A]: mutable.Builder[A, scala.collection.immutable.Iterable[A]] =
     scala.collection.immutable.Iterable.newBuilder
 
-  //TODO: allows duplicates...
+  //TODO: size is slow, but allows order, checks for dupes.....
   def apply(values: Pair*): JObject = {
     val map = values.toMap
+
+    require(map.size == values.length, "JObject created with duplicate keys")
 
     new JObject(map)(values)
   }
 
-  def apply(fields: Map[String, JValue]): JObject =
-    new JObject(fields)(fields)
+  def apply(fields: Map[String, JValue]): JObject = new JObject(fields)(fields)
 
   def newCanBuildFrom = new CanBuildFrom[TraversableOnce[Pair], Pair, JObject] {
     def apply(from: TraversableOnce[Pair]) = newJObjectBuilder // ++= from
     def apply() = newJObjectBuilder
   }
 
-  class Builder extends mutable.Builder[Pair, JObject] {
+  /** Builder for JObject. Removes dupes. */
+  final class Builder extends mutable.Builder[Pair, JObject] {
     val builder = new VectorBuilder[Pair]
     var fields = Map.empty[String, JValue]
 
+    def isEmpty = fields.isEmpty
+
+    def alreadyHas(key: String) = fields contains key
+
+    override def ++=(other: TraversableOnce[Pair]): this.type = other match {
+      //only trust map as we know there's no dupes
+      case x: scala.collection.Map[String, JValue] if isEmpty =>
+        builder ++= x
+        fields = x.toMap
+        this
+      case _ => super.++=(other)
+    }
+
     def +=(item: Pair): this.type = {
-      builder += item
+      //only add new keys
+      if(!alreadyHas(item._1)) builder += item
+
       fields += item
       this
     }
@@ -75,7 +92,7 @@ trait JObjectLike { _: JObject =>
 
   lazy val uuid = UUID.randomUUID.toString
 
-  def keyIterator = iterable.iterator.map(_._1)
+  def keyIterator = iterator.map(_._1)
 
   def empty = JObject.empty
 
@@ -95,25 +112,17 @@ trait JObjectLike { _: JObject =>
 
   def get(key: String): Option[JValue] = fields.get(key)
 
-  def iterator: Iterator[Pair] = keyIterator map { k =>
-    k -> apply(k)
-  }
+  def iterator: Iterator[Pair] = iterable.iterator
 
   def +[B1 >: JValue](kv: (String, B1)): JObject = {
-    val thisMap = fields
-
     val (key, v: JValue) = kv
-
-    val newMap = (thisMap + kv).asInstanceOf[Map[String, JValue]]
+    val newMap = fields + (key -> v)
 
     //append new keys to end
-    if (thisMap.get(key).isDefined)
+    if (fields.get(key).isDefined)
       new JObject(newMap)(iterable)
     else {
-      val builder = new VectorBuilder[Pair]
-      builder ++= iterable
-      builder += key -> v
-      new JObject(newMap)(builder.result())
+      new JObject(newMap)(iterable ++ Seq(key -> v))
     }
   }
 
