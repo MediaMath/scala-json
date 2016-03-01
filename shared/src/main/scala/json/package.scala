@@ -34,7 +34,7 @@ import scala.util.control.NonFatal
  *  - [[json.JObject]] - JSON Object Type
  *  - [[json.JArray]] - JSON Array Type
  *  - [[json.JBoolean]] - JSON Boolean Types: [[json.JTrue]] and [[json.JFalse]]
- *  - [[json.JUndefined]] - JSON undefined value
+ *  - [[json.JUndefined]] - JS undefined value
  *  - [[json.JNull]] - JSON null value
  */
 package object json extends JSONAnnotations with Implicits {

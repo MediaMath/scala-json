@@ -16,6 +16,8 @@
 
 package json
 
+import json.JUndefined
+
 import scala.annotation.implicitNotFound
 import scala.reflect.{ClassTag, classTag}
 
@@ -29,10 +31,10 @@ object JSONAccessorProducer {
     def createJSON(from: T): U = toJ(from)
     def fromJSON(from: JValue): T = fromJ(from)
     def clazz = classTag[T].runtimeClass
+    def fields = IndexedSeq.empty
 
     override def toString = "JSONAccessor.create"
 
-    def describe = baseDescription
   }
 
   /** helper JSON producer trait used for contravariant type T */
@@ -43,46 +45,27 @@ object JSONAccessorProducer {
 
 @implicitNotFound(msg = "No implicit JSONAccessorProducer for [${T}, ${JV}] in scope. Did you define/import one? https://github.com/MediaMath/scala-json/blob/master/ACCESSORS.md")
 trait JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.CreateJSON[T, JV] {
+  type LocalType = T
+
   def clazz: Class[_]
   def fromJSON(js: JValue): T
 
-  //emits a JSON description of the accessor and all the others it encounters.
-  def describe: JValue
+  //this should resolve to a simple class name for descriptive purposes
+  override def toString: String
 
-  final protected def baseDescription: JObject = Map(
-    //"accessorClass" -> getClass.getName,
-    "valueClass" -> clazz.getName,
-    "accessorType" -> toString()
-  ).js
+  def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Nil
+
+  //emits a JSON description of the accessor and all the others it encounters.
+  final def describe: JValue = JObject(
+    "accessor" -> JString(toString),
+    "types" -> {
+      if(referencedTypes.isEmpty) JUndefined
+      else JArray.empty ++ referencedTypes.map(_.describe)
+    }
+  )
 
   /** This is a special override for optimized versions that work with raw String keys */
   def fromString(value: String): T = fromJSON(JString(value))
   /** This is a special override for optimized versions that work with raw String keys */
   def toString(value: T): String = createJSON(value).jString.str
-
-  def createSwaggerProperty: JObject = {
-    val StrClassTag = ClassTag(classOf[String])
-
-    val dat = (ClassTag(clazz): ClassTag[_]) match {
-      case ClassTag.Int =>
-        Map("type" -> "integer", "format" -> "int32")
-      case ClassTag.Long =>
-        Map("type" -> "long", "format" -> "int64")
-      case ClassTag.Float =>
-        Map("type" -> "number", "format" -> "float")
-      case ClassTag.Double =>
-        Map("type" -> "number", "format" -> "double")
-      case StrClassTag =>
-        Map("type" -> "string")
-      case ClassTag.Byte =>
-        Map("type" -> "string", "format" -> "byte")
-      case ClassTag.Boolean =>
-        Map("type" -> "boolean")
-      case x => Map("type" -> x.runtimeClass.getSimpleName)
-    }
-
-    JValue(dat).toJObject + ("required" -> JTrue)
-  }
-
-  def extraSwaggerModels: Seq[JObject] = Nil
 }

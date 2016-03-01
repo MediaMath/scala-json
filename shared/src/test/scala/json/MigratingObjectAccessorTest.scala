@@ -1,9 +1,6 @@
-package src.test.scala.json
+package json
 
-import json.{JValue,JString}
-import json.tools.{MigratingObjectAccessor, Migration}
-import json._
-import utest.framework.TestSuite
+import json.tools.Migration
 import utest._
 
 object MigratingObjectAccessorTest extends TestSuite {
@@ -31,7 +28,7 @@ object MigratingObjectAccessorTest extends TestSuite {
   )
 
 
-  implicit val testModelAcc: ObjectAccessor[TestModel] = new MigratingObjectAccessor(testModelMigrations, "version", ObjectAccessor.create[TestModel])
+  implicit val testModelAcc: ObjectAccessor[TestModel] = new Migration.Accessor(testModelMigrations, "version", ObjectAccessor.create[TestModel])
 
   val needsNoMigrations = """{"data": "Data","version": 2}"""
   val needsOneMigration = """{"data": "Awesome Data","version": 1}"""

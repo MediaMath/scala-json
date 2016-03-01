@@ -18,27 +18,38 @@ package json.internal
 
 import json._
 
-trait FieldAccessor[T] extends Product2[Class[T], String] {
+abstract class FieldAccessor[T, U] extends Product2[Class[T], String] {
+  type FieldType = U
+
   def name: String
-  def getFrom(obj: T): Any
-  def defOpt: Option[Any]
-  def getJValue(obj: T): JValue
+
+  def getFrom(obj: T): U
+  def defOpt: Option[U]
 
   def annos: Set[FieldAccessorAnnotation]
-  def fieldAccessor: JSONAccessor[Any]
+  def fieldAccessor: JSONAccessor[U]
   def objClass: Class[T]
 
   def default: Any = defOpt.get
   def hasDefault: Boolean = defOpt.isDefined
   def fieldClass = fieldAccessor.clazz
 
+  def getJValue(obj: T): JValue = fieldAccessor createJSON getFrom(obj)
+
+  def describe = JObject(
+    "default" -> defaultJs,
+    "type" -> fieldAccessor.describe
+  )
+
+  def defaultJs = defOpt map fieldAccessor.createJSON getOrElse JUndefined
+
   def _1 = objClass
   def _2 = name
 
-  def canEqual(that: Any) = that.isInstanceOf[FieldAccessor[_]]
+  def canEqual(that: Any) = that.isInstanceOf[FieldAccessor[T, U]]
 
   override def equals(that: Any) = that match {
-    case x: FieldAccessor[T] =>
+    case x: FieldAccessor[T, U] =>
       x.objClass == objClass && x.name == name
     case _ => false
   }
@@ -46,35 +57,4 @@ trait FieldAccessor[T] extends Product2[Class[T], String] {
   override def productPrefix = "FieldAccessor("
   override def toString = productPrefix + productIterator.mkString(", ") + ")"
   override def hashCode = scala.runtime.ScalaRunTime._hashCode(this)
-
-  def createSwaggerProperty: JObject = {
-    val defaultJs = defOpt.map(JValue.from) match {
-      case Some(_ :JObject) => JObject.empty
-      case Some(_ :JArray)  => JObject.empty
-      case Some(x)          => JObject("defaultValue" -> x)
-      case _                => JObject.empty
-    }
-
-    val desc = annos.map {
-      case FieldDescriptionGeneric(desc) => desc
-      case _                             => ""
-    }.mkString("\n")
-
-    val requiredJs = if (hasDefault) JObject("required" -> JFalse)
-    else JObject.empty
-
-    fieldAccessor.createSwaggerProperty ++ defaultJs ++ requiredJs ++ JObject(
-      "description" -> desc.js
-    )
-  }
-
-  def createSwagger: JValue = try {
-    val accProp = createSwaggerProperty
-
-    JObject(name -> accProp)
-  } catch {
-    case e: NullPointerException => {
-      JObject(name -> "null???".js)
-    }
-  }
 }

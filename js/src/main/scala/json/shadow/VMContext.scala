@@ -44,8 +44,6 @@ object VMContext extends BaseVMContext {
 
       def createJSON(obj: js.Any): JValue = JValue from obj
       def fromJSON(jValue: JValue): js.Any = jValue.toNativeJS
-
-      def describe = baseDescription
     }
   }
 

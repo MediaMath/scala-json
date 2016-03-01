@@ -100,12 +100,15 @@ trait JValueLike extends Equals { _: JValue =>
   final def isNullOrUndefined = isNull || isUndefined
   final def isDefined = !isUndefined
 
+  /** return Some(x) if value is not undefined or null */
+  final def toOption: Option[JValue] = if(isNullOrUndefined) None else Some(this)
+
   def isDefinedAt(x: JValue): Boolean = apply(x).isDefined
 
   /** keys for this JValue. Either iterable array indexes from [[JArray]] or iterable keys from a [[JObject]] */
   def keys: Iterable[JValue] = Nil
-  def dynamic = JDynamic(this)
 
+  def dynamic = JDynamic(this)
   def d = dynamic
 
   /** convert this JValue into an object if possible */
@@ -175,9 +178,11 @@ trait JValueLike extends Equals { _: JValue =>
   //def \\(key: String): JValue = ???
 
   /** equivalent to javascript ''delete object[field]'' */
-  def -(x: JValue): JValue = this match {
+  final def -(x: JValue): JValue = this match {
     case JNumber(d) => JNumber(d - x.toJNumber.value)
+    case seq: JArray => seq.updated(x.toJNumber.toInt, JUndefined)
     case x: JObject => x - x.toJString.str
+    case x => x
   }
 
   def -[T](key: T)(implicit acc: JSONAccessor[T]): JValue = this - key.js

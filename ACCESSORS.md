@@ -56,32 +56,30 @@ res0: json.JObject =
 scala> accessorFor(complexValue).describe //JSON pretty formatted description of accessor
 res1: json.JValue =
 {
-  "valueClass": "scala.collection.immutable.Map",
-  "accessorType": "MapAccessor",
-  "types": ["K", "T"],
-  "K": {
-    "valueClass": "java.lang.String",
-    "accessorType": "StringAccessor"
-  },
-  "T": {
-    "valueClass": "scala.collection.Seq",
-    "accessorType": "IterableAccessor",
-    "types": ["T"],
-    "repr": "scala.collection.Seq",
-    "T": {
-      "valueClass": "scala.collection.immutable.Set",
-      "accessorType": "IterableAccessor",
-      "types": ["T"],
-      "repr": "scala.collection.immutable.Set",
-      "T": {
-        "valueClass": "scala.Option",
-        "accessorType": "OptionAccessor",
-        "types": ["T"],
-        "T": {
-          "valueClass": "scala.Tuple3",
-          "accessorType": "Tuple3Accessor",
-          "types": ["A", "B"],
-         ...
+  "accessor": "MapAccessor",
+  "types": [{
+    "accessor": "StringAccessor"
+  }, {
+    "accessor": "IterableAccessor",
+    "types": [{
+      "accessor": "IterableAccessor",
+      "types": [{
+        "accessor": "OptionAccessor",
+        "types": [{
+          "accessor": "Tuple3Accessor",
+          "types": [{
+            "accessor": "IntAccessor"
+          }, {
+            "accessor": "BooleanAccessor"
+          }, {
+            "accessor": "StringAccessor"
+          }]
+        }]
+      }]
+    }]
+  }]
+}
+
 scala> //
 ```
 
@@ -107,38 +105,26 @@ is inlined per usage.
 defined class TestClass
 
 scala> ObjectAccessor.create[TestClass].describe
-res3: json.JObject =
+res3: json.JValue =
 {
-  "valueClass": "TestClass",
-  "accessorType": "CaseClassObjectAccessor",
-  "fields": {
-    "a": {
-      "type": {
-        "valueClass": "int",
-        "accessorType": "IntAccessor"
-      }
-    },
-    "b": {
-      "type": {
-        "valueClass": "java.lang.String",
-        "accessorType": "StringAccessor"
-      },
-      "default": "foo"
-    },
-    "c": {
-      "type": {
-        "valueClass": "scala.collection.immutable.Map",
-        "accessorType": "MapAccessor",
-        "types": ["K", "T"],
-        "K": {
-          "valueClass": "java.lang.String",
-          "accessorType": "StringAccessor"
-        },
-        "T": {
-          "valueClass": "scala.collection.immutable.Set",
-          "accessorType": "IterableAccessor",
-          "types": ["T"],
-          "repr": "...
+  "accessor": "CaseClassObjectAccessor",
+  "types": [{
+    "accessor": "IntAccessor"
+  }, {
+    "accessor": "StringAccessor"
+  }, {
+    "accessor": "MapAccessor",
+    "types": [{
+      "accessor": "StringAccessor"
+    }, {
+      "accessor": "IterableAccessor",
+      "types": [{
+        "accessor": "BooleanAccessor"
+      }]
+    }]
+  }]
+}
+
 scala> //
 ```
 

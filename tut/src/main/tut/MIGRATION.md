@@ -8,28 +8,28 @@ the sequence of Migrations (sorted by version) before being marshaled into the f
 
 ```tut
 import json._
-import json.tools.{MigratingObjectAccessor,Migration}
+import json.tools.Migration
 
-  case class TestModel(version: Int, data: String)
+case class TestModel(version: Int, data: String)
 
-  val testModelMigrations: Seq[Migration[Int]] = Seq(
+implicit val testModelAcc: ObjectAccessor[TestModel] = {
+    val testModelMigrations: Seq[Migration[Int]] = Seq(
+        Migration(1) { jObject =>
+          jObject.get("oldData") match {
 
-    Migration(1) { jObject =>
+            case Some(data) => jObject + ("data" -> data) - "oldData"
+            case _          => jObject
+          }
+        }
+    )
 
-      jObject.get("oldData") match {
+    new Migration.Accessor(testModelMigrations, "version", ObjectAccessor.create[TestModel])
+}
 
-        case Some(data) => jObject + ("data" -> data) - "oldData"
-        case _          => jObject
-      }
-    }
-  )
-  
-  implicit val testModelAcc: ObjectAccessor[TestModel] = new MigratingObjectAccessor(testModelMigrations, "version", ObjectAccessor.create[TestModel])
 
-  val needsMigration = """{"oldData": "Data","version": 0}"""
-  
-  JValue.fromString(needsMigration).toObject[TestModel]
-  
+val needsMigration = """ {"oldData": "Data","version": 0} """
+
+JValue.fromString(needsMigration).toObject[TestModel]
 
 ```
 

@@ -27,6 +27,8 @@ trait LowPriorityAccessors {
   class Tuple2Accessor[A: JSONAccessor, B: JSONAccessor] extends JSONAccessorProducer[(A, B), JArray] {
     def clazz: Class[_] = classOf[(A, B)]
 
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[A], accessorOf[B])
+
     val aAcc = accessorOf[A]
     val bAcc = accessorOf[B]
 
@@ -38,12 +40,6 @@ trait LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
-
-    def describe: JValue = baseDescription ++ JObject(
-      "types" -> Seq("A", "B").js,
-      "A" -> accessorOf[A].describe,
-      "B" -> accessorOf[B].describe
-    )
 
     def createJSON(x: (A, B)): JArray = JArray(x._1.js, x._2.js)
   }
@@ -57,6 +53,8 @@ trait LowPriorityAccessors {
     val bAcc = accessorOf[B]
     val cAcc = accessorOf[C]
 
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[A], accessorOf[B], accessorOf[C])
+
     override def toString = "Tuple3Accessor"
 
     def fromJSON(js: JValue): (A, B, C) = js match {
@@ -65,13 +63,6 @@ trait LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
-
-    def describe: JValue = baseDescription ++ JObject(
-      "types" -> Seq("A", "B").js,
-      "A" -> accessorOf[A].describe,
-      "B" -> accessorOf[B].describe,
-      "C" -> accessorOf[C].describe
-    )
 
     def createJSON(x: (A, B, C)): JArray = JArray(x._1.js, x._2.js, x._3.js)
   }
@@ -92,11 +83,7 @@ trait LowPriorityAccessors {
 
     override def toString = "IterableAccessor"
 
-    def describe = baseDescription ++ JObject(
-      "types" -> JArray("T")(JValue.StringAccessor),
-      "repr" -> ctag.runtimeClass.getName.js,
-      "T" -> acc.describe
-    )
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[T])
 
     def createJSON(obj: U[T]): JArray = {
       if(primitive.isPrimitive) primitive.createJSON(obj)
@@ -134,19 +121,5 @@ trait LowPriorityAccessors {
         "array", x.getClass.getName, x)
     }
 
-    override def createSwaggerProperty: JObject = {
-      val unique = if (clazz == classOf[Set[_]])
-        JObject("uniqueItems" -> JTrue)
-      else JObject.empty
-
-      JObject("type" -> JString("array"), "items" -> JObject(
-        ("$" + "ref") -> JString(acc.clazz.getSimpleName)
-      )) ++ unique
-    }
-
-    override def extraSwaggerModels: Seq[JObject] = acc match {
-      case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
-      case _                             => Nil
-    }
   }
 }

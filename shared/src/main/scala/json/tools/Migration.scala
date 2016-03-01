@@ -50,7 +50,7 @@ trait Migration[T] {
    */
   def moveFromParentToChild(child: String,
                             field: String,
-                            newField: String): Migration[T] = this{ jObject =>
+                            newField: String): Migration[T] = this { jObject =>
 
     jObject.get(field).map { fieldData =>
 
@@ -72,7 +72,7 @@ trait Migration[T] {
    */
   def moveFromChildToParent(child: String,
                             field: String,
-                            newField: String): Migration[T] = this{ jObject =>
+                            newField: String): Migration[T] = this { jObject =>
 
     val updatedRecord = for {
 
@@ -95,7 +95,7 @@ trait Migration[T] {
   def moveFromChildToChild(childSrc: String,
                            childDest: String,
                            field: String,
-                           newField: String): Migration[T] = this{ jObject =>
+                           newField: String): Migration[T] = this { jObject =>
 
     val updatedRecord = for {
       childSrcObj <- jObject.get(childSrc).map(_.jObject)
@@ -117,7 +117,7 @@ trait Migration[T] {
    * @return The new Migration
    */
   def transformField(field: String, newField: String)(proc: (JValue) => JValue = { jValue => jValue }): Migration[T] =
-    this{ jObject =>
+    this { jObject =>
 
       jObject.get(field) match {
 
@@ -149,8 +149,9 @@ trait Migration[T] {
       case Nil => current - field
     }
 
-    this{ recur(_, path) }
+    this(recur(_, path))
   }
+
 }
 
 object Migration {
@@ -168,41 +169,41 @@ object Migration {
       override def version: T = ver
     }
   }
-}
 
-/**
- * [[ObjectAccessor]] that automatically migrates JSON objects using a sequence of [[Migration]]s in order of their version numbers.
- * @param migrations Seq of [[Migration]]s to perform.
- * @param versionField The field name that is used in checking the version of the object.
- * @param innerAccessor The [[ObjectAccessor]] to use in serializing/de-serializing
- * @param verAcc The implicit [[JSONAccessor]] for the version field type
- * @tparam T The base type this migrating accessor is for.
- * @tparam U The version field type
- */
-class MigratingObjectAccessor[T,U <% Ordered[U]](migrations: Seq[Migration[U]],
-                                 versionField: String,
-                                 innerAccessor: ObjectAccessor[T])(implicit val verAcc: JSONAccessor[U]) extends ObjectAccessor[T] {
+  /**
+   * [[ObjectAccessor]] that automatically migrates JSON objects using a sequence of [[Migration]]s in order of their version numbers.
+   * @param migrations Seq of [[Migration]]s to perform.
+   * @param versionField The field name that is used in checking the version of the object.
+   * @param innerAccessor The [[ObjectAccessor]] to use in serializing/de-serializing
+   * @param verAcc The implicit [[JSONAccessor]] for the version field type
+   * @tparam T The base type this migrating accessor is for.
+   * @tparam U The version field type
+   */
+  class Accessor[T,U <% Ordered[U]](migrations: Seq[Migration[U]],
+      versionField: String,
+      innerAccessor: ObjectAccessor[T])(implicit val verAcc: JSONAccessor[U]) extends ObjectAccessor[T] {
 
-  override def fromJSON(js: JValue): T = {
+    override def fromJSON(js: JValue): T = {
 
-    val version: Option[U] = js.jObject.get(versionField) match {
-      case Some(jv) => Some(jv.to[U])
-      case _                => None
+      val version: Option[U] = js.jObject.get(versionField) match {
+        case Some(jv) => Some(jv.to[U])
+        case _                => None
+      }
+
+      val migrationsToRun = migrations
+          .filter(migration => !version.exists(ver => ver >= migration.version))
+          .sortBy(_.version)
+
+      val migratedJSON: JObject = migrationsToRun.foldLeft(js.jObject) { (jObject, migration) =>
+        migration.procedure(jObject) + (versionField -> migration.version.js)
+      }
+
+      innerAccessor.fromJSON(migratedJSON)
     }
 
-    val migrationsToRun = migrations
-      .filter(migration => !version.exists(ver => ver >= migration.version))
-      .sortBy(_.version)
-
-    val migratedJSON: JObject = migrationsToRun.foldLeft(js.jObject) { (jObject, migration) =>
-      migration.procedure(jObject) + (versionField -> migration.version.js)
-    }
-
-    innerAccessor.fromJSON(migratedJSON)
+    override def fields = innerAccessor.fields
+    override def clazz = innerAccessor.clazz
+    override def createJSON(obj: T) = innerAccessor.createJSON(obj)
+    override def toString = "Migration.Accessor"
   }
-
-  override def fields: IndexedSeq[FieldAccessor[T]] = innerAccessor.fields
-  override def describe: JValue = innerAccessor.describe
-  override def clazz: Class[_] = innerAccessor.clazz
-  override def createJSON(obj: T): JObject = innerAccessor.createJSON(obj)
 }

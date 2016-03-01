@@ -30,9 +30,11 @@ import scala.annotation.meta._
  * @tparam T The base type this accessor is for.
  */
 trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
-  def fields: IndexedSeq[FieldAccessor[T]]
+  def fields: IndexedSeq[FieldAccessor[T, _]]
 
   def canEqual(that: Any) = that.isInstanceOf[ObjectAccessor[_]]
+
+  final override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = fields.map(_.fieldAccessor)
 
   override def equals(that: Any) = that match {
     case x: ObjectAccessor[_] => x.clazz == clazz
@@ -44,7 +46,7 @@ trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
 
 object ObjectAccessor {
   case object NoAccessor extends ObjectAccessor[Nothing] {
-    def fields: IndexedSeq[FieldAccessor[Nothing]] = Nil.toIndexedSeq
+    def fields: IndexedSeq[FieldAccessor[Nothing, Nothing]] = Nil.toIndexedSeq
     def clazz: Class[Nothing] = classOf[Nothing]
     def fromJSON(from: JValue): Nothing = sys.error("Cannot create Nothing object")
     def createJSON(obj: Nothing): JObject = sys.error("Cannot create Nothing json")
@@ -52,8 +54,6 @@ object ObjectAccessor {
     override def canEqual(that: Any) = that.isInstanceOf[this.type]
 
     def apply[T] = NoAccessor.asInstanceOf[ObjectAccessor[T]]
-
-    def describe = baseDescription
   }
 
   def create[T]: ObjectAccessor[T] = macro ObjectAccessorFactory.impl[T]

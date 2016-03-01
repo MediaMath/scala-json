@@ -35,7 +35,7 @@ object JValue extends JValueLikeCompanion {
   * type conversion or exceptions. For type-safe handling of JValues, consider
   * using pattern matching the good ol' scala way.
   */
-sealed trait JValue extends AnyRef with JValueLike with JValue.JValueBase {
+sealed abstract class JValue extends AnyRef with JValueLike with JValue.JValueBase {
   /** Boolean OR using [[toJBoolean]] */
   def ||[T >: this.type <: JValue](other: T): T = if (this.toJBoolean.bool) this else other
   override def toString: String = toJSONString
@@ -90,7 +90,7 @@ object JBoolean {
 }
 
 /** Base type for JSON primitives [[JTrue]] and [[JFalse]] */
-sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
+sealed abstract class JBoolean extends JValue with VM.Context.JBooleanBase {
   def value: Boolean
   def not: JBoolean
   def toJNumber: JNumber
@@ -141,19 +141,18 @@ object JNumber {
 private[json] final case class JNumberImpl(value: Double) extends JNumber
 
 /** JSON numeric value (stored as 64-bit double) */
-sealed trait JNumber extends JValue with VM.Context.JNumberBase { _: JNumberImpl =>
+sealed abstract class JNumber extends JValue with VM.Context.JNumberBase { _: JNumberImpl =>
   val value: Double
 
   def iterator: Iterator[JValue] = sys.error("Cannot iterate a number!")
 
-  def numToString = if (isLong) toLong.toString else num.toString
-
-  def isLong = num == toInt
+  def numToString = if (isInt) toLong.toString else num.toString
 
   override def apply(key: JValue): JValue = JUndefined
 
   override def jValue = this
 
+  def isInt = num == toInt
   override def isNaN: Boolean = num.isNaN
   def isInfinity: Boolean = num.isInfinity
   def isValid = !isNaN && !isInfinity

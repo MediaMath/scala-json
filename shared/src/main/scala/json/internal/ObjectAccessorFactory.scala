@@ -35,8 +35,6 @@ private object Compat210 {
 
 import Compat210._
 
-//TODO: rewrite this pile of garbage, include scala-paradise macro annoation on base class. will pass in companion class.
-
 object ObjectAccessorFactory {
   import scala.reflect.macros._ // shadows blackbox from above
   import whitebox._
@@ -246,8 +244,8 @@ object ObjectAccessorFactory {
         if theDef.mods.annotations exists {
           case Apply(Select(New(Ident(TypeName("ephemeral"))), termNames.CONSTRUCTOR), Nil) => true
           case Apply(Select(New(Ident(TypeName("EphemeralGeneric"))), termNames.CONSTRUCTOR), Nil) => true
-          case Apply(Select(New(Select(Ident(TermName("json")), TypeName("ephemeral"))), termNames.CONSTRUCTOR), Nil) => true
-          case Apply(Select(New(Select(Ident(TermName("json")), TypeName("EphemeralGeneric"))), termNames.CONSTRUCTOR), Nil) => true
+          case Apply(Select(New(Select(_, TypeName("ephemeral"))), termNames.CONSTRUCTOR), Nil) => true
+          case Apply(Select(New(Select(_, TypeName("EphemeralGeneric"))), termNames.CONSTRUCTOR), Nil) => true
           case _ => false
         }
       } yield typ0.member(theDef.name)
@@ -304,26 +302,8 @@ object ObjectAccessorFactory {
         val typeIdent: Tree = TypeTree(info.typ)
         val typeExpr = c.Expr[AnyRef](typeIdent)
 
-        val jvExpr = c.Expr[Any](Select(Ident(TermName("obj")), info.origName))
-
         //jsTree function of obj: T
         val accExpr = getAccessorFor(info.typ)
-
-        val jsTree = reify {
-          accExpr.splice.createJSON(jvExpr.splice)
-        }
-
-        val getJValueExpr = DefDef( // def getJValue(obj: T): JValue
-          Modifiers(),
-          TermName("getJValue"),
-          Nil,
-          List(List(
-            ValDef(Modifiers(), TermName("obj"),
-              TypeTree(typ0), EmptyTree)
-          )),
-          TypeTree(typeOf[JValue]),
-          jsTree.tree
-        )
 
         val mfExpr = classExpr(info.typ)
 
@@ -351,18 +331,17 @@ object ObjectAccessorFactory {
 
         val pTypeManifestExpr = c.Expr[IndexedSeq[Manifest[_]]](
           Apply(seqApply, pTypeManifests.toList))
+
         //create seq of field accessor annotations
         val annosSeqExpr = c.Expr[Seq[FieldAccessorAnnotation]](Apply(seqApply, annoArgs.toList))
 
         (reify {
-          new FieldAccessor[T] {
+          new FieldAccessor[T, Any] {
             val name: String = info.name.splice
 
             val annos: Set[FieldAccessorAnnotation] = annosSeqExpr.splice.toSet
 
             def defOpt: Option[Any] = defOptExpr.splice
-
-            c.Expr(getJValueExpr).splice
 
             c.Expr(goodGetter).splice
 
@@ -469,8 +448,8 @@ object ObjectAccessorFactory {
         (new CaseClassObjectAccessor[T] {
           val nameMap = nameConversionExpr.splice
 
-          val fields: IndexedSeq[FieldAccessor[T]] =
-            fieldsExpr.splice.asInstanceOf[IndexedSeq[FieldAccessor[T]]]
+          val fields: IndexedSeq[FieldAccessor[T, _]] =
+            fieldsExpr.splice.asInstanceOf[IndexedSeq[FieldAccessor[T, _]]]
 
           val clazz: Class[T] = objMfExpr.splice.asInstanceOf[Class[T]]
 
