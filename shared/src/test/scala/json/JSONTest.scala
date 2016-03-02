@@ -17,7 +17,7 @@
 
 package json
 
-import json.internal.JArrayPrimitive.{ByteImpl, IntImpl, BooleanImpl}
+import json.internal.PrimitiveJArray
 import json.tools.{TypedEnumerator, Enumerator}
 import utest.framework.TestSuite
 import utest._
@@ -96,11 +96,6 @@ object Tester extends TestSuite {
     val values = Set(AA, BB, CC, DD)
   }
 
-  implicit val testCustomAcc = JSONAccessor.create(
-    (x: Byte) => JNumber(x),
-    _.toJNumber.num.toByte
-  )
-
   implicit val testCustomAcc2 = JSONAccessor.create(
     (x: TestTrait) => JNumber(x.num),
     x => new TestTrait {
@@ -152,15 +147,29 @@ object Tester extends TestSuite {
       "have equality obj" - testJSONEqual(JObject("test" -> "test".js, "test2" -> 0.5.js))
 
       "native implicit accessor for int array" - {
-        val jv = Seq(1, 2, 3).js
+        val jv = Seq[Int](1, 2, 3).js
 
-        assert(jv.isInstanceOf[IntImpl])
+        assert(jv.isInstanceOf[PrimitiveJArray[_]])
+      }
+
+      "native implicit accessor for bool array" - {
+        val jv = Seq[Boolean](true, false, true).js
+
+        assert(jv.isInstanceOf[PrimitiveJArray[_]])
+      }
+
+      "native implicit accessor for double array" - {
+        val jv = Seq[Double](1, 2, 3).js
+
+        assert(jv.isInstanceOf[PrimitiveJArray[_]])
       }
 
       "native implicit accessor for byte array" - {
         val jv = Seq[Byte](1, 2, 3).js
 
-        assert(jv.isInstanceOf[ByteImpl])
+        assert(accessorOf[Byte].isInstanceOf[PrimitiveJArray.Builder[Byte]])
+
+        assert(jv.isInstanceOf[PrimitiveJArray[_]])
       }
 
       "enumerator" - {

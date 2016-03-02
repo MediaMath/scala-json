@@ -16,16 +16,32 @@
 
 package json
 
-import json.internal.JArrayPrimitive._
+import json.internal.DefaultVMContext.PrimitiveArray
+import json.internal.PrimitiveJArray
 
 import scala.scalajs.js
 import scala.scalajs.js.typedarray._
 import scalajs.js.{JSON => NativeJSON}
+
 import js.JSConverters._
 
+import json.accessors._
 
 object JSJValue {
   private implicit def typedArrToArr[T, U](x: TypedArray[T, U]): js.Array[T] = x.asInstanceOf[js.Array[T]]
+
+  def newPrimArr[T, U](from: TypedArray[T, U]) = new PrimitiveArray[T] {
+    def length: Int = from.length
+
+    def update(idx: Int, value: T): Unit = from(idx) = value
+
+    def apply(idx: Int): T = from(idx)
+
+    //for direct wrapping if/when available
+    def toIndexedSeq: IndexedSeq[T] = from.asInstanceOf[js.Array[T]]
+
+    def underlying = js.WrappedArray(from)
+  }
 
   private[json] object TypedArrayExtractor {
     def unapply(x: js.Object): Option[TypedArray[_, _]] = {
@@ -51,12 +67,12 @@ object JSJValue {
     case false     => JFalse
     case x: Double => JNumber(x)
     case TypedArrayExtractor(arr) => arr match {
-      case x: Int8Array => ByteImpl(new js.WrappedArray(x))
-      case x: Int16Array => ShortImpl(new js.WrappedArray(x))
-      case x: Int32Array => IntImpl(new js.WrappedArray(x))
-      case x: Uint8Array => ShortImpl(new js.WrappedArray(x))
-      case x: Uint16Array => IntImpl(new js.WrappedArray(x))
-      case x: Uint32Array => DoubleImpl(new js.WrappedArray(x))
+      case x: Int8Array => new PrimitiveJArray(newPrimArr(x))
+      case x: Int16Array => new PrimitiveJArray(newPrimArr(x))
+      case x: Int32Array => new PrimitiveJArray(newPrimArr(x))
+      case x: Uint8Array => new PrimitiveJArray(newPrimArr(x))
+      case x: Uint16Array => new PrimitiveJArray(newPrimArr(x))
+      case x: Uint32Array => new PrimitiveJArray(newPrimArr(x))
       case _ => sys.error("Unsupported native array of type " + js.typeOf(arr))
     }
     case x0: js.Object =>

@@ -17,14 +17,51 @@
 package json.shadow
 
 import json._
-import json.internal.{BaseVMContext, JValueObjectDeserializer}
+import json.internal.DefaultVMContext.PrimitiveArray
+import json.internal.{SimpleStringBuilder, BaseVMContext, JValueObjectDeserializer}
 
 import scala.collection.immutable.StringOps
+import scala.reflect.ClassTag
 
 object VMContext extends BaseVMContext {
+  def newVMStringBuilder: SimpleStringBuilder = new SimpleStringBuilder {
+    val builder = new StringBuilder(128)
+
+    def append(str: String): internal.SimpleStringBuilder = {
+      builder append str
+      this
+    }
+
+    def append(char: Char): SimpleStringBuilder = {
+      builder.append(char)
+      this
+    }
+
+    def ensureCapacity(cap: Int): Unit = builder.ensureCapacity(cap)
+
+    def result(): String = builder.result()
+  }
+
   val localMapper = new ThreadLocal[JValueObjectDeserializer] {
     override protected def initialValue: JValueObjectDeserializer =
       new JValueObjectDeserializer
+  }
+
+  //TODO: do these need to be specialized?
+  def createPrimitiveArray[@specialized T: ClassTag](length: Int): PrimitiveArray[T] =
+    wrapPrimitiveArray(new Array[T](length))
+
+  def wrapPrimitiveArray[@specialized T: ClassTag](from: Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
+    def length: Int = from.length
+
+    def update(idx: Int, value: T): Unit = from(idx) = value
+
+    def apply(idx: Int): T = from(idx)
+
+    //for direct wrapping if/when available
+    def toIndexedSeq: IndexedSeq[T] = from
+
+    def underlying = from
   }
 
   def fromString(str: String): JValue = {
@@ -41,7 +78,7 @@ object VMContext extends BaseVMContext {
   def fromAny(value: Any): JValue = JValue.fromAnyInternal(value)
 
   //modified some escaping for '/'
-  final def quoteJSONString(string: String, sb: StringBuilder): StringBuilder = {
+  final def quoteJSONString(string: String, sb: SimpleStringBuilder): SimpleStringBuilder = {
     require(string != null)
 
     sb.ensureCapacity(string.length)

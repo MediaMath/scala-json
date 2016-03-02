@@ -16,7 +16,7 @@
 
 package json
 
-import json.internal.JArrayPrimitive.BooleanImpl
+import json.internal.PrimitiveJArray
 import utest._
 import utest.framework.TestSuite
 
@@ -27,7 +27,7 @@ class JVMJSONTest extends TestSuite {
       val arrJS = JArray(JTrue, JFalse, JTrue).toString
       val parsed = JValue.fromString(arrJS).jArray
 
-      assert(parsed.isInstanceOf[BooleanImpl])
+      assert(parsed.isInstanceOf[PrimitiveJArray[_]])
     }
   }
 

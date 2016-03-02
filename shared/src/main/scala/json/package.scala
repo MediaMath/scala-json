@@ -50,6 +50,8 @@ package object json extends JSONAnnotations with Implicits {
   /** Package space for all scala-json annotations */
   object annotations extends JSONAnnotations
 
+  object accessors extends internal.Accessors
+
   /** Constants that can be used to avoid allocation */
   object constants {
     val trueString = JString("true")

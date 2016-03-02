@@ -39,7 +39,7 @@ trait JStringLike extends VM.Context.JStringBase { _: JString =>
   override def jString: JString = this
 
   def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
-      out: StringBuilder, lvl: Int): StringBuilder = JValue.Context.quoteJSONString(str, out)
+      out: SimpleStringBuilder, lvl: Int): SimpleStringBuilder = JValue.Context.quoteJSONString(str, out)
 
   override def jValue = this
 

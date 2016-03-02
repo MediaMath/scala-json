@@ -18,10 +18,30 @@ package json.internal
 
 import json._
 
+import scala.reflect.ClassTag
+
 trait BaseVMContext {
   def fromString(str: String): JValue
   def fromAny(value: Any): JValue
-  def quoteJSONString(string: String, builder: StringBuilder): StringBuilder
+  def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder
+  def newVMStringBuilder: SimpleStringBuilder
+  def createPrimitiveArray[@specialized T: ClassTag](length: Int): DefaultVMContext.PrimitiveArray[T] /*{
+    val tag = implicitly[ClassTag[T]]
+    val inst = tag.runtimeClass match {
+      case java.lang.Byte.TYPE      => ByteImpl(buffer.asInstanceOf[Seq[Byte]])
+      case java.lang.Short.TYPE     => ShortImpl(buffer.asInstanceOf[Seq[Short]])
+      //case java.lang.Character.TYPE =>
+      case java.lang.Integer.TYPE   => IntImpl(buffer.asInstanceOf[Seq[Int]])
+      case java.lang.Long.TYPE      => LongImpl(buffer.asInstanceOf[Seq[Long]])
+      case java.lang.Float.TYPE     => FloatImpl(buffer.asInstanceOf[Seq[Float]])
+      case java.lang.Double.TYPE    => DoubleImpl(buffer.asInstanceOf[Seq[Double]])
+      case java.lang.Boolean.TYPE   => BooleanImpl(buffer.asInstanceOf[Seq[Boolean]])
+      //case java.lang.Void.TYPE      =>
+      case x                        => throw new Error("Unknown JArrayPrimitive for class " + x)
+    }
+
+    inst.asInstanceOf[JArrayPrimitive[T]]
+  }*/
 
   private[json] trait JValueCompanionBase
 
@@ -51,6 +71,19 @@ object DefaultVMContext {
 
     def fromString(str: String): JValue = ???
     def fromAny(value: Any): JValue = ???
-    def quoteJSONString(string: String, builder: StringBuilder): StringBuilder = ???
+    def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder = ???
+    def newVMStringBuilder: SimpleStringBuilder = ???
+    def createPrimitiveArray[@specialized T: ClassTag](length: Int): PrimitiveArray[T] = ???
+  }
+
+  trait PrimitiveArray[@specialized T] {
+    def length: Int
+    def apply(idx: Int): T
+    def update(idx: Int, value: T): Unit
+
+    //for direct wrapping if/when available
+    def toIndexedSeq: IndexedSeq[T]
+
+    //def iterator: Iterator[T] = Iterator.from(0, length) map apply
   }
 }

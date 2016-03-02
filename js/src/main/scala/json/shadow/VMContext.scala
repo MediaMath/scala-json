@@ -17,16 +17,31 @@
 package json.shadow
 
 import json.JSJValue.TypedArrayExtractor
-import json.internal.{JArrayPrimitive, BaseVMContext}
+import json.internal.DefaultVMContext.PrimitiveArray
+import json.internal.{PrimitiveJArray, DefaultVMContext, SimpleStringBuilder, BaseVMContext}
 import json._
+import scala.reflect.ClassTag
 import scalajs.js.{JSON => NativeJSON}
 import scala.scalajs.js.annotation.JSExport
 import scalajs.js
 import scalajs.js.typedarray
 
-
-
 object VMContext extends BaseVMContext {
+  //optimized to use js array.join- good stable performance on most js, plus smaller footprint
+  def newVMStringBuilder: SimpleStringBuilder = new SimpleStringBuilder {
+    val arr = new js.Array[String]
+
+    def append(str: String): SimpleStringBuilder = {
+      arr.push(str)
+      this
+    }
+
+    def append(char: Char): SimpleStringBuilder = append(char.toString)
+    def ensureCapacity(cap: Int): Unit = {}
+
+    def result(): String = arr.join("")
+  }
+
   def fromString(str: String): JValue = {
     def reviver = (key: js.Any, value: js.Any) =>
       (JSJValue fromNativeJS value).asInstanceOf[js.Any]
@@ -70,17 +85,17 @@ object VMContext extends BaseVMContext {
     def values: Iterable[JValue]
 
     def toNativeJS: js.Any = this match {
-      case JArrayPrimitive(wrapped: js.WrappedArray[Any]) => wrapped.array
-      case JArrayPrimitive(seq) => seq.to[js.Array]
+      case PrimitiveJArray(wrapped: js.WrappedArray[_]) => wrapped.array
+      case PrimitiveJArray(seq) => seq.to[js.Array]
       case _ => new js.Array[js.Any] ++ values.iterator.map(_.toNativeJS)
     }
 
     @JSExport final override def toJSON(): js.Any = this match {
-      case JArrayPrimitive(wrapped: js.WrappedArray[Any]) => wrapped.array match {
+      case PrimitiveJArray(wrapped: js.WrappedArray[_]) => wrapped.array match {
         case TypedArrayExtractor(_) => wrapped.to[js.Array]
         case x => x
       }
-      case JArrayPrimitive(seq) => seq.to[js.Array]
+      case PrimitiveJArray(seq) => seq.to[js.Array]
       case _ => values.iterator.map(_.toJSON).to[js.Array]
     }
   }
@@ -119,6 +134,39 @@ object VMContext extends BaseVMContext {
     def toNativeJS: js.Any = value
   }
 
-  final def quoteJSONString(string: String, sb: StringBuilder): StringBuilder =
+  final def quoteJSONString(string: String, sb: SimpleStringBuilder): SimpleStringBuilder =
     sb append NativeJSON.stringify(string)
+
+  /*def createPrimitiveArray[@specialized T: ClassTag](length: Int): DefaultVMContext.PrimitiveArray[T] = {
+    val tag = implicitly[ClassTag[T]]
+    val inst = tag.runtimeClass match {
+      case java.lang.Byte.TYPE      => ByteImpl(buffer.asInstanceOf[Seq[Byte]])
+      case java.lang.Short.TYPE     => ShortImpl(buffer.asInstanceOf[Seq[Short]])
+      //case java.lang.Character.TYPE =>
+      case java.lang.Integer.TYPE   => IntImpl(buffer.asInstanceOf[Seq[Int]])
+      case java.lang.Long.TYPE      => LongImpl(buffer.asInstanceOf[Seq[Long]])
+      case java.lang.Float.TYPE     => FloatImpl(buffer.asInstanceOf[Seq[Float]])
+      case java.lang.Double.TYPE    => DoubleImpl(buffer.asInstanceOf[Seq[Double]])
+      case java.lang.Boolean.TYPE   => BooleanImpl(buffer.asInstanceOf[Seq[Boolean]])
+      //case java.lang.Void.TYPE      =>
+      case x                        => throw new Error("Unknown JArrayPrimitive for class " + x)
+    }
+  }*/
+
+  //TODO: optimize with typed arrays when possible
+  def createPrimitiveArray[@specialized T: ClassTag](length: Int): PrimitiveArray[T] =
+    wrapPrimitiveArray(new Array[T](length))
+
+  def wrapPrimitiveArray[@specialized T: ClassTag](from: Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
+    def length: Int = from.length
+
+    def update(idx: Int, value: T): Unit = from(idx) = value
+
+    def apply(idx: Int): T = from(idx)
+
+    //for direct wrapping if/when available
+    def toIndexedSeq: IndexedSeq[T] = from
+
+    def underlying = from
+  }
 }

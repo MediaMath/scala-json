@@ -19,6 +19,8 @@ package json.internal
 import json._
 import json.internal.DefaultVMContext._
 
+import scala.collection.generic.Growable
+
 private[json] object VM {
   //import shadow context! Will shadow default terms from on high
 
@@ -74,9 +76,19 @@ trait JValueLikeCompanion extends Accessors with VM.Context.JValueCompanionBase 
   implicit def intToJValue(v: Int): JNumber = JNumber(v)
 }
 
+trait SimpleStringBuilder {
+  def append(str: String): SimpleStringBuilder
+  def result(): String
+
+  def append(char: Char): SimpleStringBuilder
+  def ensureCapacity(cap: Int): Unit
+
+  final override def toString = result()
+}
+
 trait JValueLike extends Equals { _: JValue =>
-  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
-    builder: StringBuilder = new StringBuilder, lvl: Int = 0): StringBuilder
+  def appendJSONStringBuilder(settings: JSONBuilderSettings,
+      out: SimpleStringBuilder, lvl: Int): SimpleStringBuilder
 
   /** JS-like string representation of this value. */
   def toJString: JString
@@ -227,8 +239,8 @@ trait JValueLike extends Equals { _: JValue =>
   /** Boolean ''not'' according to JS boolean logic */
   def unary_!(): JBoolean = toJBoolean.not
 
-  def toJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty, lvl: Int = 0): StringBuilder =
-    appendJSONStringBuilder(settings, new StringBuilder(128), lvl)
+  def toJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty, lvl: Int = 0): SimpleStringBuilder =
+    appendJSONStringBuilder(settings, VM.Context.newVMStringBuilder, lvl)
 
   /** toString method that uses a specific [[json.JSONBuilderSettings]] and specific indent level to generate JSON */
   def toString(settings: JSONBuilderSettings,

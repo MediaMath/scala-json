@@ -17,7 +17,6 @@
 package json.internal
 
 import json._
-import json.internal.JArrayPrimitive.{SpecialBuilders, PrimitiveAccessor}
 
 import scala.collection.generic.CanBuildFrom
 import scala.reflect.ClassTag
@@ -70,55 +69,79 @@ trait LowPriorityAccessors {
   implicit def tuple3Accessor[A: JSONAccessor, B: JSONAccessor, C: JSONAccessor] = new Tuple3Accessor[A, B, C]
 
   implicit def iterableAccessor[T, U[T] <: Iterable[T]](
-      implicit acc: JSONAccessor[T], cbf: CanBuildFrom[Nothing, T, U[T]],
+      implicit acc: JSONAccessor[T],
+      cbf: CanBuildFrom[Nothing, T, U[T]],
       ctag: ClassTag[U[T]],
-      primitive: PrimitiveAccessor[T] = PrimitiveAccessor.NonPrimitive[T],
-      specialBuilder: SpecialBuilders[U] = SpecialBuilders.ForAny[U]) = new IterableAccessor[T, U]
+      ctagForT: ClassTag[T],
+      specialBuilder: PrimitiveJArray.SpecialBuilders[U] = PrimitiveJArray.SpecialBuilders.ForAny) = new IterableAccessor[T, U]
 
   final class IterableAccessor[T, U[T] <: Iterable[T]](implicit val acc: JSONAccessor[T],
-      val cbf: CanBuildFrom[Nothing, T, U[T]], val ctag: ClassTag[U[T]],
-      val primitive: PrimitiveAccessor[T],
-      val specialBuilder: SpecialBuilders[U]) extends JSONAccessorProducer[U[T], JArray] {
+      val cbf: CanBuildFrom[Nothing, T, U[T]],
+      val ctag: ClassTag[U[T]],
+      val specialBuilder: PrimitiveJArray.SpecialBuilders[U]) extends JSONAccessorProducer[U[T], JArray] {
     def clazz = ctag.runtimeClass
+
+    val primitiveAccessor = acc match {
+      case x: PrimitiveJArray.Builder[T] => Some(x)
+      case _ => None
+    }
 
     override def toString = "IterableAccessor"
 
     override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[T])
 
-    def createJSON(obj: U[T]): JArray = {
-      if(primitive.isPrimitive) primitive.createJSON(obj)
-      else JArray(obj.map(_.js))
+    def createJSON(obj: U[T]): JArray = primitiveAccessor match {
+      case None => JArray(obj.map(_.js))
+      case Some(prim) => //create using flat primitive array
+        val arr = prim.create(obj.size)
+
+        var idx = 0
+        for(x <- obj) {
+          arr.primArr(idx) = x
+          idx += 1
+        }
+
+        arr
     }
 
     def fromJSON(js: JValue): U[T] = js match {
-      case x: JArrayPrimitive[_] if primitive.isPrimitive =>
-        val iterable = primitive.iterableFromJValue(x)
+      //if primitive array of matching internal type
+      case x: PrimitiveJArray[_] if specialBuilder.canIndexedSeq && primitiveAccessor.isDefined =>
+        implicit val builder = primitiveAccessor.get
 
-        specialBuilder match {
-          case x if x.isGeneric =>
-            iterable.to[U](cbf)
-          case builder =>
-            builder.buildFrom(iterable)
+        val indexed = if(x.builder.classTag == builder.classTag)
+          x.primArr.toIndexedSeq.asInstanceOf[IndexedSeq[T]]
+        else {
+          val newPrim = builder.create(x.length)
+          newPrim.copyFrom(x)
+          newPrim.primArr.toIndexedSeq
         }
+
+        specialBuilder.buildFrom(indexed)
+      //TODO: maybe some translation for boxed arrays
+      /*case x: BoxedJArray[_] if x.builder.classTag == ctagForT && specialBuilder.canIndexedSeq =>
+        val indexed = x.primValues.asInstanceOf[IndexedSeq[T]]
+        specialBuilder.buildFrom(indexed)*/
 
       case JArray(vals) =>
         var exceptions = List[InputFormatException]()
+        val builder = cbf()
 
-        val res = vals.iterator.zipWithIndex.flatMap {
-          case (x, idx) =>
-            try Seq(x.to[T]) catch {
-              case e: InputFormatException =>
-                exceptions ::= e.prependFieldName(idx.toString)
-                Nil
-            }
-        }.to[U](cbf)
+        for((x, idx) <- vals.iterator.zipWithIndex) {
+          try {
+            val value = x.to[T]
+            builder += value
+          } catch {
+            case e: InputFormatException =>
+              exceptions ::= e.prependFieldName(idx.toString)
+          }
+        }
 
         if (!exceptions.isEmpty)
           throw InputFormatsException(exceptions.flatMap(_.getExceptions).toSet)
 
-        res
-      case x => throw InputTypeException("",
-        "array", x.getClass.getName, x)
+        builder.result()
+      case x => throw InputTypeException("", "array", x.getClass.getName, x)
     }
 
   }

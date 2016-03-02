@@ -19,7 +19,6 @@ package json.internal
 import java.text.SimpleDateFormat
 
 import json._
-import json.internal.JArrayPrimitive.{SpecialBuilders, PrimitiveAccessor}
 
 import scala.collection.generic.CanBuildFrom
 import scala.reflect.{classTag, ClassTag}
@@ -119,7 +118,7 @@ trait Accessors extends LowPriorityAccessors {
     }
   }
 
-  implicit case object BooleanAccessor extends JSONAccessorProducerA[Boolean, JBoolean] {
+  implicit case object BooleanAccessor extends JSONAccessorProducerA[Boolean, JBoolean] with PrimitiveJArray.Builder[Boolean] {
     def createJSON(obj: Boolean): JBoolean = JBoolean(obj)
     def fromJSON(js: JValue): Boolean = js match {
       case JFalse       => false
@@ -133,9 +132,13 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "boolean", x.getClass.getName, x)
     }
+    def toDouble(x: Boolean): Double = if(x) 1.0 else 0.0
+    def fromDouble(x: Double): Boolean = x != 0.0
+
+    override def toJValue(x: Boolean): JValue = JBoolean(x)
   }
 
-  implicit case object IntAccessor extends JSONAccessorProducerA[Int, JNumber] {
+  implicit case object IntAccessor extends JSONAccessorProducerA[Int, JNumber] with PrimitiveJArray.Builder[Int] {
     def createJSON(obj: Int): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Int = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -147,9 +150,11 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Int): Double = x.toDouble
+    def fromDouble(x: Double): Int = x.toInt
   }
 
-  implicit case object LongAccessor extends JSONAccessorProducerA[Long, JNumber] {
+  implicit case object LongAccessor extends JSONAccessorProducerA[Long, JNumber] with PrimitiveJArray.Builder[Long] {
     def createJSON(obj: Long): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Long = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -161,9 +166,11 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Long): Double = x.toDouble
+    def fromDouble(x: Double): Long = x.toLong
   }
 
-  implicit case object DoubleAccessor extends JSONAccessorProducerA[Double, JNumber] {
+  implicit case object DoubleAccessor extends JSONAccessorProducerA[Double, JNumber] with PrimitiveJArray.Builder[Double] {
     def createJSON(obj: Double): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Double = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -172,9 +179,11 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Double): Double = x
+    def fromDouble(x: Double): Double = x
   }
 
-  implicit case object FloatAccessor extends JSONAccessorProducerA[Float, JNumber] {
+  implicit case object FloatAccessor extends JSONAccessorProducerA[Float, JNumber] with PrimitiveJArray.Builder[Float] {
     def createJSON(obj: Float): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Float = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -186,9 +195,11 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Float): Double = x.toDouble
+    def fromDouble(x: Double): Float = x.toFloat
   }
 
-  implicit case object ShortAccessor extends JSONAccessorProducerA[Short, JNumber] {
+  implicit case object ShortAccessor extends JSONAccessorProducerA[Short, JNumber] with PrimitiveJArray.Builder[Short] {
     def createJSON(obj: Short): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Short = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -200,9 +211,11 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Short): Double = x.toDouble
+    def fromDouble(x: Double): Short = x.toShort
   }
 
-  implicit case object ByteAccessor extends JSONAccessorProducerA[Byte, JNumber] {
+  implicit case object ByteAccessor extends JSONAccessorProducerA[Byte, JNumber] with PrimitiveJArray.Builder[Byte] {
     def createJSON(obj: Byte): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Byte = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -214,6 +227,8 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Byte): Double = x.toDouble
+    def fromDouble(x: Double): Byte = x.toByte
   }
 
   implicit case object JValueAccessor extends JSONAccessorProducerA[JValue, JValue] {
@@ -223,7 +238,8 @@ trait Accessors extends LowPriorityAccessors {
 
   /** convenience abstract class to reduce class size from trait */
   abstract class JSONAccessorProducerA[T: ClassTag, U <: JValue] extends JSONAccessorProducer[T, U] {
-    val clazz = implicitly[ClassTag[T]].runtimeClass
+    val classTag = implicitly[ClassTag[T]]
+    val clazz = classTag.runtimeClass
   }
 }
 

@@ -24,10 +24,13 @@ import com.fasterxml.jackson.databind.{DeserializationContext, ObjectMapper}
 import com.fasterxml.jackson.core.JsonToken._
 
 import json._
+import json.accessors._
 
 import scala.annotation.switch
 import scala.collection.immutable.VectorBuilder
 import scala.collection.mutable
+
+import shadow.{VMContext => JVMContext}
 
 /** To be used THREAD LOCAL ONLY */
 private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](classOf[JValue]) {
@@ -140,8 +143,7 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
     }
 
     jp.nextToken match {
-      case END_ARRAY =>
-        JArray.empty
+      case END_ARRAY => JArray.empty
       case VALUE_NUMBER_INT =>
         val builder = mutable.ArrayBuilder.make[Int]
         builder.sizeHint(16)
@@ -159,7 +161,7 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
           anyBuilder ++= builder.result().iterator.map(JNumber(_))
           readAsJValue()
         } else {
-          JArrayPrimitive.IntImpl(builder.result())
+          new PrimitiveJArray(JVMContext wrapPrimitiveArray builder.result())
         }
       case VALUE_NUMBER_FLOAT =>
         val builder = mutable.ArrayBuilder.make[Double]
@@ -178,7 +180,7 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
           anyBuilder ++= builder.result().iterator.map(JNumber(_))
           readAsJValue()
         } else {
-          JArrayPrimitive.DoubleImpl(builder.result())
+          new PrimitiveJArray(JVMContext wrapPrimitiveArray builder.result())
         }
       case VALUE_TRUE | VALUE_FALSE =>
         val builder = mutable.ArrayBuilder.make[Boolean]
@@ -197,7 +199,7 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
           anyBuilder ++= builder.result().iterator.map(JBoolean(_))
           readAsJValue()
         } else {
-          JArrayPrimitive.BooleanImpl(builder.result())
+          new PrimitiveJArray(JVMContext wrapPrimitiveArray builder.result())
         }
       case _ => readAsJValue()
     }

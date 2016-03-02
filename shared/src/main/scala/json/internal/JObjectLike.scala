@@ -22,7 +22,7 @@ import json.JObject._
 import json._
 
 import scala.collection.IterableLike
-import scala.collection.generic.{CanBuildFrom, GenericCompanion}
+import scala.collection.generic.{Growable, CanBuildFrom, GenericCompanion}
 import scala.collection.immutable.VectorBuilder
 import scala.collection.mutable
 
@@ -167,7 +167,7 @@ trait JObjectLike { _: JObject =>
   }
 
   def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
-      out: StringBuilder, lvl: Int): StringBuilder = {
+      out: SimpleStringBuilder, lvl: Int): SimpleStringBuilder = {
     val nl = settings.newLineString
     val tab = settings.tabString
 
