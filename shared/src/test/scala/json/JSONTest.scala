@@ -133,6 +133,13 @@ object Tester extends TestSuite {
         assert(field != JUndefined)
       }
 
+      "parse json equality" - {
+        val parsed = JValue.fromString(testJSON2)
+        val reparsed = JValue fromString parsed.toString
+
+        assert(parsed == reparsed)
+      }
+
       "have equality3" - testJSONEqual(t3jval)
       "have equality string" - testJSONEqual(JString("test"))
       "have equality num" - testJSONEqual(JNumber(0.5))
