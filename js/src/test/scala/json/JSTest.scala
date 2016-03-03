@@ -111,7 +111,7 @@ object JSTest extends TestSuite {
       val jval = obj.js
       val native = jval.toNativeJS
       val asString = js.JSON.stringify(jval.asInstanceOf[js.Any])
-      val reone: TestTypedArray = JSJValue.fromNativeJS(native).toObject[TestTypedArray]
+      val fromNative: TestTypedArray = JSJValue.fromNativeJS(native).toObject[TestTypedArray]
       val fromJSON = JValue fromString asString
 
       require(fromJSON == jval)
@@ -120,7 +120,7 @@ object JSTest extends TestSuite {
         case PrimitiveJArray(wrapped: js.WrappedArray[_])
           if (wrapped.array: js.Any).isInstanceOf[js.typedarray.Int8Array] => true
         case PrimitiveJArray(x) =>
-          sys.error("got a primitive, but not wrapper")
+          sys.error("got a primitive, but not wrapper " + x.getClass)
         case _ => false
       })
 
@@ -128,21 +128,21 @@ object JSTest extends TestSuite {
         case PrimitiveJArray(wrapped: js.WrappedArray[_])
           if (wrapped.array: js.Any).isInstanceOf[js.typedarray.Int8Array] => true
         case PrimitiveJArray(x) =>
-          sys.error("got a primitive, but not wrapper")
+          sys.error("got a primitive, but not wrapper" + x.getClass)
         case _ => false
       })
 
-      require(arr.js.jArray.toObject[Seq[Byte]] match {
+      require(arr.js.toObject[Seq[Byte]] match {
         case wrapped: js.WrappedArray[_]
           if (wrapped.array: js.Any).isInstanceOf[js.typedarray.Int8Array] => true
         case _ => false
-      })
+      }, "failed to convert back to a wrapped array")
 
-      require(reone.seq match {
+      require(fromNative.seq match {
         case wrapped: js.WrappedArray[_]
           if (wrapped.array: js.Any).isInstanceOf[js.typedarray.Int8Array] => true
         case _ => false
-      })
+      }, "failed to get direct access to native array from native")
     }
 
     "test parse" - {

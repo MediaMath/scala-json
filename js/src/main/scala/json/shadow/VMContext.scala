@@ -20,6 +20,7 @@ import json.JSJValue.TypedArrayExtractor
 import json.internal.DefaultVMContext.PrimitiveArray
 import json.internal.{PrimitiveJArray, DefaultVMContext, SimpleStringBuilder, BaseVMContext}
 import json._
+import scala.collection.mutable
 import scala.reflect.ClassTag
 import scalajs.js.{JSON => NativeJSON}
 import scala.scalajs.js.annotation.JSExport
@@ -52,6 +53,34 @@ object VMContext extends BaseVMContext {
   }
 
   def fromAny(value: Any): JValue = JSJValue.from(value)
+
+  def newJValueFromArray(arr: Array[_]): JArray = {
+    import json.accessors._
+
+    arr match {
+      case x: Array[Byte] => new PrimitiveJArray[Byte](wrapPrimitiveArray(x))
+      case x: Array[Short] => new PrimitiveJArray[Short](wrapPrimitiveArray(x))
+      case x: Array[Int] => new PrimitiveJArray[Int](wrapPrimitiveArray(x))
+      case x: Array[Long] => new PrimitiveJArray[Long](wrapPrimitiveArray(x))
+      case x: Array[Double] => new PrimitiveJArray[Double](wrapPrimitiveArray(x))
+      case x: Array[Float] => new PrimitiveJArray[Float](wrapPrimitiveArray(x))
+      case x: Array[Boolean] => new PrimitiveJArray[Boolean](wrapPrimitiveArray(x))
+    }
+  }
+
+  def extractPrimitiveJArray[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray] = {
+    val builder = implicitly[PrimitiveJArray.Builder[T]]
+
+    x match {
+      case x: mutable.WrappedArray[T] => Some(newJValueFromArray(x.array))
+      case x: js.WrappedArray[T] => Some(x.array match {
+        case TypedArrayExtractor(typed) => JSJValue.typedArrayToJArray(typed)
+        case jArray => new PrimitiveJArray[T](wrapPrimitiveArray(jArray))
+
+      })
+      case _ => None
+    }
+  }
 
   trait JValueCompanionBase {
     implicit case object JsAnyAccessor extends JSONAccessorProducer[js.Any, JValue] {
@@ -157,7 +186,20 @@ object VMContext extends BaseVMContext {
   def createPrimitiveArray[@specialized T: ClassTag](length: Int): PrimitiveArray[T] =
     wrapPrimitiveArray(new Array[T](length))
 
-  def wrapPrimitiveArray[@specialized T: ClassTag](from: Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
+  def wrapPrimitiveArray[@specialized T: ClassTag](from: js.Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
+    def length: Int = from.length
+
+    def update(idx: Int, value: T): Unit = from(idx) = value
+
+    def apply(idx: Int): T = from(idx)
+
+    //for direct wrapping if/when available
+    def toIndexedSeq: IndexedSeq[T] = from
+
+    def underlying = from
+  }
+
+  def wrapPrimitiveArray[T: ClassTag](from: Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
     def length: Int = from.length
 
     def update(idx: Int, value: T): Unit = from(idx) = value

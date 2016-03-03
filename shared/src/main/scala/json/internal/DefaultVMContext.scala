@@ -17,6 +17,8 @@
 package json.internal
 
 import json._
+import json.internal.DefaultVMContext.PrimitiveArray
+import json.internal.PrimitiveJArray.Builder
 
 import scala.reflect.ClassTag
 
@@ -25,23 +27,8 @@ trait BaseVMContext {
   def fromAny(value: Any): JValue
   def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder
   def newVMStringBuilder: SimpleStringBuilder
-  def createPrimitiveArray[@specialized T: ClassTag](length: Int): DefaultVMContext.PrimitiveArray[T] /*{
-    val tag = implicitly[ClassTag[T]]
-    val inst = tag.runtimeClass match {
-      case java.lang.Byte.TYPE      => ByteImpl(buffer.asInstanceOf[Seq[Byte]])
-      case java.lang.Short.TYPE     => ShortImpl(buffer.asInstanceOf[Seq[Short]])
-      //case java.lang.Character.TYPE =>
-      case java.lang.Integer.TYPE   => IntImpl(buffer.asInstanceOf[Seq[Int]])
-      case java.lang.Long.TYPE      => LongImpl(buffer.asInstanceOf[Seq[Long]])
-      case java.lang.Float.TYPE     => FloatImpl(buffer.asInstanceOf[Seq[Float]])
-      case java.lang.Double.TYPE    => DoubleImpl(buffer.asInstanceOf[Seq[Double]])
-      case java.lang.Boolean.TYPE   => BooleanImpl(buffer.asInstanceOf[Seq[Boolean]])
-      //case java.lang.Void.TYPE      =>
-      case x                        => throw new Error("Unknown JArrayPrimitive for class " + x)
-    }
-
-    inst.asInstanceOf[JArrayPrimitive[T]]
-  }*/
+  def createPrimitiveArray[@specialized T: ClassTag](length: Int): DefaultVMContext.PrimitiveArray[T]
+  def extractPrimitiveJArray[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray]
 
   private[json] trait JValueCompanionBase
 
@@ -53,6 +40,11 @@ trait BaseVMContext {
   private[json] trait JUndefinedBase
   private[json] trait JNullBase
   private[json] trait JStringBase
+
+  object PrimitiveJArrayExtractor {
+    def unapply[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray] =
+      extractPrimitiveJArray(x)
+  }
 }
 
 object DefaultVMContext {
@@ -74,6 +66,7 @@ object DefaultVMContext {
     def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder = ???
     def newVMStringBuilder: SimpleStringBuilder = ???
     def createPrimitiveArray[@specialized T: ClassTag](length: Int): PrimitiveArray[T] = ???
+    def extractPrimitiveJArray[T: ClassTag : Builder](x: Iterable[T]): Option[JArray] = ???
   }
 
   trait PrimitiveArray[@specialized T] {

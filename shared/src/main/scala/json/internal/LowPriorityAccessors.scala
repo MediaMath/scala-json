@@ -81,6 +81,8 @@ trait LowPriorityAccessors {
       val specialBuilder: PrimitiveJArray.SpecialBuilders[U]) extends JSONAccessorProducer[U[T], JArray] {
     def clazz = ctag.runtimeClass
 
+    implicit def classTagForT: ClassTag[T] = ClassTag(acc.clazz.asInstanceOf[Class[T]])
+    
     val primitiveAccessor = acc match {
       case x: PrimitiveJArray.Builder[T] => Some(x)
       case _ => None
@@ -92,16 +94,22 @@ trait LowPriorityAccessors {
 
     def createJSON(obj: U[T]): JArray = primitiveAccessor match {
       case None => JArray(obj.map(_.js))
-      case Some(prim) => //create using flat primitive array
-        val arr = prim.create(obj.size)
+      case Some(jvPrim) =>
+        implicit def primBuild = jvPrim
 
-        var idx = 0
-        for(x <- obj) {
-          arr.primArr(idx) = x
-          idx += 1
+        obj match {
+          case VM.Context.PrimitiveJArrayExtractor(jarr) => jarr //extract primitive jarray using base array
+          case _ =>
+            val arr = jvPrim.create(obj.size)
+
+            var idx = 0
+            for(x <- obj) {
+              arr.primArr(idx) = x
+              idx += 1
+            }
+
+            arr
         }
-
-        arr
     }
 
     def fromJSON(js: JValue): U[T] = js match {
@@ -117,7 +125,7 @@ trait LowPriorityAccessors {
           newPrim.primArr.toIndexedSeq
         }
 
-        specialBuilder.buildFrom(indexed)
+        indexed.asInstanceOf[U[T]]
       //TODO: maybe some translation for boxed arrays
       /*case x: BoxedJArray[_] if x.builder.classTag == ctagForT && specialBuilder.canIndexedSeq =>
         val indexed = x.primValues.asInstanceOf[IndexedSeq[T]]

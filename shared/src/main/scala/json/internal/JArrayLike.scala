@@ -120,19 +120,6 @@ private final class JArraySeqImpl(override val values: IndexedSeq[JValue]) exten
   override def apply(idx: Int): JValue = values(idx)
 }
 
-final class BoxedJArray[T: PrimitiveJArray.Builder] private[json] (private[json] val primValues: IndexedSeq[T]) extends JArray {
-  val builder = implicitly[PrimitiveJArray.Builder[T]]
-
-  def length: Int = primValues.length
-
-  override def apply(idx: Int): JValue = builder.toJValue(primValues(idx))
-
-  def getDouble(idx: Int): Double = builder toDouble primValues(idx)
-
-  //TODO: should check fraction component for float/double
-  def numStringFor(idx: Int): String = primValues(idx).toString
-}
-
 final class PrimitiveJArray[@specialized T: PrimitiveJArray.Builder] private[json] (private[json] val primArr: PrimitiveArray[T]) extends JArray {
   type Elem = T
 
@@ -159,24 +146,16 @@ final class PrimitiveJArray[@specialized T: PrimitiveJArray.Builder] private[jso
 object PrimitiveJArray {
   private[json] def unapply[T](x: PrimitiveJArray[T]): Option[IndexedSeq[T]] = Some(x.primArr.toIndexedSeq)
 
-  sealed trait SpecialBuilders[+U[_]] {
-    def buildFrom[T](iterable: Iterable[T]): U[T]
+  sealed trait SpecialBuilders[+U[_] <: Iterable[_]] {
     def canIndexedSeq: Boolean
   }
 
   object SpecialBuilders {
-    implicit def indexedSeqSpecial[U[_] >: IndexedSeq[_]]: SpecialBuilders[U] = ForIndexedSeq
-
-    case object ForIndexedSeq extends SpecialBuilders[IndexedSeq] {
-      def buildFrom[T](iterable: Iterable[T]): IndexedSeq[T] = iterable match {
-        case x: IndexedSeq[T] => x
-        case _ => iterable.toIndexedSeq
-      }
+    implicit case object ForIndexedSeq extends SpecialBuilders[IndexedSeq] {
       def canIndexedSeq: Boolean = true
     }
 
     case object ForAny extends SpecialBuilders[Nothing] {
-      def buildFrom[T](iterable: Iterable[T]) = sys.error("no real implementation")
       def canIndexedSeq: Boolean = false
     }
   }
@@ -189,9 +168,11 @@ object PrimitiveJArray {
 
     def toJValue(x: T): JValue = JNumber(toDouble(x))
 
+    def createFrom(prim: PrimitiveArray[T]) = new PrimitiveJArray[T](prim)(this)
+
     def create(length: Int) = {
       val prim = VM.Context.createPrimitiveArray[T](length)(classTag)
-      new PrimitiveJArray[T](prim)(this)
+      createFrom(prim)
     }
   }
 }

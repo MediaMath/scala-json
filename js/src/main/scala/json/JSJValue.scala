@@ -52,6 +52,16 @@ object JSJValue {
     }
   }
 
+  def typedArrayToJArray(arr: TypedArray[_, _]) = arr match {
+    case x: Int8Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Int16Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Int32Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Uint8Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Uint16Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Uint32Array => new PrimitiveJArray(newPrimArr(x))
+    case _ => sys.error("Unsupported native array of type " + js.typeOf(arr))
+  }
+
   def fromNativeJS(default: => JValue)(v: Any): JValue = v match {
     case x: JValue => x
     case x if js.isUndefined(x) => JUndefined
@@ -66,15 +76,7 @@ object JSJValue {
     case true      => JTrue
     case false     => JFalse
     case x: Double => JNumber(x)
-    case TypedArrayExtractor(arr) => arr match {
-      case x: Int8Array => new PrimitiveJArray(newPrimArr(x))
-      case x: Int16Array => new PrimitiveJArray(newPrimArr(x))
-      case x: Int32Array => new PrimitiveJArray(newPrimArr(x))
-      case x: Uint8Array => new PrimitiveJArray(newPrimArr(x))
-      case x: Uint16Array => new PrimitiveJArray(newPrimArr(x))
-      case x: Uint32Array => new PrimitiveJArray(newPrimArr(x))
-      case _ => sys.error("Unsupported native array of type " + js.typeOf(arr))
-    }
+    case TypedArrayExtractor(arr) => typedArrayToJArray(arr)
     case x0: js.Object =>
       val x = x0.asInstanceOf[js.Dynamic]
       val seq = (js.Object keys x0).map { key =>

@@ -18,9 +18,11 @@ package json.shadow
 
 import json._
 import json.internal.DefaultVMContext.PrimitiveArray
-import json.internal.{SimpleStringBuilder, BaseVMContext, JValueObjectDeserializer}
+import json.internal.PrimitiveJArray.Builder
+import json.internal.{PrimitiveJArray, SimpleStringBuilder, BaseVMContext, JValueObjectDeserializer}
 
 import scala.collection.immutable.StringOps
+import scala.collection.mutable
 import scala.reflect.ClassTag
 
 object VMContext extends BaseVMContext {
@@ -109,6 +111,27 @@ object VMContext extends BaseVMContext {
     sb.append('"')
 
     sb
+  }
+
+  def newJValueFromArray(arr: Array[_]): JArray = {
+    import json.accessors._
+
+    arr match {
+      case x: Array[Byte] => new PrimitiveJArray[Byte](wrapPrimitiveArray(x))
+      case x: Array[Short] => new PrimitiveJArray[Short](wrapPrimitiveArray(x))
+      case x: Array[Int] => new PrimitiveJArray[Int](wrapPrimitiveArray(x))
+      case x: Array[Long] => new PrimitiveJArray[Long](wrapPrimitiveArray(x))
+      case x: Array[Double] => new PrimitiveJArray[Double](wrapPrimitiveArray(x))
+      case x: Array[Float] => new PrimitiveJArray[Float](wrapPrimitiveArray(x))
+      case x: Array[Boolean] => new PrimitiveJArray[Boolean](wrapPrimitiveArray(x))
+    }
+  }
+
+  def extractPrimitiveJArray[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray] = {
+    x match {
+      case x: mutable.WrappedArray[T] => Some(newJValueFromArray(x.array))
+      case _ => None
+    }
   }
 }
 

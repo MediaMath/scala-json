@@ -167,7 +167,7 @@ object Tester extends TestSuite {
       "native implicit accessor for byte array" - {
         val jv = Seq[Byte](1, 2, 3).js
 
-        assert(accessorOf[Byte].isInstanceOf[PrimitiveJArray.Builder[Byte]])
+        assert(accessorOf[Byte].isInstanceOf[PrimitiveJArray.Builder[_]])
 
         assert(jv.isInstanceOf[PrimitiveJArray[_]])
       }
