@@ -6,7 +6,7 @@ scala-json is looking forward to receiving your feedback and pull requests!
 
 1. Fork [scala-json](https://github.com/MediaMath/scala-json)
 1. Clone your fork (we'll refer to your fork as `origin` hereafter)
-1. Install [SBT
+1. Install [SBT](http://www.scala-sbt.org/)
 1. Run `sbt test publishLocal`
 
 ```bash
