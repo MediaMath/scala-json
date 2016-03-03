@@ -15,14 +15,6 @@ $ cd scala-json/
 $ sbt test
 ```
 
-#### Building the documentation
-
-After building the components themselves, the documentation pages for scala-json can be built by running the `docs` Grunt task:
-
-```bash
-$ sbt doc
-```
-
 ## <a name="issue"></a> Found an Issue?
 If you find a bug in the source code or a mistake in the documentation, help us by
 submitting an [issue](https://github.com/MediaMath/scala-json/issues).
