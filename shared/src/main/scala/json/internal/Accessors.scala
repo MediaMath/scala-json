@@ -181,6 +181,14 @@ trait Accessors extends LowPriorityAccessors {
     }
     def toDouble(x: Double): Double = x
     def fromDouble(x: Double): Double = x
+
+    //remove empty fraction component
+    override def toPrimitiveString(x: Double): String = {
+      val xInt = x.toInt
+
+      if(xInt == x) xInt.toString
+      else x.toString
+    }
   }
 
   implicit case object FloatAccessor extends JSONAccessorProducerA[Float, JNumber] with PrimitiveJArray.Builder[Float] {
@@ -197,6 +205,13 @@ trait Accessors extends LowPriorityAccessors {
     }
     def toDouble(x: Float): Double = x.toDouble
     def fromDouble(x: Double): Float = x.toFloat
+
+    override def toPrimitiveString(x: Float): String = {
+      val xInt = x.toInt
+
+      if(xInt == x) xInt.toString
+      else x.toString
+    }
   }
 
   implicit case object ShortAccessor extends JSONAccessorProducerA[Short, JNumber] with PrimitiveJArray.Builder[Short] {

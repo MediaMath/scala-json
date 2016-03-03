@@ -120,13 +120,14 @@ private final class JArraySeqImpl(override val values: IndexedSeq[JValue]) exten
   override def apply(idx: Int): JValue = values(idx)
 }
 
+//TODO: need a generic IndexedSeq version of PrimitiveJArray
+
 final class PrimitiveJArray[@specialized T: PrimitiveJArray.Builder] private[json] (private[json] val primArr: PrimitiveArray[T]) extends JArray {
   type Elem = T
 
   val builder = implicitly[PrimitiveJArray.Builder[T]]
 
-  //TODO: should check fraction component for float/double
-  def numStringFor(idx: Int): String = primArr(idx).toString
+  def numStringFor(idx: Int): String = builder.toPrimitiveString(primArr(idx))
 
   def length = primArr.length
 
@@ -169,6 +170,8 @@ object PrimitiveJArray {
     def toJValue(x: T): JValue = JNumber(toDouble(x))
 
     def createFrom(prim: PrimitiveArray[T]) = new PrimitiveJArray[T](prim)(this)
+
+    def toPrimitiveString(x: T): String = x.toString
 
     def create(length: Int) = {
       val prim = VM.Context.createPrimitiveArray[T](length)(classTag)

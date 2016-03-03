@@ -20,6 +20,7 @@ Accessors come in 3 types:
   * Main accessor type used
   * Produces JValue from T
   * Produces T from JValue
+  * Is a simple type-class that can be used with type-class notation ```[T: JSONAccessor]```
 * ```JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.CreateJSON[T, JV]```
   * Produces specific type of JValue (JV) from T
   * Produces T from JValue
