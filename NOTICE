@@ -1,0 +1,16 @@
+scala-json is licensed under the conditions in the LICENSE document.
+
+scala-json includes dependencies to other third-party projects that are obtained through SBT dependency management.
+These projects are licensed as follows:
+
+scala (http://www.scala-lang.org/license.html)
+
+scala-js (https://github.com/scala-js/scala-js/blob/master/LICENSE)
+
+jackson (http://wiki.fasterxml.com/JacksonLicensing)
+
+tut (https://github.com/tpolecat/tut/blob/master/LICENSE)
+
+scalamacros.org paradise (https://github.com/scalamacros/paradise/blob/2.11.7/LICENSE.md)
+
+utest is offered under an unidentified license (https://github.com/lihaoyi/utest)
