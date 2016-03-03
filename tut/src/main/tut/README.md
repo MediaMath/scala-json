@@ -69,3 +69,5 @@ Dependencies
 * [µTest](https://github.com/lihaoyi/utest) for testing
 * [tut](https://github.com/tpolecat/tut) for doc building
 
+[Contributing](./CONTRIBUTING.md)
+---
