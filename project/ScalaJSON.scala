@@ -84,7 +84,7 @@ object ScalaJSON {
       <licenses>
         <license>
           <name>Apache 2.0</name>
-          <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+          <url>https://github.com/MediaMath/scala-json/blob/master/LICENSE</url>
         </license>
       </licenses>
       <scm>

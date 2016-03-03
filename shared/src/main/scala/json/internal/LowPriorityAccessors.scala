@@ -118,11 +118,11 @@ trait LowPriorityAccessors {
         implicit val builder = primitiveAccessor.get
 
         val indexed = if(x.builder.classTag == builder.classTag)
-          x.primArr.toIndexedSeq.asInstanceOf[IndexedSeq[T]]
+          x.primArr.toWrapped.asInstanceOf[IndexedSeq[T]]
         else {
           val newPrim = builder.create(x.length)
           newPrim.copyFrom(x)
-          newPrim.primArr.toIndexedSeq
+          newPrim.primArr.toWrapped
         }
 
         indexed.asInstanceOf[U[T]]

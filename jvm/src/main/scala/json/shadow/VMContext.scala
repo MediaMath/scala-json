@@ -50,10 +50,10 @@ object VMContext extends BaseVMContext {
   }
 
   //TODO: do these need to be specialized?
-  def createPrimitiveArray[@specialized T: ClassTag](length: Int): PrimitiveArray[T] =
+  def createPrimitiveArray[/*@specialized */T: ClassTag](length: Int): PrimitiveArray[T] =
     wrapPrimitiveArray(new Array[T](length))
 
-  def wrapPrimitiveArray[@specialized T: ClassTag](from: Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
+  def wrapPrimitiveArray[/*@specialized */T: ClassTag](from: Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
     def length: Int = from.length
 
     def update(idx: Int, value: T): Unit = from(idx) = value
@@ -61,7 +61,7 @@ object VMContext extends BaseVMContext {
     def apply(idx: Int): T = from(idx)
 
     //for direct wrapping if/when available
-    def toIndexedSeq: IndexedSeq[T] = from
+    def toWrapped: IndexedSeq[T] = from
 
     def underlying = from
   }

@@ -65,11 +65,11 @@ object DefaultVMContext {
     def fromAny(value: Any): JValue = ???
     def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder = ???
     def newVMStringBuilder: SimpleStringBuilder = ???
-    def createPrimitiveArray[@specialized T: ClassTag](length: Int): PrimitiveArray[T] = ???
+    def createPrimitiveArray[/*@specialized */T: ClassTag](length: Int): PrimitiveArray[T] = ???
     def extractPrimitiveJArray[T: ClassTag : Builder](x: Iterable[T]): Option[JArray] = ???
   }
 
-  trait PrimitiveArray[@specialized T] {
+  /*trait PrimitiveArray[@specialized T] {
     def length: Int
     def apply(idx: Int): T
     def update(idx: Int, value: T): Unit
@@ -78,5 +78,9 @@ object DefaultVMContext {
     def toIndexedSeq: IndexedSeq[T]
 
     //def iterator: Iterator[T] = Iterator.from(0, length) map apply
+  }*/
+
+  trait PrimitiveArray[T] extends scala.collection.mutable.IndexedSeq[T] {
+    def toWrapped: IndexedSeq[T]
   }
 }

@@ -38,7 +38,7 @@ object JSJValue {
     def apply(idx: Int): T = from(idx)
 
     //for direct wrapping if/when available
-    def toIndexedSeq: IndexedSeq[T] = from.asInstanceOf[js.Array[T]]
+    def toWrapped: IndexedSeq[T] = from.asInstanceOf[js.Array[T]]
 
     def underlying = js.WrappedArray(from)
   }

@@ -120,9 +120,34 @@ private final class JArraySeqImpl(override val values: IndexedSeq[JValue]) exten
   override def apply(idx: Int): JValue = values(idx)
 }
 
-//TODO: need a generic IndexedSeq version of PrimitiveJArray
+//TODO: one day we should specialize this class with the following form, all VM specific:
+/*
+abstract class PrimitiveJArray[@specialized T: PrimitiveJArray.Builder] private[json] extends JArray {
+  type Elem = T
 
-final class PrimitiveJArray[@specialized T: PrimitiveJArray.Builder] private[json] (private[json] val primArr: PrimitiveArray[T]) extends JArray {
+  def toWrapped: IndexedSeq[T]
+  def length: Int
+  private[json] def applyRaw(idx: Int): T
+  private[json] def update(idx: Int, value: T): Unit
+
+  val builder = implicitly[PrimitiveJArray.Builder[T]]
+
+  def numStringFor(idx: Int): String = builder.toPrimitiveString(applyRaw(idx))
+
+  override def apply(idx: Int): JValue = builder.toJValue(applyRaw(idx))
+
+  def getDouble(idx: Int): Double = builder toDouble applyRaw(idx)
+
+  def copyFrom[F](from: PrimitiveJArray[F]): Unit = {
+    require(length == from.length)
+
+    for(idx <- 0 until length)
+      this(idx) = builder.fromDouble(from getDouble idx)
+  }
+}
+ */
+
+final class PrimitiveJArray[/*@specialized */T: PrimitiveJArray.Builder] private[json] (private[json] val primArr: PrimitiveArray[T]) extends JArray {
   type Elem = T
 
   val builder = implicitly[PrimitiveJArray.Builder[T]]
@@ -145,7 +170,7 @@ final class PrimitiveJArray[@specialized T: PrimitiveJArray.Builder] private[jso
 }
 
 object PrimitiveJArray {
-  private[json] def unapply[T](x: PrimitiveJArray[T]): Option[IndexedSeq[T]] = Some(x.primArr.toIndexedSeq)
+  private[json] def unapply[T](x: PrimitiveJArray[T]): Option[IndexedSeq[T]] = Some(x.primArr.toWrapped)
 
   sealed trait SpecialBuilders[+U[_] <: Iterable[_]] {
     def canIndexedSeq: Boolean
