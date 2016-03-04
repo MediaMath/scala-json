@@ -1,7 +1,6 @@
 Scala-json is licensed under the conditions in the LICENSE document. The project includes
 dependencies to other third-party projects that are obtained through SBT dependency management.
 
-
 These projects are licensed as follows:
 
 scala - (http://www.scala-lang.org/license.html)
