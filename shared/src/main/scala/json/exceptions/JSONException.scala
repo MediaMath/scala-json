@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package json
+package json.exceptions
 
 /*
  * Copyright 2016 MediaMath, Inc

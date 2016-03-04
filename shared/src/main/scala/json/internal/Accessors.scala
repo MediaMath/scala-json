@@ -19,6 +19,7 @@ package json.internal
 import java.text.SimpleDateFormat
 
 import json._
+import json.exceptions.{InputTypeException, NumericTypeException, InputFormatsException, InputFormatException}
 
 import scala.collection.generic.CanBuildFrom
 import scala.reflect.{classTag, ClassTag}

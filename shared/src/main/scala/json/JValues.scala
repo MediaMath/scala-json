@@ -16,6 +16,7 @@
 
 package json
 
+import json.exceptions.JUndefinedException
 import json.internal._
 
 import scala.collection.generic.{CanBuildFrom, GenericCompanion}
@@ -130,7 +131,7 @@ final case object JTrue extends JBoolean {
 
 final case object JFalse extends JBoolean {
   val toJString: JString = JString("false")
-  
+
   def value = false
   def not = JTrue
   def toJNumber: JNumber = JNumber.zero

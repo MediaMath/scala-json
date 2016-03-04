@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import json.exceptions.{GenericFieldException, InputFormatException}
 import json.{JSONAccessorProducer, JValue}
 import json.internal.JSONAnnotations
 
@@ -52,6 +53,8 @@ package object json extends JSONAnnotations with Implicits {
 
   object accessors extends internal.Accessors
 
+  /** Base type for all JSON exceptions. All exceptions are based off of case classes. */
+  type JSONException = exceptions.JSONException
 
   def fromJSON[T](jval: JValue)(implicit acc: JSONAccessor[T]) = acc.fromJSON(jval)
   def toJSONString[T: JSONAccessor](obj: T) = obj.js.toString

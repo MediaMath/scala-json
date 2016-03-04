@@ -143,6 +143,9 @@ res21: json.JObject =
 * Typed exceptions with field data
 
 ```scala
+scala> import json.exceptions._
+import json.exceptions._
+
 scala> try {
      |   JObject("FIELD_A" -> "badint".js).toObject[TestClass]
      |   sys.error("should fail before")
