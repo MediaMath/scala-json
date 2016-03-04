@@ -73,7 +73,7 @@ object ScalaJSON {
     }),
 
     javacOptions <++= scalaVersion map {
-      case x if x.startsWith("2.12.") => Seq("-source", "1.8", "-target", "1.8")
+      case x if x.startsWith("2.12.") => Nil
       case x => Seq("-source", "1.6", "-target", "1.6")
     },
 
