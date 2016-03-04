@@ -30,9 +30,6 @@ trait NameConversionGeneric extends ObjectAccessorAnnotation {
   def convert: String => String
 }
 
-case class IgnoreFieldDocGeneric(ignoreRead: Boolean = true,
-    ignoreWrite: Boolean = true) extends FieldAccessorAnnotation
-
 case class FieldNameGeneric(field: String) extends FieldAccessorAnnotation
 case class FieldDescriptionGeneric(desc: String) extends FieldAccessorAnnotation
 
@@ -40,13 +37,10 @@ case class EphemeralGeneric() extends FieldAccessorAnnotation
 
 /** holder for annotation types */
 trait JSONAnnotations {
-  /** Base type of all annotations, useful when reflecting `annos` in [[json.internal.FieldAccessor]] */
+  /** Base type of all annotations, useful when reflecting `annos` in [[json.FieldAccessor]] */
   type FieldAccessorAnnotation = json.internal.FieldAccessorAnnotation
 
   //TODO: need additional useful name function annos- upper case, lower case, camel, snake-case
-
-  /** Annotation used to mark whether a field will be ignored when emitting auto-gen docs */
-  type ignoreDoc = IgnoreFieldDocGeneric
 
   /** Provide field name that will be used in the JSON. Useful when making case classes for
     * existing JSON models that aren't camel cased.
