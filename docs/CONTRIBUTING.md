@@ -8,12 +8,11 @@ scala-json is looking forward to receiving your feedback and pull requests!
 1. Clone your fork (we'll refer to your fork as `origin` hereafter)
 1. Install [SBT](http://www.scala-sbt.org/)
 1. Run `sbt test publishLocal`
-
-```bash
-$ git clone git@github.com:[my-user-name]/scala-json.git
-$ cd scala-json/
-$ sbt test
-```
+    ```bash
+    $ git clone git@github.com:[my-user-name]/scala-json.git
+    $ cd scala-json/
+    $ sbt test
+    ```
 
 ## <a name="issue"></a> Found an Issue?
 If you find a bug in the source code or a mistake in the documentation, help us by
@@ -28,8 +27,11 @@ Before you submit your pull request consider the following guidelines:
 * Make sure your fork is [synched](https://help.github.com/articles/syncing-a-fork/)
 * Open an issue first to discuss any potential changes.
 * Create a new branch from `develop`, the current stable version.
-* Branch name should be in the format: `<github.id>-<issue#>-<iteration>` (ex: `colinrgodsey-1853-2`)
+* Branch name should be in the format:
+
+    `<github.id>-<issue#>-<iteration>` (ex: `colinrgodsey-1853-2`)
 * Make your changes in a new git branch:
+
      ```bash
      git checkout -b mygithub-1234-1
      ```
@@ -37,6 +39,7 @@ Before you submit your pull request consider the following guidelines:
 * Follow our [Coding Guidelines](#guidelines).
 * Commit your changes using a descriptive commit message
 * Push your branch to GitHub:
+
     ```bash
     git push origin mygithub-1234-1
     ```
@@ -44,6 +47,7 @@ Before you submit your pull request consider the following guidelines:
 * If we suggest changes then:
 * Make the required updates
 * [Rebase](https://help.github.com/articles/about-git-rebase/) your branch and force push to your GitHub repository (this will update your Pull Request):
+
     ```bash
     git fetch upstream
     git rebase -i upstream/develop
