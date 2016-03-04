@@ -1,7 +1,6 @@
 package json.tools
 
 import json._
-import json.internal.FieldAccessor
 
 /**
  * Represents a single migration to a specified version

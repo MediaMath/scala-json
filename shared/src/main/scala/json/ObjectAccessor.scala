@@ -16,11 +16,9 @@
 
 package json
 
-import json.internal.{NameConversionGeneric, FieldAccessor, CaseClassObjectAccessor, ObjectAccessorFactory}
+import json.internal.ObjectAccessorFactory
 
 import scala.language.experimental.macros
-import scala.annotation.{StaticAnnotation, implicitNotFound}
-import scala.annotation.meta._
 
 
 /**
@@ -30,6 +28,7 @@ import scala.annotation.meta._
  * @tparam T The base type this accessor is for.
  */
 trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
+  /** Accessor for each named field. Includes type accessor for field, defaults, annotations, etc. */
   def fields: IndexedSeq[FieldAccessor[T, _]]
 
   def canEqual(that: Any) = that.isInstanceOf[ObjectAccessor[_]]
@@ -52,16 +51,6 @@ trait ObjectAccessor[T] extends JSONAccessorProducer[T, JObject] {
 }
 
 object ObjectAccessor {
-  case object NoAccessor extends ObjectAccessor[Nothing] {
-    def fields: IndexedSeq[FieldAccessor[Nothing, Nothing]] = Nil.toIndexedSeq
-    def clazz: Class[Nothing] = classOf[Nothing]
-    def fromJSON(from: JValue): Nothing = sys.error("Cannot create Nothing object")
-    def createJSON(obj: Nothing): JObject = sys.error("Cannot create Nothing json")
-
-    override def canEqual(that: Any) = that.isInstanceOf[this.type]
-
-    def apply[T] = NoAccessor.asInstanceOf[ObjectAccessor[T]]
-  }
-
+  /** This is the base method used to create an accessor for a case class via macros */
   def create[T]: ObjectAccessor[T] = macro ObjectAccessorFactory.impl[T]
 }
