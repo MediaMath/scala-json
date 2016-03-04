@@ -109,6 +109,24 @@ with scala json. The base type for all JSON values is the
       </a>
     </span>
       <p class="shortcomment cmt">This is the class extension that allows you to use the .js method on any value</p><div class="fullcomment"><div class="comment cmt"><p>This is the class extension that allows you to use the .js method on any value</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Implicits.html" class="extype" name="json.Implicits">Implicits</a></dd></dl></div>
+    </li><li name="json.FieldAccessor" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="FieldAccessor[T,U]extendsProduct2[Class[T],String]"></a>
+      <a id="FieldAccessor[T,U]:FieldAccessor[T,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="FieldAccessor.html"><span class="name">FieldAccessor</span></a><span class="tparams">[<span name="T">T</span>, <span name="U">U</span>]</span><span class="result"> extends <span class="extype" name="scala.Product2">Product2</span>[<span class="extype" name="scala.Predef.Class">Class</span>[<span class="extype" name="json.FieldAccessor.T">T</span>], <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.package@FieldAccessor[T,U]extendsProduct2[Class[T],String]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base accessor class for field accessors in objects (seen via case class macro generally).</p><div class="fullcomment"><div class="comment cmt"><p>Base accessor class for field accessors in objects (seen via case class macro generally).</p><p>The contains extended run-time info such as field name, field defaults, type access etc.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>type of class that owns the fields</p></dd><dt class="tparam">U</dt><dd class="cmt"><p>type of the field</p></dd></dl></div>
     </li><li name="json.internal.JSONAnnotations.FieldAccessorAnnotation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="FieldAccessorAnnotation=json.internal.FieldAccessorAnnotation"></a>
       <a id="FieldAccessorAnnotation:FieldAccessorAnnotation"></a>
@@ -125,7 +143,7 @@ with scala json. The base type for all JSON values is the
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Base type of all annotations, useful when reflecting <code>annos</code> in <span class="extype" name="json.internal.FieldAccessor">json.internal.FieldAccessor</span></p><div class="fullcomment"><div class="comment cmt"><p>Base type of all annotations, useful when reflecting <code>annos</code> in <span class="extype" name="json.internal.FieldAccessor">json.internal.FieldAccessor</span></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
+      <p class="shortcomment cmt">Base type of all annotations, useful when reflecting <code>annos</code> in <a href="FieldAccessor.html" class="extype" name="json.FieldAccessor">json.FieldAccessor</a></p><div class="fullcomment"><div class="comment cmt"><p>Base type of all annotations, useful when reflecting <code>annos</code> in <a href="FieldAccessor.html" class="extype" name="json.FieldAccessor">json.FieldAccessor</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
     </li><li name="json.Implicits" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ImplicitsextendsAnyRef"></a>
       <a id="Implicits:Implicits"></a>
@@ -399,7 +417,8 @@ Extend this if you need to make a custom accessor that has named fields.</p></di
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt">Automatically provides an implicit ObjectAccessor to a class companion object.</p><div class="fullcomment"><div class="comment cmt"><p>Automatically provides an implicit ObjectAccessor to a class companion object.
+Requires the macro paradise compiler plugin.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@compileTimeOnly</span><span class="args">(<span>
       
       <span class="defval" name="&quot;macro annotation could not be expanded (the most common reason for that is that you need to enable the macro paradise plugin; another possibility is that you try to use macro annotation in the same compilation run that defines it)&quot;">...</span>
@@ -449,23 +468,6 @@ but not needed for construction (basically read only).</p><div class="fullcommen
 but not needed for construction (basically read only).</p><pre>@json.accessor <span class="kw">case</span> <span class="kw">class</span> Foo(bar: <span class="std">String</span>) {
   @json.ephemeral <span class="kw">def</span> twice = bar + bar
 }</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
-    </li><li name="json.internal.JSONAnnotations.ignoreDoc" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ignoreDoc=json.internal.IgnoreFieldDocGeneric"></a>
-      <a id="ignoreDoc:ignoreDoc"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">ignoreDoc</span><span class="result"> = <span class="extype" name="json.internal.IgnoreFieldDocGeneric">IgnoreFieldDocGeneric</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#json.package@ignoreDoc=json.internal.IgnoreFieldDocGeneric" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Annotation used to mark whether a field will be ignored when emitting auto-gen docs</p><div class="fullcomment"><div class="comment cmt"><p>Annotation used to mark whether a field will be ignored when emitting auto-gen docs</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
     </li><li name="json.internal.JSONAnnotations.name" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="name=json.internal.FieldNameGeneric"></a>
       <a id="name:name"></a>
