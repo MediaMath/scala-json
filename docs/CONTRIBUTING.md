@@ -30,31 +30,25 @@ Before you submit your pull request consider the following guidelines:
 * Create a new branch from `develop`, the current stable version.
 * Branch name should be in the format: `<github.id>-<issue#>-<iteration>` (ex: `colinrgodsey-1853-2`)
 * Make your changes in a new git branch:
-
      ```bash
      git checkout -b mygithub-1234-1
      ```
-
 * Create your patch
 * Follow our [Coding Guidelines](#guidelines).
 * Commit your changes using a descriptive commit message
 * Push your branch to GitHub:
-
     ```bash
     git push origin mygithub-1234-1
     ```
-
 * In GitHub, send a pull request to `scala-json:develop`
 * If we suggest changes then:
-	* Make the required updates
-	* [Rebase](https://help.github.com/articles/about-git-rebase/) your branch and force push to your GitHub repository (this will update your Pull Request):
-
+* Make the required updates
+* [Rebase](https://help.github.com/articles/about-git-rebase/) your branch and force push to your GitHub repository (this will update your Pull Request):
     ```bash
     git fetch upstream
     git rebase -i upstream/develop
     git push -f origin mygithub-1234-1
     ```
-
 * When you solution is approved, please [squash](https://help.github.com/articles/about-git-rebase/) your commits
 
 Thanks for your contribution!
