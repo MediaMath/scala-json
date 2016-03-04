@@ -21,8 +21,9 @@ import json.internal.ObjectAccessorFactory
 import scala.annotation.StaticAnnotation
 
 //this has to be remote because compiler complains if the macro needs this type
+/** Automatically provides an implicit ObjectAccessor to a class companion object.
+  * Requires the macro paradise compiler plugin. */
 @json.internal.CompileTimeOnly.anno("enable macro paradise to expand macro annotations. https://github.com/MediaMath/scala-json/blob/master/README.md#dependencies")
-/** Automatically provides an implicit ObjectAccessor to a class companion object */
 class accessor extends StaticAnnotation {
   def macroTransform(annottees: Any*): Any = macro ObjectAccessorFactory.annotation_impl
 }
