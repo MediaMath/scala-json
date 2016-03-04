@@ -33,15 +33,16 @@ import scala.collection.mutable
 import shadow.{VMContext => JVMContext}
 
 /** To be used THREAD LOCAL ONLY */
-private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](classOf[JValue]) {
-  private val valCache = mutable.Map[String, JString]()
-  private var cacheSizeChars = 0
-
-  def enableStringCache = true
-  def maxCacheStringLength = 128
-  def maxCacheSizeMB = 5
+private[json] final class JValueObjectDeserializer extends BaseJValueObjectDeserializer {
+  val enableStringCache = true
+  val maxCacheStringLength = 128
+  val maxCacheSizeMB = 5
 
   val maxCacheSizeChars = (maxCacheSizeMB * 1024 * 1024) / 2
+
+  private val valCache = mutable.Map[String, JString]()
+
+  private var cacheSizeChars = 0
 
   lazy val mapper = {
     val mpr = new ObjectMapper()
@@ -52,24 +53,6 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
     mpr.registerModule(module)
 
     mpr
-  }
-
-  def deserialize(jp: JsonParser, ctx: DeserializationContext): JValue = {
-    (jp.getCurrentToken: @switch) match {
-      case NOT_AVAILABLE => sys.error("JSON parser - unexpected end of token")
-      case START_ARRAY   => parseArray(jp, ctx)
-      case END_ARRAY     => sys.error("JSON parser - unexpected end of array")
-      case START_OBJECT  => parseObject(jp, ctx)
-      case END_OBJECT    => sys.error("JSON parser - unexpected end of object")
-      case FIELD_NAME    => sys.error("JSON parser - unexpected field name")
-      case VALUE_STRING  => jString(jp.getText)
-      case VALUE_NUMBER_FLOAT | VALUE_NUMBER_INT => JNumber(_parseDouble(jp, ctx))
-      case VALUE_TRUE  => JTrue
-      case VALUE_FALSE => JFalse
-      case VALUE_NULL  => JNull
-      case VALUE_EMBEDDED_OBJECT =>
-        sys.error("JSON parser - unexpected embedded object")
-    }
   }
 
   override def deserializeWithType(jp: JsonParser,
@@ -204,4 +187,6 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
       case _ => readAsJValue()
     }
   }
+
+  protected def throwException(msg: String): Unit = throw GenericJSONException(msg)
 }

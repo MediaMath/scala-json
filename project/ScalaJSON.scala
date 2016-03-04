@@ -72,6 +72,11 @@ object ScalaJSON {
       case x => "-target:jvm-1.6"
     }),
 
+    javacOptions <++= scalaVersion map {
+      case x if x.startsWith("2.12.") => Seq("-source", "1.8", "-target", "1.8")
+      case x => Seq("-source", "1.6", "-target", "1.6")
+    },
+
     libraryDependencies <++= scalaVersion { x =>
       Seq(
         "org.scala-lang" % "scala-reflect" % x,

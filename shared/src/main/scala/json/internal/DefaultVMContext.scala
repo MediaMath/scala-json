@@ -27,7 +27,7 @@ trait BaseVMContext {
   def fromAny(value: Any): JValue
   def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder
   def newVMStringBuilder: SimpleStringBuilder
-  def createPrimitiveArray[@specialized T: ClassTag](length: Int): DefaultVMContext.PrimitiveArray[T]
+  def createPrimitiveArray[/*@specialized */T: ClassTag](length: Int): DefaultVMContext.PrimitiveArray[T]
   def extractPrimitiveJArray[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray]
 
   private[json] trait JValueCompanionBase
