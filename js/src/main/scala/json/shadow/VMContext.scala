@@ -135,7 +135,7 @@ object VMContext extends BaseVMContext {
     def toNativeJS: js.Any = {
       val result = js.Dictionary.empty[js.Any]
       iterator.foreach { pair =>
-        result(pair._1.str) = pair._2.toNativeJS
+        result(pair._1) = pair._2.toNativeJS
       }
       result
     }
@@ -143,7 +143,7 @@ object VMContext extends BaseVMContext {
     @JSExport final override def toJSON(): js.Any = {
       val result = js.Dictionary.empty[js.Any]
       iterator.foreach { pair =>
-        result(pair._1.str) = pair._2.toJSON
+        result(pair._1) = pair._2.toJSON
       }
       result
     }

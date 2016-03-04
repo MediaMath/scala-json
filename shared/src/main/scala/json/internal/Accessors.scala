@@ -69,7 +69,7 @@ trait Accessors extends LowPriorityAccessors {
           case (k, v) =>
             try Seq(keyAcc.fromString(k) -> v.to[T]) catch {
               case e: InputFormatException =>
-                exceptions ::= e.prependFieldName(k.str)
+                exceptions ::= e.prependFieldName(k)
                 Nil
             }
         }

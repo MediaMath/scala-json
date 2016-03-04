@@ -42,7 +42,9 @@ package object json extends JSONAnnotations with Implicits {
   lazy val JNaN = JNumber(Double.NaN)
 
   /** JSONAccessor is shorthand for a [[JSONAccessorProducer]] of generic JValue type */
-  @implicitNotFound(msg = "No implicit JSONAccessor for ${T} in scope. Did you define/import one? https://github.com/MediaMath/scala-json/blob/master/ACCESSORS.md")
+  @implicitNotFound(msg = "No implicit JSONAccessor for ${T} in scope. If using " +
+      "@accessor make sure macro-paradise plugin is enabled. " +
+      "https://github.com/MediaMath/scala-json/blob/master/ACCESSORS.md")
   type JSONAccessor[T] = JSONAccessorProducer[T, JValue]
   /** see [[JSONAccessorProducer]] */
   val JSONAccessor = JSONAccessorProducer

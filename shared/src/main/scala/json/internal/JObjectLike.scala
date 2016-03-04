@@ -101,7 +101,7 @@ trait JObjectLike { _: JObject =>
   def toMap: Map[String, JValue] = fields
 
   override def values: Iterable[JValue] = fields.values
-  def value = fields.map(pair => pair._1.str -> pair._2.value)
+  def value = fields.map(pair => pair._1 -> pair._2.value)
 
   override def apply(x: JValue): JValue = x match {
     case JString(str) => apply(str)
