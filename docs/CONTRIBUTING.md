@@ -7,11 +7,11 @@ scala-json is looking forward to receiving your feedback and pull requests!
 1. Install the [SBT](http://www.scala-sbt.org/) build tool. 
 1. Run and test using *sbt test*:
 
-```bash
-$ git clone git@github.com:[my-user-name]/scala-json.git
-$ cd scala-json/
-$ sbt test
-```
+  ```bash
+  $ git clone git@github.com:[my-user-name]/scala-json.git
+  $ cd scala-json/
+  $ sbt test
+  ```
 
 ## <a name="issue"></a>Found an Issue?
 If you find a bug in the source code or a mistake in the documentation, help us by
