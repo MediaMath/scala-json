@@ -20,6 +20,7 @@ Accessors come in 3 types:
   * Main accessor type used
   * Produces JValue from T
   * Produces T from JValue
+  * Is a simple type-class that can be used with type-class notation ```[T: JSONAccessor]```
 * ```JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.CreateJSON[T, JV]```
   * Produces specific type of JValue (JV) from T
   * Produces T from JValue
@@ -54,34 +55,32 @@ res0: json.JObject =
 }
 
 scala> accessorFor(complexValue).describe //JSON pretty formatted description of accessor
-res1: json.JValue =
+res1: json.JObject =
 {
-  "valueClass": "scala.collection.immutable.Map",
-  "accessorType": "MapAccessor",
-  "types": ["K", "T"],
-  "K": {
-    "valueClass": "java.lang.String",
-    "accessorType": "StringAccessor"
-  },
-  "T": {
-    "valueClass": "scala.collection.Seq",
-    "accessorType": "IterableAccessor",
-    "types": ["T"],
-    "repr": "scala.collection.Seq",
-    "T": {
-      "valueClass": "scala.collection.immutable.Set",
-      "accessorType": "IterableAccessor",
-      "types": ["T"],
-      "repr": "scala.collection.immutable.Set",
-      "T": {
-        "valueClass": "scala.Option",
-        "accessorType": "OptionAccessor",
-        "types": ["T"],
-        "T": {
-          "valueClass": "scala.Tuple3",
-          "accessorType": "Tuple3Accessor",
-          "types": ["A", "B"],
-         ...
+  "accessor": "MapAccessor",
+  "types": [{
+    "accessor": "StringAccessor"
+  }, {
+    "accessor": "IterableAccessor",
+    "types": [{
+      "accessor": "IterableAccessor",
+      "types": [{
+        "accessor": "OptionAccessor",
+        "types": [{
+          "accessor": "Tuple3Accessor",
+          "types": [{
+            "accessor": "IntAccessor"
+          }, {
+            "accessor": "BooleanAccessor"
+          }, {
+            "accessor": "StringAccessor"
+          }]
+        }]
+      }]
+    }]
+  }]
+}
+
 scala> //
 ```
 
@@ -109,36 +108,28 @@ defined class TestClass
 scala> ObjectAccessor.create[TestClass].describe
 res3: json.JObject =
 {
-  "valueClass": "TestClass",
-  "accessorType": "CaseClassObjectAccessor",
+  "accessor": "CaseClassObjectAccessor",
   "fields": {
     "a": {
-      "type": {
-        "valueClass": "int",
-        "accessorType": "IntAccessor"
-      }
+      "accessor": "IntAccessor"
     },
     "b": {
-      "type": {
-        "valueClass": "java.lang.String",
-        "accessorType": "StringAccessor"
-      },
-      "default": "foo"
+      "accessor": "StringAccessor"
     },
     "c": {
-      "type": {
-        "valueClass": "scala.collection.immutable.Map",
-        "accessorType": "MapAccessor",
-        "types": ["K", "T"],
-        "K": {
-          "valueClass": "java.lang.String",
-          "accessorType": "StringAccessor"
-        },
-        "T": {
-          "valueClass": "scala.collection.immutable.Set",
-          "accessorType": "IterableAccessor",
-          "types": ["T"],
-          "repr": "...
+      "accessor": "MapAccessor",
+      "types": [{
+        "accessor": "StringAccessor"
+      }, {
+        "accessor": "IterableAccessor",
+        "types": [{
+          "accessor": "BooleanAccessor"
+        }]
+      }]
+    }
+  }
+}
+
 scala> //
 ```
 

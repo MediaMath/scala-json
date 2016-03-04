@@ -22,14 +22,22 @@ for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/sc
 * Extensible accessor API. Serialize any type you want.
 * Uses default fields correctly.
 * Provides a useful JS-like AST for intermediate JSON data.
+<<<<<<< HEAD
 * Implicit [accessors](./ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
+=======
+* Implicit [accessors](./docs/ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
+>>>>>>> 2016updates.flat2
 * Enables use of normal looking scala structures with any existing JSON API.
 * Produces pretty and human readable JSON from normal scala types.
 * Supports [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
 * Enables you to create readable APIs that match existing/specific class structure.
 * Exposes rich compile-time type info, more run-time type data than reflect could ever provide.
 * Uses existing scala collection CanBuildFrom factories to support buildable collections.
+<<<<<<< HEAD
 * Provides support for unknown types (Any) via 'pickling' with a run-time class [registry](./REGISTRY.md).
+=======
+* Provides support for unknown types (Any) via 'pickling' with a run-time class [registry](./docs/REGISTRY.md).
+>>>>>>> 2016updates.flat2
 * Support for scala 2.10.x, 2.11.x, 2.12.0-M3.
 * Support for scala-js 0.6.x.
 
@@ -37,10 +45,11 @@ for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/sc
 Docs
 ---
 
-* [Usage and Examples](./USAGE.md) - Getting started with basic usage and examples.
-* [Accessors](./ACCESSORS.md) - Accessors are the compile-time constructs that allow you to go from a JValue to a scala type and back.
-* [Registry](./REGISTRY.md) - The Accessor Registry allows you to pickle registered types from untyped (Any) data.
-* [Enumerator](./ENUMERATOR.md) - Allows enumerated case object values of a sealed trait.
+* [Usage and Examples](./docs/USAGE.md) - Getting started with basic usage and examples.
+* [Accessors](./docs/ACCESSORS.md) - Accessors are the compile-time constructs that allow you to go from a JValue to a scala type and back.
+* [Registry](./docs/REGISTRY.md) - The Accessor Registry allows you to pickle registered types from untyped (Any) data.
+* [Enumerator](./docs/ENUMERATOR.md) - Allows enumerated case object values of a sealed trait.
+* [Migration](./docs/MIGRATION.md) - Simple JSON migration support.
 * [Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
 
 SBT
@@ -68,4 +77,6 @@ Dependencies
 * [µTest](https://github.com/lihaoyi/utest) for testing
 * [tut](https://github.com/tpolecat/tut) for doc building
 
+[Contributing](./docs/CONTRIBUTING.md)
+---
 

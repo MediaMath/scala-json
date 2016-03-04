@@ -20,6 +20,7 @@ Accessors come in 3 types:
   * Main accessor type used
   * Produces JValue from T
   * Produces T from JValue
+  * Is a simple type-class that can be used with type-class notation ```[T: JSONAccessor]```
 * ```JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.CreateJSON[T, JV]```
   * Produces specific type of JValue (JV) from T
   * Produces T from JValue
@@ -50,6 +51,7 @@ complexValue.js
 accessorFor(complexValue).describe //JSON pretty formatted description of accessor
 
 //
+
 ```
 
 Option is treated in a special way in scala-json. Normally field
@@ -75,6 +77,7 @@ case class TestClass(a: Int, b: String = "foo", c: Map[String, Set[Boolean]])
 ObjectAccessor.create[TestClass].describe
 
 //
+
 ```
 
 Custom types

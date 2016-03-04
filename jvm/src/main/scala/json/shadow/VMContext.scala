@@ -17,15 +17,43 @@
 package json.shadow
 
 import json._
-import json.internal.{BaseVMContext, JValueObjectDeserializer}
+import json.internal.DefaultVMContext.PrimitiveArray
+import json.internal.PrimitiveJArray.Builder
+import json.internal.{PrimitiveJArray, SimpleStringBuilder, BaseVMContext, JValueObjectDeserializer}
 
 import scala.collection.immutable.StringOps
+import scala.collection.mutable
+import scala.reflect.ClassTag
 
 object VMContext extends BaseVMContext {
+  def newVMStringBuilder: SimpleStringBuilder = new SimpleStringBuilder {
+    val builder = new StringBuilder(128)
+
+    def append(str: String): internal.SimpleStringBuilder = {
+      builder append str
+      this
+    }
+
+    def append(char: Char): SimpleStringBuilder = {
+      builder.append(char)
+      this
+    }
+
+    def ensureCapacity(cap: Int): Unit = builder.ensureCapacity(cap)
+
+    def result(): String = builder.result()
+  }
+
   val localMapper = new ThreadLocal[JValueObjectDeserializer] {
     override protected def initialValue: JValueObjectDeserializer =
       new JValueObjectDeserializer
   }
+
+  //TODO: do these need to be specialized?
+  def createPrimitiveArray[/*@specialized */T: ClassTag](length: Int): PrimitiveArray[T] =
+    wrapPrimitiveArray(new Array[T](length))
+
+  def wrapPrimitiveArray[/*@specialized */T: ClassTag](from: Array[T]): PrimitiveArray[T] = from
 
   def fromString(str: String): JValue = {
     val deser = localMapper.get
@@ -41,7 +69,7 @@ object VMContext extends BaseVMContext {
   def fromAny(value: Any): JValue = JValue.fromAnyInternal(value)
 
   //modified some escaping for '/'
-  final def quoteJSONString(string: String, sb: StringBuilder): StringBuilder = {
+  final def quoteJSONString(string: String, sb: SimpleStringBuilder): SimpleStringBuilder = {
     require(string != null)
 
     sb.ensureCapacity(string.length)
@@ -72,6 +100,30 @@ object VMContext extends BaseVMContext {
     sb.append('"')
 
     sb
+  }
+
+  def newJValueFromArray(arr: Array[_]): JArray = {
+    import json.accessors._
+
+    arr match {
+      case x: Array[Byte] => new PrimitiveJArray[Byte](wrapPrimitiveArray(x))
+      case x: Array[Short] => new PrimitiveJArray[Short](wrapPrimitiveArray(x))
+      case x: Array[Int] => new PrimitiveJArray[Int](wrapPrimitiveArray(x))
+      case x: Array[Long] => new PrimitiveJArray[Long](wrapPrimitiveArray(x))
+      case x: Array[Double] => new PrimitiveJArray[Double](wrapPrimitiveArray(x))
+      case x: Array[Float] => new PrimitiveJArray[Float](wrapPrimitiveArray(x))
+      case x: Array[Boolean] => new PrimitiveJArray[Boolean](wrapPrimitiveArray(x))
+    }
+  }
+
+  def extractPrimitiveJArray[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray] = {
+    val builder = implicitly[PrimitiveJArray.Builder[T]]
+
+    x match {
+      case x: mutable.WrappedArray[T] => Some(newJValueFromArray(x.array))
+      case x: IndexedSeq[T] => Some(new PrimitiveJArray[T](x))
+      case _ => None
+    }
   }
 }
 

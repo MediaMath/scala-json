@@ -16,16 +16,21 @@
 
 package json
 
-import json.internal.JArrayPrimitive._
+import json.internal.DefaultVMContext.PrimitiveArray
+import json.internal.PrimitiveJArray
 
 import scala.scalajs.js
 import scala.scalajs.js.typedarray._
 import scalajs.js.{JSON => NativeJSON}
+
 import js.JSConverters._
 
+import json.accessors._
 
 object JSJValue {
   private implicit def typedArrToArr[T, U](x: TypedArray[T, U]): js.Array[T] = x.asInstanceOf[js.Array[T]]
+
+  def newPrimArr[T, U](from: TypedArray[T, U]) = (from: js.Array[T])
 
   private[json] object TypedArrayExtractor {
     def unapply(x: js.Object): Option[TypedArray[_, _]] = {
@@ -34,6 +39,16 @@ object JSJValue {
       else if(js.isUndefined(dynamic.length) || js.isUndefined(dynamic.byteLength)) None
       else Some(x.asInstanceOf[TypedArray[_, _]])
     }
+  }
+
+  def typedArrayToJArray(arr: TypedArray[_, _]) = arr match {
+    case x: Int8Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Int16Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Int32Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Uint8Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Uint16Array => new PrimitiveJArray(newPrimArr(x))
+    case x: Uint32Array => new PrimitiveJArray(newPrimArr(x))
+    case _ => sys.error("Unsupported native array of type " + js.typeOf(arr))
   }
 
   def fromNativeJS(default: => JValue)(v: Any): JValue = v match {
@@ -50,15 +65,7 @@ object JSJValue {
     case true      => JTrue
     case false     => JFalse
     case x: Double => JNumber(x)
-    case TypedArrayExtractor(arr) => arr match {
-      case x: Int8Array => ByteImpl(new js.WrappedArray(x))
-      case x: Int16Array => ShortImpl(new js.WrappedArray(x))
-      case x: Int32Array => IntImpl(new js.WrappedArray(x))
-      case x: Uint8Array => ShortImpl(new js.WrappedArray(x))
-      case x: Uint16Array => IntImpl(new js.WrappedArray(x))
-      case x: Uint32Array => DoubleImpl(new js.WrappedArray(x))
-      case _ => sys.error("Unsupported native array of type " + js.typeOf(arr))
-    }
+    case TypedArrayExtractor(arr) => typedArrayToJArray(arr)
     case x0: js.Object =>
       val x = x0.asInstanceOf[js.Dynamic]
       val seq = (js.Object keys x0).map { key =>

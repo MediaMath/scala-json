@@ -34,7 +34,7 @@ import scala.util.control.NonFatal
  *  - [[json.JObject]] - JSON Object Type
  *  - [[json.JArray]] - JSON Array Type
  *  - [[json.JBoolean]] - JSON Boolean Types: [[json.JTrue]] and [[json.JFalse]]
- *  - [[json.JUndefined]] - JSON undefined value
+ *  - [[json.JUndefined]] - JS undefined value
  *  - [[json.JNull]] - JSON null value
  */
 package object json extends JSONAnnotations with Implicits {
@@ -42,13 +42,17 @@ package object json extends JSONAnnotations with Implicits {
   lazy val JNaN = JNumber(Double.NaN)
 
   /** JSONAccessor is shorthand for a [[JSONAccessorProducer]] of generic JValue type */
-  @implicitNotFound(msg = "No implicit JSONAccessor for ${T} in scope. Did you define/import one? https://github.com/MediaMath/scala-json/blob/master/ACCESSORS.md")
+  @implicitNotFound(msg = "No implicit JSONAccessor for ${T} in scope. If using " +
+      "@accessor make sure macro-paradise plugin is enabled. " +
+      "https://github.com/MediaMath/scala-json/blob/master/ACCESSORS.md")
   type JSONAccessor[T] = JSONAccessorProducer[T, JValue]
   /** see [[JSONAccessorProducer]] */
   val JSONAccessor = JSONAccessorProducer
 
   /** Package space for all scala-json annotations */
   object annotations extends JSONAnnotations
+
+  object accessors extends internal.Accessors
 
   /** Constants that can be used to avoid allocation */
   object constants {

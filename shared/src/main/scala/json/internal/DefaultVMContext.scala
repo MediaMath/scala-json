@@ -17,11 +17,18 @@
 package json.internal
 
 import json._
+import json.internal.DefaultVMContext.PrimitiveArray
+import json.internal.PrimitiveJArray.Builder
+
+import scala.reflect.ClassTag
 
 trait BaseVMContext {
   def fromString(str: String): JValue
   def fromAny(value: Any): JValue
-  def quoteJSONString(string: String, builder: StringBuilder): StringBuilder
+  def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder
+  def newVMStringBuilder: SimpleStringBuilder
+  def createPrimitiveArray[T: ClassTag](length: Int): DefaultVMContext.PrimitiveArray[T]
+  def extractPrimitiveJArray[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray]
 
   private[json] trait JValueCompanionBase
 
@@ -33,6 +40,11 @@ trait BaseVMContext {
   private[json] trait JUndefinedBase
   private[json] trait JNullBase
   private[json] trait JStringBase
+
+  object PrimitiveJArrayExtractor {
+    def unapply[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray] =
+      extractPrimitiveJArray(x)
+  }
 }
 
 object DefaultVMContext {
@@ -51,6 +63,11 @@ object DefaultVMContext {
 
     def fromString(str: String): JValue = ???
     def fromAny(value: Any): JValue = ???
-    def quoteJSONString(string: String, builder: StringBuilder): StringBuilder = ???
+    def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder = ???
+    def newVMStringBuilder: SimpleStringBuilder = ???
+    def createPrimitiveArray[T: ClassTag](length: Int): PrimitiveArray[T] = ???
+    def extractPrimitiveJArray[T: ClassTag : Builder](x: Iterable[T]): Option[JArray] = ???
   }
+
+  type PrimitiveArray[T] = scala.collection.mutable.IndexedSeq[T]
 }

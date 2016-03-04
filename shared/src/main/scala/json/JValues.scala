@@ -35,7 +35,7 @@ object JValue extends JValueLikeCompanion {
   * type conversion or exceptions. For type-safe handling of JValues, consider
   * using pattern matching the good ol' scala way.
   */
-sealed trait JValue extends AnyRef with JValueLike with JValue.JValueBase {
+sealed abstract class JValue extends JValueLike with JValue.JValueBase {
   /** Boolean OR using [[toJBoolean]] */
   def ||[T >: this.type <: JValue](other: T): T = if (this.toJBoolean.bool) this else other
   override def toString: String = toJSONString
@@ -69,19 +69,31 @@ object JArray extends JArrayCompanion {
   implicit def canBuildFrom: CanBuildFrom[TraversableOnce[JValue], JValue, JArray] =
     newCanBuildFrom
 
-  def unapply(x: JArray): Option[IndexedSeq[JValue]] = Some(x.values.toIndexedSeq)
+  def unapply(x: JArray): Option[IndexedSeq[JValue]] = Some(x)
 }
 
 /** JSON array as ordered sequence of JValues */
 abstract class JArray private[json] extends JValue with JArrayLike with VM.Context.JArrayBase {
   override def toString = toJSONString
 
-  final override def canEqual(that: Any) = that.isInstanceOf[JArray]
-  final override def equals(that: Any) = that match {
-    case x: JArray => x.values == values
-    case _ => false
+  def numStringFor(idx: Int): String
+
+  def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
+      out: SimpleStringBuilder, lvl: Int): SimpleStringBuilder = {
+    out.append("[")
+
+    var isFirst = true
+    for(idx <- 0 until length) {
+      if (!isFirst) out.append("," + settings.spaceString)
+
+      //TODO: could be optimized more
+      out append numStringFor(idx)
+
+      isFirst = false
+    }
+
+    out.append("]")
   }
-  final override def hashCode() = values.hashCode()
 }
 
 object JBoolean {
@@ -90,7 +102,7 @@ object JBoolean {
 }
 
 /** Base type for JSON primitives [[JTrue]] and [[JFalse]] */
-sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
+sealed abstract class JBoolean extends JValue with VM.Context.JBooleanBase {
   def value: Boolean
   def not: JBoolean
   def toJNumber: JNumber
@@ -105,7 +117,7 @@ sealed trait JBoolean extends JValue with VM.Context.JBooleanBase {
   override def jBoolean: JBoolean = this
 
   def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
-      out: StringBuilder, lvl: Int): StringBuilder = out append toJString.str
+      out: SimpleStringBuilder, lvl: Int): SimpleStringBuilder = out append toJString.str
 }
 
 final case object JTrue extends JBoolean {
@@ -141,19 +153,18 @@ object JNumber {
 private[json] final case class JNumberImpl(value: Double) extends JNumber
 
 /** JSON numeric value (stored as 64-bit double) */
-sealed trait JNumber extends JValue with VM.Context.JNumberBase { _: JNumberImpl =>
+sealed abstract class JNumber extends JValue with VM.Context.JNumberBase { _: JNumberImpl =>
   val value: Double
 
   def iterator: Iterator[JValue] = sys.error("Cannot iterate a number!")
 
-  def numToString = if (isLong) toLong.toString else num.toString
-
-  def isLong = num == toInt
+  def numToString = if (isInt) toLong.toString else num.toString
 
   override def apply(key: JValue): JValue = JUndefined
 
   override def jValue = this
 
+  def isInt = num == toInt
   override def isNaN: Boolean = num.isNaN
   def isInfinity: Boolean = num.isInfinity
   def isValid = !isNaN && !isInfinity
@@ -174,7 +185,7 @@ sealed trait JNumber extends JValue with VM.Context.JNumberBase { _: JNumberImpl
   def toJString: JString = JString(numToString)
 
   def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
-      out: StringBuilder, lvl: Int): StringBuilder = {
+      out: SimpleStringBuilder, lvl: Int): SimpleStringBuilder = {
     require(!isNaN && !isInfinity, "invalid number for json")
 
     out append numToString
@@ -196,7 +207,7 @@ final case object JNull extends JValue with VM.Context.JNullBase {
     sys.error(s"Cannot read property '$key' of null") //TypeError
   }
   def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
-      out: StringBuilder, lvl: Int): StringBuilder = out append "null"
+      out: SimpleStringBuilder, lvl: Int): SimpleStringBuilder = out append "null"
 }
 
 /** JS undefined primitive (not actually a JSON primitive) */
@@ -209,7 +220,7 @@ final case object JUndefined extends JValue with VM.Context.JUndefinedBase {
   val toJNumber: JNumber = JNaN
   def toJString: JString = throw JUndefinedException() //"undefined"
   def appendJSONStringBuilder(settings: JSONBuilderSettings = JSONBuilderSettings.pretty,
-      out: StringBuilder, lvl: Int): StringBuilder = throw JUndefinedException("Cant serialize undefined!")
+      out: SimpleStringBuilder, lvl: Int): SimpleStringBuilder = throw JUndefinedException("Cant serialize undefined!")
   override def apply(key: JValue): JValue = {
     val kstr = key.toJString.str
     throw JUndefinedException(s"Cannot read property '$kstr' of undefined")

@@ -53,7 +53,7 @@ object ScalaJSON {
     organizationName := "MediaMath, Inc",
     organizationHomepage := Some(url("http://www.mediamath.com")),
     crossPaths := true,
-    crossScalaVersions := Seq("2.10.5", targetScalaVer, "2.12.0-M3"),
+    crossScalaVersions := Seq("2.10.6", targetScalaVer, "2.12.0-M3"),
     resolvers += Resolver.sonatypeRepo("releases"),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
   )
@@ -72,6 +72,11 @@ object ScalaJSON {
       case x => "-target:jvm-1.6"
     }),
 
+    javacOptions <++= scalaVersion map {
+      case x if x.startsWith("2.12.") => Nil
+      case x => Seq("-source", "1.6", "-target", "1.6")
+    },
+
     libraryDependencies <++= scalaVersion { x =>
       Seq(
         "org.scala-lang" % "scala-reflect" % x,
@@ -84,7 +89,7 @@ object ScalaJSON {
       <licenses>
         <license>
           <name>Apache 2.0</name>
-          <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+          <url>https://github.com/MediaMath/scala-json/blob/master/LICENSE</url>
         </license>
       </licenses>
       <scm>
@@ -141,9 +146,14 @@ object ScalaJSON {
       for((outFile, _) <- outFiles.toSeq) yield {
         val out = readFile(outFile).replaceAllLiterally("__VER__", ver)
 
-        writeFile(baseDir / ".." / outFile.getName, out)
+        val outPath = outFile.getName.toLowerCase match {
+          case "readme.md" => baseDir / ".." / outFile.getName
+          case _ => baseDir / ".." / "docs" / outFile.getName
+        }
 
-        file(out)
+        writeFile(outPath, out)
+
+        outPath
       }
     },
 

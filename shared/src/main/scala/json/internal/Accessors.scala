@@ -19,14 +19,11 @@ package json.internal
 import java.text.SimpleDateFormat
 
 import json._
-import json.internal.JArrayPrimitive.{SpecialBuilders, PrimitiveAccessor}
 
 import scala.collection.generic.CanBuildFrom
 import scala.reflect.{classTag, ClassTag}
 
 trait Accessors extends LowPriorityAccessors {
-  def accessorFor[T](implicit acc: JSONAccessor[T]) = acc
-
   implicit def optionAccessor[T: JSONAccessor, U <: Option[T]] = new OptionAccessor[T, U]
 
   final class OptionAccessor[T: JSONAccessor, U <: Option[T]]
@@ -46,19 +43,7 @@ trait Accessors extends LowPriorityAccessors {
       case x          => Some(x.to[T])
     }
 
-    override def createSwaggerProperty: JObject = {
-      accessorOf[T].createSwaggerProperty + ("required" -> JFalse)
-    }
-
-    override def extraSwaggerModels: Seq[JObject] = accessorOf[T] match {
-      case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
-      case _                             => Nil
-    }
-
-    def describe = baseDescription ++ JObject(
-      "types" -> JArray(JString("T")),
-      "T" -> accessorOf[T].describe
-    )
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[T])
   }
 
   implicit def mapAccessor[K, T](implicit valueAcc: JSONAccessor[T], keyAcc: JSONAccessorProducer[K, JString]) =
@@ -68,15 +53,9 @@ trait Accessors extends LowPriorityAccessors {
       extends JSONAccessorProducer[Map[K, T], JObject] {
     def clazz = classOf[Map[Any, Any]]
 
-    val swaggerModelName = s"Map[String,${valueAcc.clazz.getSimpleName}]"
-
     override def toString = "MapAccessor"
 
-    def describe = baseDescription ++ JObject(
-      "types" -> JArray("K", "T")(StringAccessor),
-      "K" -> keyAcc.describe,
-      "T" -> valueAcc.describe
-    )
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[K], accessorOf[T])
 
     def createJSON(obj: Map[K, T]): JObject = JObject(obj map {
       case (k, v) => keyAcc.toString(k) -> v.js
@@ -90,7 +69,7 @@ trait Accessors extends LowPriorityAccessors {
           case (k, v) =>
             try Seq(keyAcc.fromString(k) -> v.to[T]) catch {
               case e: InputFormatException =>
-                exceptions ::= e.prependFieldName(k.str)
+                exceptions ::= e.prependFieldName(k)
                 Nil
             }
         }
@@ -102,42 +81,10 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "object", x.getClass.getName, x)
     }
-
-    override def extraSwaggerModels: Seq[JObject] = {
-      val typ = valueAcc.clazz.getSimpleName
-
-      val jstr = s"""{
-        "id": "$swaggerModelName",
-        "description": "Key value pair of String -> $typ",
-        "properties": {
-          "{key}": {
-            "type": "string",
-            "required": true,
-            "defaultValue": false
-          },
-          "{value}": {
-            "type": "$typ",
-            "required": true,
-            "defaultValue": false
-          }
-        }
-      }"""
-
-      JObject(swaggerModelName -> jstr.parseJSON.toJObject) +: (valueAcc match {
-        case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
-        case _                             => Nil
-      })
-    }
-
-    override def createSwaggerProperty: JObject = JObject("type" -> JString(swaggerModelName))
   }
 
   //TODO: needs to be rethought, moved or removed
-  implicit case object BigDecimalAccessor extends JSONAccessorProducer[BigDecimal, JNumber] {
-    val clazz = classOf[BigDecimal]
-
-    def describe = baseDescription
-
+  implicit case object BigDecimalAccessor extends JSONAccessorProducerA[BigDecimal, JNumber] {
     def createJSON(obj: BigDecimal): JNumber = JNumber(obj.toDouble)
     def fromJSON(js: JValue): BigDecimal = js.toJNumber match {
       case jn @ JNumber(d) if jn.isValid => BigDecimal(d)
@@ -147,11 +94,7 @@ trait Accessors extends LowPriorityAccessors {
   }
 
   //TODO: needs to be rethought, moved or removed
-  implicit case object DateAccessor extends JSONAccessorProducer[java.util.Date, JString] {
-    val clazz = classOf[java.util.Date]
-
-    def describe = baseDescription
-
+  implicit case object DateAccessor extends JSONAccessorProducerA[java.util.Date, JString] {
     def createJSON(obj: java.util.Date): JString = JString(obj.toString)
     def fromJSON(js: JValue): java.util.Date = js match {
       case str: JString =>
@@ -161,11 +104,7 @@ trait Accessors extends LowPriorityAccessors {
     }
   }
 
-  implicit case object StringAccessor extends JSONAccessorProducer[String, JString] {
-    val clazz = classOf[String]
-
-    def describe = baseDescription
-
+  implicit case object StringAccessor extends JSONAccessorProducerA[String, JString] {
     //optimized str to str passthrough for object keys
     override def fromString(str: String): String = str
 
@@ -179,11 +118,7 @@ trait Accessors extends LowPriorityAccessors {
     }
   }
 
-  implicit case object BooleanAccessor extends JSONAccessorProducer[Boolean, JBoolean] {
-    val clazz = classOf[Boolean]
-
-    def describe = baseDescription
-
+  implicit case object BooleanAccessor extends JSONAccessorProducerA[Boolean, JBoolean] with PrimitiveJArray.Builder[Boolean] {
     def createJSON(obj: Boolean): JBoolean = JBoolean(obj)
     def fromJSON(js: JValue): Boolean = js match {
       case JFalse       => false
@@ -197,13 +132,13 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "boolean", x.getClass.getName, x)
     }
+    def toDouble(x: Boolean): Double = if(x) 1.0 else 0.0
+    def fromDouble(x: Double): Boolean = x != 0.0
+
+    override def toJValue(x: Boolean): JValue = JBoolean(x)
   }
 
-  implicit case object IntAccessor extends JSONAccessorProducer[Int, JNumber] {
-    val clazz = classOf[Int]
-
-    def describe = baseDescription
-
+  implicit case object IntAccessor extends JSONAccessorProducerA[Int, JNumber] with PrimitiveJArray.Builder[Int] {
     def createJSON(obj: Int): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Int = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -215,13 +150,11 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Int): Double = x.toDouble
+    def fromDouble(x: Double): Int = x.toInt
   }
 
-  implicit case object LongAccessor extends JSONAccessorProducer[Long, JNumber] {
-    val clazz = classOf[Long]
-
-    def describe = baseDescription
-
+  implicit case object LongAccessor extends JSONAccessorProducerA[Long, JNumber] with PrimitiveJArray.Builder[Long] {
     def createJSON(obj: Long): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Long = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -233,13 +166,11 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Long): Double = x.toDouble
+    def fromDouble(x: Double): Long = x.toLong
   }
 
-  implicit case object DoubleAccessor extends JSONAccessorProducer[Double, JNumber] {
-    val clazz = classOf[Double]
-
-    def describe = baseDescription
-
+  implicit case object DoubleAccessor extends JSONAccessorProducerA[Double, JNumber] with PrimitiveJArray.Builder[Double] {
     def createJSON(obj: Double): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Double = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -248,13 +179,19 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Double): Double = x
+    def fromDouble(x: Double): Double = x
+
+    //remove empty fraction component
+    override def toPrimitiveString(x: Double): String = {
+      val xInt = x.toInt
+
+      if(xInt == x) xInt.toString
+      else x.toString
+    }
   }
 
-  implicit case object FloatAccessor extends JSONAccessorProducer[Float, JNumber] {
-    val clazz = classOf[Float]
-
-    def describe = baseDescription
-
+  implicit case object FloatAccessor extends JSONAccessorProducerA[Float, JNumber] with PrimitiveJArray.Builder[Float] {
     def createJSON(obj: Float): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Float = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -266,13 +203,18 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Float): Double = x.toDouble
+    def fromDouble(x: Double): Float = x.toFloat
+
+    override def toPrimitiveString(x: Float): String = {
+      val xInt = x.toInt
+
+      if(xInt == x) xInt.toString
+      else x.toString
+    }
   }
 
-  implicit case object ShortAccessor extends JSONAccessorProducer[Short, JNumber] {
-    val clazz = classOf[Short]
-
-    def describe = baseDescription
-
+  implicit case object ShortAccessor extends JSONAccessorProducerA[Short, JNumber] with PrimitiveJArray.Builder[Short] {
     def createJSON(obj: Short): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Short = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -284,13 +226,11 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Short): Double = x.toDouble
+    def fromDouble(x: Double): Short = x.toShort
   }
 
-  implicit case object ByteAccessor extends JSONAccessorProducer[Byte, JNumber] {
-    val clazz = classOf[Byte]
-
-    def describe = baseDescription
-
+  implicit case object ByteAccessor extends JSONAccessorProducerA[Byte, JNumber] with PrimitiveJArray.Builder[Byte] {
     def createJSON(obj: Byte): JNumber = JNumber(obj)
     def fromJSON(js: JValue): Byte = js match {
       case x: JString if x.toJNumber.isValid =>
@@ -302,15 +242,19 @@ trait Accessors extends LowPriorityAccessors {
       case x => throw InputTypeException("",
         "numeric", x.getClass.getName, x)
     }
+    def toDouble(x: Byte): Double = x.toDouble
+    def fromDouble(x: Double): Byte = x.toByte
   }
 
-  implicit case object JValueAccessor extends JSONAccessorProducer[JValue, JValue] {
-    val clazz = classOf[JValue]
-
-    def describe = baseDescription
-
+  implicit case object JValueAccessor extends JSONAccessorProducerA[JValue, JValue] {
     def createJSON(obj: JValue): JValue = obj
     def fromJSON(js: JValue): JValue = js
+  }
+
+  /** convenience abstract class to reduce class size from trait */
+  abstract class JSONAccessorProducerA[T: ClassTag, U <: JValue] extends JSONAccessorProducer[T, U] {
+    val classTag = implicitly[ClassTag[T]]
+    val clazz = classTag.runtimeClass
   }
 }
 

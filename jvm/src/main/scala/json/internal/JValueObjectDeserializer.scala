@@ -24,21 +24,25 @@ import com.fasterxml.jackson.databind.{DeserializationContext, ObjectMapper}
 import com.fasterxml.jackson.core.JsonToken._
 
 import json._
+import json.accessors._
 
 import scala.annotation.switch
 import scala.collection.immutable.VectorBuilder
 import scala.collection.mutable
 
-/** To be used THREAD LOCAL ONLY */
-private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](classOf[JValue]) {
-  private val valCache = mutable.Map[String, JString]()
-  private var cacheSizeChars = 0
+import shadow.{VMContext => JVMContext}
 
-  def enableStringCache = true
-  def maxCacheStringLength = 128
-  def maxCacheSizeMB = 5
+/** To be used THREAD LOCAL ONLY */
+private[json] final class JValueObjectDeserializer extends BaseJValueObjectDeserializer {
+  val enableStringCache = true
+  val maxCacheStringLength = 128
+  val maxCacheSizeMB = 5
 
   val maxCacheSizeChars = (maxCacheSizeMB * 1024 * 1024) / 2
+
+  private val valCache = mutable.Map[String, JString]()
+
+  private var cacheSizeChars = 0
 
   lazy val mapper = {
     val mpr = new ObjectMapper()
@@ -49,24 +53,6 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
     mpr.registerModule(module)
 
     mpr
-  }
-
-  def deserialize(jp: JsonParser, ctx: DeserializationContext): JValue = {
-    (jp.getCurrentToken: @switch) match {
-      case NOT_AVAILABLE => sys.error("JSON parser - unexpected end of token")
-      case START_ARRAY   => parseArray(jp, ctx)
-      case END_ARRAY     => sys.error("JSON parser - unexpected end of array")
-      case START_OBJECT  => parseObject(jp, ctx)
-      case END_OBJECT    => sys.error("JSON parser - unexpected end of object")
-      case FIELD_NAME    => sys.error("JSON parser - unexpected field name")
-      case VALUE_STRING  => jString(jp.getText)
-      case VALUE_NUMBER_FLOAT | VALUE_NUMBER_INT => JNumber(_parseDouble(jp, ctx))
-      case VALUE_TRUE  => JTrue
-      case VALUE_FALSE => JFalse
-      case VALUE_NULL  => JNull
-      case VALUE_EMBEDDED_OBJECT =>
-        sys.error("JSON parser - unexpected embedded object")
-    }
   }
 
   override def deserializeWithType(jp: JsonParser,
@@ -140,8 +126,7 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
     }
 
     jp.nextToken match {
-      case END_ARRAY =>
-        JArray.empty
+      case END_ARRAY => JArray.empty
       case VALUE_NUMBER_INT =>
         val builder = mutable.ArrayBuilder.make[Int]
         builder.sizeHint(16)
@@ -159,7 +144,7 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
           anyBuilder ++= builder.result().iterator.map(JNumber(_))
           readAsJValue()
         } else {
-          JArrayPrimitive.IntImpl(builder.result())
+          new PrimitiveJArray(JVMContext wrapPrimitiveArray builder.result())
         }
       case VALUE_NUMBER_FLOAT =>
         val builder = mutable.ArrayBuilder.make[Double]
@@ -178,7 +163,7 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
           anyBuilder ++= builder.result().iterator.map(JNumber(_))
           readAsJValue()
         } else {
-          JArrayPrimitive.DoubleImpl(builder.result())
+          new PrimitiveJArray(JVMContext wrapPrimitiveArray builder.result())
         }
       case VALUE_TRUE | VALUE_FALSE =>
         val builder = mutable.ArrayBuilder.make[Boolean]
@@ -197,9 +182,11 @@ private[json] class JValueObjectDeserializer extends StdDeserializer[JValue](cla
           anyBuilder ++= builder.result().iterator.map(JBoolean(_))
           readAsJValue()
         } else {
-          JArrayPrimitive.BooleanImpl(builder.result())
+          new PrimitiveJArray(JVMContext wrapPrimitiveArray builder.result())
         }
       case _ => readAsJValue()
     }
   }
+
+  protected def throwException(msg: String): Unit = throw GenericJSONException(msg)
 }

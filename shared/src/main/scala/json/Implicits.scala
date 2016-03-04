@@ -25,7 +25,7 @@ trait Implicits {
     def js[U <: JValue](implicit acc: JSONAccessorProducer.CreateJSON[T, U]): U = acc.createJSON(x)
   }
 
-  implicit class JSONStringOps(val str: String) {
+  implicit class JSONStringOps(str: String) {
     def parseJSON = JValue fromString str
   }
 }

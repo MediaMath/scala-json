@@ -17,7 +17,6 @@
 package json.internal
 
 import json._
-import json.internal.JArrayPrimitive.{SpecialBuilders, PrimitiveAccessor}
 
 import scala.collection.generic.CanBuildFrom
 import scala.reflect.ClassTag
@@ -26,6 +25,8 @@ import scala.reflect.ClassTag
 trait LowPriorityAccessors {
   class Tuple2Accessor[A: JSONAccessor, B: JSONAccessor] extends JSONAccessorProducer[(A, B), JArray] {
     def clazz: Class[_] = classOf[(A, B)]
+
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[A], accessorOf[B])
 
     val aAcc = accessorOf[A]
     val bAcc = accessorOf[B]
@@ -39,12 +40,6 @@ trait LowPriorityAccessors {
         "numeric", x.getClass.getName, x)
     }
 
-    def describe: JValue = baseDescription ++ JObject(
-      "types" -> Seq("A", "B").js,
-      "A" -> accessorOf[A].describe,
-      "B" -> accessorOf[B].describe
-    )
-
     def createJSON(x: (A, B)): JArray = JArray(x._1.js, x._2.js)
   }
 
@@ -57,6 +52,8 @@ trait LowPriorityAccessors {
     val bAcc = accessorOf[B]
     val cAcc = accessorOf[C]
 
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[A], accessorOf[B], accessorOf[C])
+
     override def toString = "Tuple3Accessor"
 
     def fromJSON(js: JValue): (A, B, C) = js match {
@@ -66,87 +63,91 @@ trait LowPriorityAccessors {
         "numeric", x.getClass.getName, x)
     }
 
-    def describe: JValue = baseDescription ++ JObject(
-      "types" -> Seq("A", "B").js,
-      "A" -> accessorOf[A].describe,
-      "B" -> accessorOf[B].describe,
-      "C" -> accessorOf[C].describe
-    )
-
     def createJSON(x: (A, B, C)): JArray = JArray(x._1.js, x._2.js, x._3.js)
   }
 
   implicit def tuple3Accessor[A: JSONAccessor, B: JSONAccessor, C: JSONAccessor] = new Tuple3Accessor[A, B, C]
 
   implicit def iterableAccessor[T, U[T] <: Iterable[T]](
-      implicit acc: JSONAccessor[T], cbf: CanBuildFrom[Nothing, T, U[T]],
+      implicit acc: JSONAccessor[T],
+      cbf: CanBuildFrom[Nothing, T, U[T]],
       ctag: ClassTag[U[T]],
-      primitive: PrimitiveAccessor[T] = PrimitiveAccessor.NonPrimitive[T],
-      specialBuilder: SpecialBuilders[U] = SpecialBuilders.ForAny[U]) = new IterableAccessor[T, U]
+      ctagForT: ClassTag[T],
+      specialBuilder: PrimitiveJArray.SpecialBuilders[U] = PrimitiveJArray.SpecialBuilders.ForAny) = new IterableAccessor[T, U]
 
   final class IterableAccessor[T, U[T] <: Iterable[T]](implicit val acc: JSONAccessor[T],
-      val cbf: CanBuildFrom[Nothing, T, U[T]], val ctag: ClassTag[U[T]],
-      val primitive: PrimitiveAccessor[T],
-      val specialBuilder: SpecialBuilders[U]) extends JSONAccessorProducer[U[T], JArray] {
+      val cbf: CanBuildFrom[Nothing, T, U[T]],
+      val ctag: ClassTag[U[T]],
+      val specialBuilder: PrimitiveJArray.SpecialBuilders[U]) extends JSONAccessorProducer[U[T], JArray] {
     def clazz = ctag.runtimeClass
+
+    implicit def classTagForT: ClassTag[T] = ClassTag(acc.clazz.asInstanceOf[Class[T]])
+    
+    val primitiveAccessor = acc match {
+      case x: PrimitiveJArray.Builder[T] => Some(x)
+      case _ => None
+    }
 
     override def toString = "IterableAccessor"
 
-    def describe = baseDescription ++ JObject(
-      "types" -> JArray("T")(JValue.StringAccessor),
-      "repr" -> ctag.runtimeClass.getName.js,
-      "T" -> acc.describe
-    )
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[T])
 
-    def createJSON(obj: U[T]): JArray = {
-      if(primitive.isPrimitive) primitive.createJSON(obj)
-      else JArray(obj.map(_.js))
+    def createJSON(obj: U[T]): JArray = primitiveAccessor match {
+      case None => JArray(obj.map(_.js))
+      case Some(jvPrim) =>
+        implicit def primBuild = jvPrim
+
+        obj match {
+          case VM.Context.PrimitiveJArrayExtractor(jarr) => jarr //extract primitive jarray using base array
+          case _ =>
+            val primArr = VM.Context.createPrimitiveArray[T](obj.size)
+
+            var idx = 0
+            for(x <- obj) {
+              primArr(idx) = x
+              idx += 1
+            }
+
+            jvPrim.createFrom(primArr)
+        }
     }
 
     def fromJSON(js: JValue): U[T] = js match {
-      case x: JArrayPrimitive[_] if primitive.isPrimitive =>
-        val iterable = primitive.iterableFromJValue(x)
+      //if primitive array of matching internal type
+      case x: PrimitiveJArray[_] if specialBuilder.canIndexedSeq && primitiveAccessor.isDefined =>
+        implicit val builder = primitiveAccessor.get
 
-        specialBuilder match {
-          case x if x.isGeneric =>
-            iterable.to[U](cbf)
-          case builder =>
-            builder.buildFrom(iterable)
-        }
+        val indexed = if(x.builder.classTag == builder.classTag)
+          x.primArr.asInstanceOf[IndexedSeq[T]]
+        else
+          builder.createFrom(x).primArr
+
+        indexed.asInstanceOf[U[T]]
+      //TODO: maybe some translation for boxed arrays
+      /*case x: BoxedJArray[_] if x.builder.classTag == ctagForT && specialBuilder.canIndexedSeq =>
+        val indexed = x.primValues.asInstanceOf[IndexedSeq[T]]
+        specialBuilder.buildFrom(indexed)*/
 
       case JArray(vals) =>
         var exceptions = List[InputFormatException]()
+        val builder = cbf()
 
-        val res = vals.iterator.zipWithIndex.flatMap {
-          case (x, idx) =>
-            try Seq(x.to[T]) catch {
-              case e: InputFormatException =>
-                exceptions ::= e.prependFieldName(idx.toString)
-                Nil
-            }
-        }.to[U](cbf)
+        for((x, idx) <- vals.iterator.zipWithIndex) {
+          try {
+            val value = x.to[T]
+            builder += value
+          } catch {
+            case e: InputFormatException =>
+              exceptions ::= e.prependFieldName(idx.toString)
+          }
+        }
 
         if (!exceptions.isEmpty)
           throw InputFormatsException(exceptions.flatMap(_.getExceptions).toSet)
 
-        res
-      case x => throw InputTypeException("",
-        "array", x.getClass.getName, x)
+        builder.result()
+      case x => throw InputTypeException("", "array", x.getClass.getName, x)
     }
 
-    override def createSwaggerProperty: JObject = {
-      val unique = if (clazz == classOf[Set[_]])
-        JObject("uniqueItems" -> JTrue)
-      else JObject.empty
-
-      JObject("type" -> JString("array"), "items" -> JObject(
-        ("$" + "ref") -> JString(acc.clazz.getSimpleName)
-      )) ++ unique
-    }
-
-    override def extraSwaggerModels: Seq[JObject] = acc match {
-      case x: CaseClassObjectAccessor[_] => x.createSwaggerModels
-      case _                             => Nil
-    }
   }
 }

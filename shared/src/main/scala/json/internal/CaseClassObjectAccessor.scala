@@ -21,46 +21,17 @@ import json._
 import scala.annotation.implicitNotFound
 
 /** Base trait for macro generated ObjectAccessors. Not recommended to extend. */
-trait CaseClassObjectAccessor[T] extends ObjectAccessor[T] {
+abstract class CaseClassObjectAccessor[T] extends ObjectAccessor[T] {
   //function used to create field name from member name
-  def nameMap: String => String
+  //def nameMap: String => String
 
-  lazy val fieldMap = fields.map(field => field.name -> field).toMap
+  //lazy val fieldMap = fields.map(field => field.name -> field).toMap[String, FieldAccessor[T, _]]
 
-  def getValue(obj: T, key: String) = fieldMap(key).getFrom(obj)
+  //final def getValue(obj: T, key: String) = fieldMap(key).getFrom(obj)
 
-  def createJSON(obj: T): JObject = JObject((fields map { field =>
+  final def createJSON(obj: T): JObject = JObject((fields map { field =>
     field.name -> field.getJValue(obj)
   }): _*)
 
   override def toString = "CaseClassObjectAccessor"
-
-  def describe: JObject = baseDescription ++ Map(
-    "fields" -> (JObject.empty ++ fieldMap.map {
-      case (name, fieldAcc) => name -> JObject(
-        "type" -> fieldAcc.fieldAccessor.describe,
-        "default" -> fieldAcc.defOpt.map(_.js(fieldAcc.fieldAccessor)).getOrElse(JUndefined)
-      ).toJValue
-    }),
-    "accessorClass" -> JString("json.internal.CaseClassObjectAccessor")
-  )
-
-  def createSwaggerModels: Seq[JObject] = {
-    val properties = fields.map(_.createSwagger.toJObject).foldLeft(JObject())(_ ++ _)
-
-    //TODO: need annos for root class
-    val description = ""
-
-    val id = clazz.getSimpleName
-    val extras = fields.flatMap(_.fieldAccessor.extraSwaggerModels)
-
-    val jv = JObject(
-      "id" -> id,
-      "description" -> description,
-      //"required".js -> required,
-      "properties" -> properties
-    )
-
-    extras :+ JObject(id -> jv)
-  }
 }

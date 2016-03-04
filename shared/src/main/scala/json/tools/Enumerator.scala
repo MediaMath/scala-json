@@ -60,12 +60,5 @@ abstract class TypedEnumerator[K, T <: TypedEnumerator[K, T, J]#Value: ClassTag,
     def createJSON(from: T): J = from.toJSON
     def fromJSON(from: JValue): T = keyMap.getOrElse(from.to[K], default(from))
     def clazz = classTag[T].runtimeClass
-
-    override def createSwaggerProperty: JObject =
-      super.createSwaggerProperty ++ JObject("enum" -> JArray(jsValues))
-
-    def describe: JValue = baseDescription ++ JObject(
-      "values" -> keyMap.keySet.map(_.js.toJValue).js
-    )
   }
 }

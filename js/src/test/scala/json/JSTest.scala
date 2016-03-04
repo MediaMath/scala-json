@@ -16,16 +16,14 @@
 
 package json
 
-import json.internal.JArrayPrimitive
-import json.internal.JArrayPrimitive.{IntImpl, ByteImpl, BooleanImpl}
+import json.internal.PrimitiveJArray
 import utest._
 import scalajs.js
 import scalajs.js.{JSON => NativeJSON}
 
-object JSTest extends TestSuite {
-  case class TestTypedArray(seq: Seq[Byte])
-  implicit val ttaacc = ObjectAccessor.create[TestTypedArray]
+@accessor case class TestTypedArray(seq: Seq[Byte])
 
+object JSTest extends TestSuite {
   def emptyArray = js.Dynamic.newInstance(js.Dynamic.global.Array)()
 
   def baseJSValueTests(x: js.Any, result: JValue): Unit = {
@@ -95,7 +93,7 @@ object JSTest extends TestSuite {
 
       val jv = JSJValue.fromNativeJS(arr)
 
-      assert(jv.isInstanceOf[ByteImpl])
+      assert(jv.isInstanceOf[PrimitiveJArray[_]])
     }
 
     "use primitive arrays int" - {
@@ -103,50 +101,48 @@ object JSTest extends TestSuite {
 
       val jv = JSJValue.fromNativeJS(arr)
 
-      assert(jv.isInstanceOf[IntImpl])
+      assert(jv.isInstanceOf[PrimitiveJArray[_]])
     }
 
     "use primitive arrays" - {
-      val arr: Seq[Byte] = (new js.typedarray.Int8Array(3)).asInstanceOf[js.Array[Byte]]
+      val arr = (new js.typedarray.Int8Array(3)).asInstanceOf[js.Array[Byte]]
 
       val obj = TestTypedArray(arr)
       val jval = obj.js
       val native = jval.toNativeJS
       val asString = js.JSON.stringify(jval.asInstanceOf[js.Any])
-      val reone: TestTypedArray = JSJValue.fromNativeJS(native).toObject[TestTypedArray]
+      val fromNative: TestTypedArray = JSJValue.fromNativeJS(native).toObject[TestTypedArray]
       val fromJSON = JValue fromString asString
 
-      val arrAcc = json.accessorOf[Seq[Byte]]
+      require(fromJSON == jval)
 
-      assert(fromJSON == jval)
-
-      assert(arr.js match {
-        case JArrayPrimitive.ByteImpl(wrapped: js.WrappedArray[_])
+      require(arr.js match {
+        case PrimitiveJArray(wrapped: js.WrappedArray[_])
           if (wrapped.array: js.Any).isInstanceOf[js.typedarray.Int8Array] => true
-        case JArrayPrimitive.ByteImpl(x) =>
-          sys.error("got a primitive, but not wrapper")
+        case PrimitiveJArray(x) =>
+          sys.error("got a primitive, but not wrapper " + x.getClass)
         case _ => false
       })
 
-      assert(jval("seq") match {
-        case JArrayPrimitive.ByteImpl(wrapped: js.WrappedArray[_])
+      require(jval("seq") match {
+        case PrimitiveJArray(wrapped: js.WrappedArray[_])
           if (wrapped.array: js.Any).isInstanceOf[js.typedarray.Int8Array] => true
-        case JArrayPrimitive.ByteImpl(x) =>
-          sys.error("got a primitive, but not wrapper")
+        case PrimitiveJArray(x) =>
+          sys.error("got a primitive, but not wrapper" + x.getClass)
         case _ => false
       })
 
-      assert(arr.js.jArray.toObject(arrAcc) match {
+      require(arr.js.toObject[Seq[Byte]] match {
         case wrapped: js.WrappedArray[_]
           if (wrapped.array: js.Any).isInstanceOf[js.typedarray.Int8Array] => true
         case _ => false
-      })
+      }, "failed to convert back to a wrapped array")
 
-      assert(reone.seq match {
+      require(fromNative.seq match {
         case wrapped: js.WrappedArray[_]
           if (wrapped.array: js.Any).isInstanceOf[js.typedarray.Int8Array] => true
         case _ => false
-      })
+      }, "failed to get direct access to native array from native")
     }
 
     "test parse" - {
