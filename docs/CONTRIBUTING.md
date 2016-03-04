@@ -8,6 +8,7 @@ scala-json is looking forward to receiving your feedback and pull requests!
 1. Clone your fork (we'll refer to your fork as `origin` hereafter)
 1. Install [SBT](http://www.scala-sbt.org/)
 1. Run `sbt test publishLocal`
+
     ```bash
     $ git clone git@github.com:[my-user-name]/scala-json.git
     $ cd scala-json/
@@ -27,9 +28,7 @@ Before you submit your pull request consider the following guidelines:
 * Make sure your fork is [synched](https://help.github.com/articles/syncing-a-fork/)
 * Open an issue first to discuss any potential changes.
 * Create a new branch from `develop`, the current stable version.
-* Branch name should be in the format:
-
-    `<github.id>-<issue#>-<iteration>` (ex: `colinrgodsey-1853-2`)
+* Branch name should be in the format: `<github.id>-<issue#>-<iteration>` (ex: `colinrgodsey-1853-2`)
 * Make your changes in a new git branch:
 
      ```bash
