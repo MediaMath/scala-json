@@ -53,18 +53,7 @@ object VMContext extends BaseVMContext {
   def createPrimitiveArray[/*@specialized */T: ClassTag](length: Int): PrimitiveArray[T] =
     wrapPrimitiveArray(new Array[T](length))
 
-  def wrapPrimitiveArray[/*@specialized */T: ClassTag](from: Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
-    def length: Int = from.length
-
-    def update(idx: Int, value: T): Unit = from(idx) = value
-
-    def apply(idx: Int): T = from(idx)
-
-    //for direct wrapping if/when available
-    def toWrapped: IndexedSeq[T] = from
-
-    def underlying = from
-  }
+  def wrapPrimitiveArray[/*@specialized */T: ClassTag](from: Array[T]): PrimitiveArray[T] = from
 
   def fromString(str: String): JValue = {
     val deser = localMapper.get

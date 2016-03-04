@@ -30,18 +30,7 @@ import json.accessors._
 object JSJValue {
   private implicit def typedArrToArr[T, U](x: TypedArray[T, U]): js.Array[T] = x.asInstanceOf[js.Array[T]]
 
-  def newPrimArr[T, U](from: TypedArray[T, U]) = new PrimitiveArray[T] {
-    def length: Int = from.length
-
-    def update(idx: Int, value: T): Unit = from(idx) = value
-
-    def apply(idx: Int): T = from(idx)
-
-    //for direct wrapping if/when available
-    def toWrapped: IndexedSeq[T] = from.asInstanceOf[js.Array[T]]
-
-    def underlying = js.WrappedArray(from)
-  }
+  def newPrimArr[T, U](from: TypedArray[T, U]) = (from: js.Array[T])
 
   private[json] object TypedArrayExtractor {
     def unapply(x: js.Object): Option[TypedArray[_, _]] = {

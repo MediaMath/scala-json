@@ -19,13 +19,11 @@ package json.internal
 import java.util.UUID
 
 import json._
-import json.internal.DefaultVMContext.PrimitiveArray
 
 import scala.collection.generic.CanBuildFrom
 import scala.collection.immutable.VectorBuilder
 import scala.collection.mutable.Builder
 import scala.collection.{immutable, IndexedSeqLike}
-import scala.reflect.ClassTag
 
 trait JArrayCompanion/* extends GenericCompanion[scala.collection.immutable.Seq]*/ {
   def newCanBuildFrom = new CanBuildFrom[TraversableOnce[JValue], JValue, JArray] {
@@ -120,88 +118,8 @@ private final class JArraySeqImpl(override val values: IndexedSeq[JValue]) exten
   override def apply(idx: Int): JValue = values(idx)
 }
 
-//TODO: one day we should specialize this class with the following form, all VM specific:
-/*
-abstract class PrimitiveJArray[@specialized T: PrimitiveJArray.Builder] private[json] extends JArray {
-  type Elem = T
 
-  def toWrapped: IndexedSeq[T]
-  def length: Int
-  private[json] def applyRaw(idx: Int): T
-  private[json] def update(idx: Int, value: T): Unit
 
-  val builder = implicitly[PrimitiveJArray.Builder[T]]
 
-  def numStringFor(idx: Int): String = builder.toPrimitiveString(applyRaw(idx))
 
-  override def apply(idx: Int): JValue = builder.toJValue(applyRaw(idx))
-
-  def getDouble(idx: Int): Double = builder toDouble applyRaw(idx)
-
-  def copyFrom[F](from: PrimitiveJArray[F]): Unit = {
-    require(length == from.length)
-
-    for(idx <- 0 until length)
-      this(idx) = builder.fromDouble(from getDouble idx)
-  }
-}
- */
-
-final class PrimitiveJArray[/*@specialized */T: PrimitiveJArray.Builder] private[json] (private[json] val primArr: PrimitiveArray[T]) extends JArray {
-  type Elem = T
-
-  val builder = implicitly[PrimitiveJArray.Builder[T]]
-
-  def numStringFor(idx: Int): String = builder.toPrimitiveString(primArr(idx))
-
-  def length = primArr.length
-
-  override def apply(idx: Int): JValue = builder.toJValue(primArr(idx))
-
-  def getDouble(idx: Int): Double = builder toDouble primArr(idx)
-
-  def copyFrom[F](from: PrimitiveJArray[F]): Unit = {
-    require(length == from.length)
-
-    for(idx <- 0 until length)
-      primArr(idx) = builder.fromDouble(from getDouble idx)
-  }
-
-}
-
-object PrimitiveJArray {
-  private[json] def unapply[T](x: PrimitiveJArray[T]): Option[IndexedSeq[T]] = Some(x.primArr.toWrapped)
-
-  sealed trait SpecialBuilders[+U[_] <: Iterable[_]] {
-    def canIndexedSeq: Boolean
-  }
-
-  object SpecialBuilders {
-    implicit case object ForIndexedSeq extends SpecialBuilders[IndexedSeq] {
-      def canIndexedSeq: Boolean = true
-    }
-
-    case object ForAny extends SpecialBuilders[Nothing] {
-      def canIndexedSeq: Boolean = false
-    }
-  }
-
-  trait Builder[@specialized T] { _: JSONAccessorProducer[T, _] =>
-    def classTag: ClassTag[T]
-
-    def toDouble(x: T): Double
-    def fromDouble(x: Double): T
-
-    def toJValue(x: T): JValue = JNumber(toDouble(x))
-
-    def createFrom(prim: PrimitiveArray[T]) = new PrimitiveJArray[T](prim)(this)
-
-    def toPrimitiveString(x: T): String = x.toString
-
-    def create(length: Int) = {
-      val prim = VM.Context.createPrimitiveArray[T](length)(classTag)
-      createFrom(prim)
-    }
-  }
-}
 

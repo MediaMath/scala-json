@@ -186,29 +186,7 @@ object VMContext extends BaseVMContext {
   def createPrimitiveArray[T: ClassTag](length: Int): PrimitiveArray[T] =
     wrapPrimitiveArray(new Array[T](length))
 
-  def wrapPrimitiveArray[T: ClassTag](from: js.Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
-    def length: Int = from.length
+  def wrapPrimitiveArray[T: ClassTag](from: js.Array[T]): PrimitiveArray[T] = from
 
-    def update(idx: Int, value: T): Unit = from(idx) = value
-
-    def apply(idx: Int): T = from(idx)
-
-    //for direct wrapping if/when available
-    def toWrapped: IndexedSeq[T] = from
-
-    def underlying = from
-  }
-
-  def wrapPrimitiveArray[T: ClassTag](from: Array[T]): PrimitiveArray[T] = new PrimitiveArray[T] {
-    def length: Int = from.length
-
-    def update(idx: Int, value: T): Unit = from(idx) = value
-
-    def apply(idx: Int): T = from(idx)
-
-    //for direct wrapping if/when available
-    def toWrapped: IndexedSeq[T] = from
-
-    def underlying = from
-  }
+  def wrapPrimitiveArray[T: ClassTag](from: Array[T]): PrimitiveArray[T] = from
 }
