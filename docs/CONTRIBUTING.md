@@ -7,10 +7,10 @@ scala-json is looking forward to receiving your feedback and pull requests!
 1. Install the [SBT](http://www.scala-sbt.org/) build tool. 
 1. Run and test using *sbt test*:
 
-  ```bash
-  $ git clone git@github.com:[my-user-name]/scala-json.git
-  $ cd scala-json/
-  $ sbt test
+```bash
+$ git clone git@github.com:[my-user-name]/scala-json.git
+$ cd scala-json/
+$ sbt test
   ```
 
 ## <a name="issue"></a>Found an Issue?
@@ -32,14 +32,14 @@ Before you submit your pull request consider the following guidelines:
 ```
 * Make your changes in a new git branch:
  ```bash
- git checkout -b mygithub-1234-1
+ $ git checkout -b mygithub-1234-1
  ```
 * Create your patch.
 * Follow our [Coding Guidelines](#guidelines).
 * Commit your changes using a descriptive commit message
 * Push your branch to GitHub:
 ```bash
-git push origin mygithub-1234-1
+$ git push origin mygithub-1234-1
 ```
 * In GitHub, send a pull request to `scala-json:develop`
 
@@ -49,9 +49,9 @@ If code review suggests changes...
 * Make the required updates.
 * [Rebase](https://help.github.com/articles/about-git-rebase/) your branch and force push to your GitHub repository (this will update your Pull Request):
 ```bash
-git fetch upstream
-git rebase -i upstream/develop
-git push -f origin mygithub-1234-1
+$ git fetch upstream
+$ git rebase -i upstream/develop
+$ git push -f origin mygithub-1234-1
 ```
 * When you solution is approved, please [squash](https://help.github.com/articles/about-git-rebase/) your commits.
 
