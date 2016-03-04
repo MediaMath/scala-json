@@ -76,8 +76,8 @@ object VMContext extends BaseVMContext {
       case x: js.WrappedArray[T] => Some(x.array match {
         case TypedArrayExtractor(typed) => JSJValue.typedArrayToJArray(typed)
         case jArray => new PrimitiveJArray[T](wrapPrimitiveArray(jArray))
-
       })
+      case x: IndexedSeq[T] => Some(builder.createFrom(x))
       case _ => None
     }
   }

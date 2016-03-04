@@ -121,7 +121,7 @@ object VMContext extends BaseVMContext {
 
     x match {
       case x: mutable.WrappedArray[T] => Some(newJValueFromArray(x.array))
-      case x: IndexedSeq[T] => Some(new PrimitiveJArray[T](x))
+      case x: IndexedSeq[T] => Some(builder.createFrom(x))
       case _ => None
     }
   }
