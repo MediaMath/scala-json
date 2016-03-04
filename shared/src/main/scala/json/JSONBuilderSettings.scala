@@ -18,28 +18,35 @@ package json
 
 //TODO: make these implicit
 object JSONBuilderSettings {
-  final val ignoreNulls = false
+  val defaultTabString = "  "
+
+  private val maxNumTabs = 40
+
+  private lazy val tabs: Map[Int, String] = {
+    val seq = for(i <- 0 until maxNumTabs) yield i -> nTabsRaw(i, defaultTabString)
+    seq.toMap.withDefault(nTabsRaw(_, defaultTabString))
+  }
 
   val pretty = JSONBuilderSettings(
-    newLineString = "\n", tabString = "  ", spaceString = " "
+    newLineString = "\n", tabString = defaultTabString, spaceString = " "
   )
   val dense = JSONBuilderSettings(
     newLineString = "", tabString = "", spaceString = "")
 
   val default = pretty
+
+  private def nTabsRaw(n: Int, tabString: String) =
+    (for (i <- 0 until n) yield tabString).mkString
 }
 
 case class JSONBuilderSettings(
     spaceString: String,
     newLineString: String,
     tabString: String) {
-  private lazy val tabs = {
-    val seq = for(i <- 0 until 30) yield i -> nTabsRaw(i)
-    seq.toMap withDefault nTabsRaw
-  }
+  import JSONBuilderSettings._
 
-  private def nTabsRaw(n: Int) =
-    (for (i <- 0 until n) yield tabString).mkString
-
-  def nTabs(n: Int) = tabs(n)
+  def nTabs(n: Int): String =
+    if(n == 0 || tabString == "") ""
+    else if(tabString != defaultTabString) nTabsRaw(n, tabString)
+    else tabs(n)
 }

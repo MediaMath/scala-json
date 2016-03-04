@@ -73,6 +73,8 @@ SomeModel("foo", 22).js
 * Typed exceptions with field data
 
 ```tut
+import json.exceptions._
+
 try {
   JObject("FIELD_A" -> "badint".js).toObject[TestClass]
   sys.error("should fail before")

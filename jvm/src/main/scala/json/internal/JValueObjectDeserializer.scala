@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.JsonToken._
 
 import json._
 import json.accessors._
+import json.exceptions.GenericJSONException
 
 import scala.annotation.switch
 import scala.collection.immutable.VectorBuilder

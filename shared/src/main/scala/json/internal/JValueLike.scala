@@ -17,6 +17,7 @@
 package json.internal
 
 import json._
+import json.exceptions.GenericJSONException
 import json.internal.DefaultVMContext._
 
 import scala.collection.generic.Growable

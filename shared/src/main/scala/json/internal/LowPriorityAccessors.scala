@@ -17,6 +17,7 @@
 package json.internal
 
 import json._
+import json.exceptions.{InputTypeException, InputFormatsException, InputFormatException}
 
 import scala.collection.generic.CanBuildFrom
 import scala.reflect.ClassTag

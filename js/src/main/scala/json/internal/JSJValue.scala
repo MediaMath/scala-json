@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package json
+package json.internal
 
-import json.internal.DefaultVMContext.PrimitiveArray
-import json.internal.PrimitiveJArray
+import json._
 
 import scala.scalajs.js
 import scala.scalajs.js.typedarray._
-import scalajs.js.{JSON => NativeJSON}
-
-import js.JSConverters._
-
-import json.accessors._
 
 object JSJValue {
+  import accessors._
+
   private implicit def typedArrToArr[T, U](x: TypedArray[T, U]): js.Array[T] = x.asInstanceOf[js.Array[T]]
 
   def newPrimArr[T, U](from: TypedArray[T, U]) = (from: js.Array[T])
@@ -41,7 +37,7 @@ object JSJValue {
     }
   }
 
-  def typedArrayToJArray(arr: TypedArray[_, _]) = arr match {
+  def typedArrayToJArray(arr: TypedArray[_, _]): PrimitiveJArray[_] = arr match {
     case x: Int8Array => new PrimitiveJArray(newPrimArr(x))
     case x: Int16Array => new PrimitiveJArray(newPrimArr(x))
     case x: Int32Array => new PrimitiveJArray(newPrimArr(x))

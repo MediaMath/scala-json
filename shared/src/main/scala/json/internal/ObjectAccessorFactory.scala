@@ -17,6 +17,7 @@
 package json.internal
 
 import json._
+import json.exceptions.{MissingFieldException, InputFormatsException, InputFormatException}
 
 import scala.collection.mutable
 import scala.language.experimental.macros
