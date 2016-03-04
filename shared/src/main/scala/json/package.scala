@@ -52,12 +52,6 @@ package object json extends JSONAnnotations with Implicits {
 
   object accessors extends internal.Accessors
 
-  /** Constants that can be used to avoid allocation */
-  object constants {
-    val trueString = JString("true")
-    val falseString = JString("false")
-    val nullString = JString("null")
-  }
 
   def fromJSON[T](jval: JValue)(implicit acc: JSONAccessor[T]) = acc.fromJSON(jval)
   def toJSONString[T: JSONAccessor](obj: T) = obj.js.toString

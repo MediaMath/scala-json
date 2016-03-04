@@ -121,17 +121,19 @@ sealed abstract class JBoolean extends JValue with VM.Context.JBooleanBase {
 }
 
 final case object JTrue extends JBoolean {
+  val toJString: JString = JString("true")
+
   def value = true
   def not = JFalse
   def toJNumber: JNumber = JNumber.one
-  def toJString: JString = constants.trueString
 }
 
 final case object JFalse extends JBoolean {
+  val toJString: JString = JString("false")
+  
   def value = false
   def not = JTrue
   def toJNumber: JNumber = JNumber.zero
-  def toJString: JString = constants.falseString
 }
 
 /** JSON String value */
@@ -196,12 +198,13 @@ sealed abstract class JNumber extends JValue with VM.Context.JNumberBase { _: JN
 
 /** JSON null primitive */
 final case object JNull extends JValue with VM.Context.JNullBase {
+  val toJString: JString = JString("null")
+
   def iterator: Iterator[JValue] = sys.error("Cannot iterate null!")
 
   def value = null
   override def jValue = this
   def toJBoolean: JBoolean = JFalse
-  def toJString: JString = constants.nullString
   def toJNumber: JNumber = JNumber.zero
   override def apply(key: JValue): JValue = {
     sys.error(s"Cannot read property '$key' of null") //TypeError
