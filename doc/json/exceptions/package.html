@@ -1,0 +1,290 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>exceptions - json.exceptions</title>
+          <meta name="description" content="exceptions - json.exceptions" />
+          <meta name="keywords" content="exceptions json.exceptions" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../index.html';
+            var hash = 'json.exceptions.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../lib/package_big.png" />
+        <p id="owner"><a href="../package.html" class="extype" name="json">json</a></p>
+        <h1>exceptions</h1><span class="permalink">
+      <a href="../../index.html#json.exceptions.package" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">exceptions</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="json.exceptions.DuplicateKeyException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DuplicateKeyExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable"></a>
+      <a id="DuplicateKeyException:DuplicateKeyException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DuplicateKeyException.html"><span class="name">DuplicateKeyException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;Duplicate keys in object!&quot;</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.exceptions.JSONException">JSONException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@DuplicateKeyExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Exception that happens when creating a JObject with ordered pairs that contain duplicate keys</p>
+    </li><li name="json.exceptions.GenericFieldException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GenericFieldExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable"></a>
+      <a id="GenericFieldException:GenericFieldException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="GenericFieldException.html"><span class="name">GenericFieldException</span></a><span class="params">(<span name="fieldName">fieldName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="cause">cause: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFieldException.html" class="extype" name="json.exceptions.InputFieldException">InputFieldException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@GenericFieldExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic field exception for parsing errors on a field.</p>
+    </li><li name="json.exceptions.GenericJSONException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GenericJSONExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable"></a>
+      <a id="GenericJSONException:GenericJSONException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="GenericJSONException.html"><span class="name">GenericJSONException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;JSON Exception&quot;</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.exceptions.JSONException">JSONException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@GenericJSONExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="json.exceptions.InputFieldException" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="InputFieldExceptionextendsExceptionwithJSONExceptionwithInputFormatException"></a>
+      <a id="InputFieldException:InputFieldException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="InputFieldException.html"><span class="name">InputFieldException</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.exceptions.JSONException">JSONException</a> with <a href="InputFormatException.html" class="extype" name="json.exceptions.InputFormatException">InputFormatException</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@InputFieldExceptionextendsExceptionwithJSONExceptionwithInputFormatException" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base type for 'input format' exceptions that happened on a single field.</p><div class="fullcomment"><div class="comment cmt"><p>Base type for 'input format' exceptions that happened on a single field.
+Contains no other exceptions.</p></div></div>
+    </li><li name="json.exceptions.InputFormatException" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="InputFormatExceptionextendsExceptionwithJSONException"></a>
+      <a id="InputFormatException:InputFormatException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="InputFormatException.html"><span class="name">InputFormatException</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.exceptions.JSONException">JSONException</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@InputFormatExceptionextendsExceptionwithJSONException" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base type for 'input format' exceptions.</p><div class="fullcomment"><div class="comment cmt"><p>Base type for 'input format' exceptions.
+May have multiple exceptions, may be for a single field (see <a href="InputFieldException.html" class="extype" name="json.exceptions.InputFieldException">InputFieldException</a>).</p></div></div>
+    </li><li name="json.exceptions.InputFormatsException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InputFormatsExceptionextendsExceptionwithInputFormatExceptionwithProductwithSerializable"></a>
+      <a id="InputFormatsException:InputFormatsException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="InputFormatsException.html"><span class="name">InputFormatsException</span></a><span class="params">(<span name="set">set: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="InputFormatException.html" class="extype" name="json.exceptions.InputFormatException">InputFormatException</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFormatException.html" class="extype" name="json.exceptions.InputFormatException">InputFormatException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@InputFormatsExceptionextendsExceptionwithInputFormatExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Exception that contains format exceptions for multiple fields.</p>
+    </li><li name="json.exceptions.InputTypeException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InputTypeExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable"></a>
+      <a id="InputTypeException:InputTypeException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="InputTypeException.html"><span class="name">InputTypeException</span></a><span class="params">(<span name="fieldName">fieldName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="needsType">needsType: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="isType">isType: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="v">v: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFieldException.html" class="extype" name="json.exceptions.InputFieldException">InputFieldException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@InputTypeExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Field exception that occurs when receiving an unexpected type for a field.</p>
+    </li><li name="json.exceptions.JSONException" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="JSONExceptionextendsExceptionwithProduct"></a>
+      <a id="JSONException:JSONException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JSONException.html"><span class="name">JSONException</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@JSONExceptionextendsExceptionwithProduct" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base type for all JSON exceptions.</p><div class="fullcomment"><div class="comment cmt"><p>Base type for all JSON exceptions. All exceptions are based off of case classes.</p></div></div>
+    </li><li name="json.exceptions.JUndefinedException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JUndefinedExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable"></a>
+      <a id="JUndefinedException:JUndefinedException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JUndefinedException.html"><span class="name">JUndefinedException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;Cannot access JUndefined&quot;</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="JSONException.html" class="extype" name="json.exceptions.JSONException">JSONException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@JUndefinedExceptionextendsExceptionwithJSONExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Exception that happens when accessing fields of JUndefined</p>
+    </li><li name="json.exceptions.MissingFieldException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MissingFieldExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable"></a>
+      <a id="MissingFieldException:MissingFieldException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MissingFieldException.html"><span class="name">MissingFieldException</span></a><span class="params">(<span name="fieldName">fieldName: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFieldException.html" class="extype" name="json.exceptions.InputFieldException">InputFieldException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@MissingFieldExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Field exception for a field that was expecting a value but had no default.</p>
+    </li><li name="json.exceptions.NumericTypeException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NumericTypeExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable"></a>
+      <a id="NumericTypeException:NumericTypeException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NumericTypeException.html"><span class="name">NumericTypeException</span></a><span class="params">(<span name="fieldName">fieldName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="v">v: <span class="extype" name="scala.Any">Any</span></span>, <span name="typString">typString: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="InputFieldException.html" class="extype" name="json.exceptions.InputFieldException">InputFieldException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#json.exceptions.package@NumericTypeExceptionextendsExceptionwithInputFieldExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Field exception for a field that was expecting a numeric type.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
