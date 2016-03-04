@@ -39,6 +39,8 @@ object PrimitiveJArray {
   }
 
   trait Builder[T] { _: JSONAccessorProducer[T, _] =>
+    type Elem = T
+
     def classTag: ClassTag[T]
 
     def toDouble(x: T): Double
@@ -50,14 +52,18 @@ object PrimitiveJArray {
 
     def toPrimitiveString(x: T): String = x.toString
 
-    def create(length: Int) = {
-      val prim = VM.Context.createPrimitiveArray[T](length)(classTag)
-      createFrom(prim)
+    def createFrom[F](from: PrimitiveJArray[F]): PrimitiveJArray[T] = {
+      val primArr = VM.Context.createPrimitiveArray[T](from.length)(classTag)
+
+      for(idx <- 0 until from.length)
+        primArr(idx) = fromDouble(from getDouble idx)
+
+      createFrom(primArr)
     }
   }
 }
 
-final class PrimitiveJArray[T: PrimitiveJArray.Builder] private[json] (private[json] val primArr: PrimitiveArray[T]) extends JArray {
+final class PrimitiveJArray[T: PrimitiveJArray.Builder] private[json] (private[json] val primArr: IndexedSeq[T]) extends JArray {
   type Elem = T
 
   val builder = implicitly[PrimitiveJArray.Builder[T]]
@@ -69,13 +75,6 @@ final class PrimitiveJArray[T: PrimitiveJArray.Builder] private[json] (private[j
   override def apply(idx: Int): JValue = builder toJValue primArr(idx)
 
   def getDouble(idx: Int): Double = builder toDouble primArr(idx)
-
-  def copyFrom[F](from: PrimitiveJArray[F]): Unit = {
-    require(length == from.length)
-
-    for(idx <- 0 until length)
-      primArr(idx) = builder.fromDouble(from getDouble idx)
-  }
 
 }
 

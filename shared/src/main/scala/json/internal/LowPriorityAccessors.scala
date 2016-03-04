@@ -100,15 +100,15 @@ trait LowPriorityAccessors {
         obj match {
           case VM.Context.PrimitiveJArrayExtractor(jarr) => jarr //extract primitive jarray using base array
           case _ =>
-            val arr = jvPrim.create(obj.size)
+            val primArr = VM.Context.createPrimitiveArray[T](obj.size)
 
             var idx = 0
             for(x <- obj) {
-              arr.primArr(idx) = x
+              primArr(idx) = x
               idx += 1
             }
 
-            arr
+            jvPrim.createFrom(primArr)
         }
     }
 
@@ -119,11 +119,8 @@ trait LowPriorityAccessors {
 
         val indexed = if(x.builder.classTag == builder.classTag)
           x.primArr.asInstanceOf[IndexedSeq[T]]
-        else {
-          val newPrim = builder.create(x.length)
-          newPrim.copyFrom(x)
-          newPrim.primArr
-        }
+        else
+          builder.createFrom(x).primArr
 
         indexed.asInstanceOf[U[T]]
       //TODO: maybe some translation for boxed arrays

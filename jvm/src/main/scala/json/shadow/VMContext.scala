@@ -117,8 +117,11 @@ object VMContext extends BaseVMContext {
   }
 
   def extractPrimitiveJArray[T: ClassTag: PrimitiveJArray.Builder](x: Iterable[T]): Option[JArray] = {
+    val builder = implicitly[PrimitiveJArray.Builder[T]]
+
     x match {
       case x: mutable.WrappedArray[T] => Some(newJValueFromArray(x.array))
+      case x: IndexedSeq[T] => Some(new PrimitiveJArray[T](x))
       case _ => None
     }
   }

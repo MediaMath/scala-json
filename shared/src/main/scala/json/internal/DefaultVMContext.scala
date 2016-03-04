@@ -65,7 +65,7 @@ object DefaultVMContext {
     def fromAny(value: Any): JValue = ???
     def quoteJSONString(string: String, builder: SimpleStringBuilder): SimpleStringBuilder = ???
     def newVMStringBuilder: SimpleStringBuilder = ???
-    def createPrimitiveArray[/*@specialized */T: ClassTag](length: Int): PrimitiveArray[T] = ???
+    def createPrimitiveArray[T: ClassTag](length: Int): PrimitiveArray[T] = ???
     def extractPrimitiveJArray[T: ClassTag : Builder](x: Iterable[T]): Option[JArray] = ???
   }
 

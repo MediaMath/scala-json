@@ -9,6 +9,7 @@ scala-json is looking forward to receiving your feedback and pull requests!
 1. Install [SBT](http://www.scala-sbt.org/)
 1. Run `sbt test publishLocal`
 
+
     ```bash
     $ git clone git@github.com:[my-user-name]/scala-json.git
     $ cd scala-json/
@@ -43,7 +44,10 @@ Before you submit your pull request consider the following guidelines:
     git push origin mygithub-1234-1
     ```
 * In GitHub, send a pull request to `scala-json:develop`
-* If we suggest changes then:
+
+## <a name="cr"></a>Code Review
+If code review suggests changes...
+
 * Make the required updates
 * [Rebase](https://help.github.com/articles/about-git-rebase/) your branch and force push to your GitHub repository (this will update your Pull Request):
 

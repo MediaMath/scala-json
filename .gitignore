@@ -50,3 +50,5 @@ jrebel.lic
 /.idea_modules
 
 .smbdelete*
+
+/doc

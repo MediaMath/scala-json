@@ -53,7 +53,7 @@ object ScalaJSON {
     organizationName := "MediaMath, Inc",
     organizationHomepage := Some(url("http://www.mediamath.com")),
     crossPaths := true,
-    crossScalaVersions := Seq("2.10.5", targetScalaVer, "2.12.0-M3"),
+    crossScalaVersions := Seq("2.10.6", targetScalaVer, "2.12.0-M3"),
     resolvers += Resolver.sonatypeRepo("releases"),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
   )
