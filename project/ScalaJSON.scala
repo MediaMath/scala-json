@@ -64,6 +64,8 @@ object ScalaJSON {
     publishTo := Some("publish" at Repository.publishTo(isSnapshot.value)),
     publishArtifact in Test := false,
 
+    scalacOptions in (Compile, doc) ++= Seq("-skip-packages", "json.internal:json.shadow"),
+
     scalacOptions ++= Seq("-deprecation", "-language:_", "-unchecked", "-Xlint",
       "-Xlog-free-terms", "-encoding", "UTF-8"),
 
