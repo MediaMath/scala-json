@@ -16,16 +16,17 @@
 
 package json.shadow
 
-import json.JSJValue.TypedArrayExtractor
-import json.internal.DefaultVMContext.PrimitiveArray
-import json.internal.{PrimitiveJArray, DefaultVMContext, SimpleStringBuilder, BaseVMContext}
 import json._
+import json.internal.DefaultVMContext.PrimitiveArray
+import json.internal._
+import JSJValue.TypedArrayExtractor
+
 import scala.collection.mutable
 import scala.reflect.ClassTag
+
 import scalajs.js.{JSON => NativeJSON}
-import scala.scalajs.js.annotation.JSExport
+import scalajs.js.annotation.JSExport
 import scalajs.js
-import scalajs.js.typedarray
 
 object VMContext extends BaseVMContext {
   //optimized to use js array.join- good stable performance on most js, plus smaller footprint

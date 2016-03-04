@@ -16,7 +16,7 @@
 
 package json
 
-import json.internal.PrimitiveJArray
+import json.internal.{JSJValue, PrimitiveJArray}
 import utest._
 import scalajs.js
 import scalajs.js.{JSON => NativeJSON}
