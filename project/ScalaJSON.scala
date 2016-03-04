@@ -146,9 +146,14 @@ object ScalaJSON {
       for((outFile, _) <- outFiles.toSeq) yield {
         val out = readFile(outFile).replaceAllLiterally("__VER__", ver)
 
-        writeFile(baseDir / ".." / outFile.getName, out)
+        val outPath = outFile.getName.toLowerCase match {
+          case "readme.md" => baseDir / ".." / outFile.getName
+          case _ => baseDir / ".." / "docs" / outFile.getName
+        }
 
-        file(out)
+        writeFile(outPath, out)
+
+        outPath
       }
     },
 
