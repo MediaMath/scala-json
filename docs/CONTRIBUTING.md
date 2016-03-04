@@ -40,9 +40,9 @@ Before you submit your pull request consider the following guidelines:
 * Commit your changes using a descriptive commit message
 * Push your branch to GitHub:
 
-```bash
-$ git push origin mygithub-1234-1
-```
+  ```bash
+  $ git push origin mygithub-1234-1
+  ```
 * In GitHub, send a pull request to `scala-json:develop`
 
 ## <a name="cr"></a>Code Review
