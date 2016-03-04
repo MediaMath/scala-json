@@ -52,13 +52,13 @@
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>ObjectAccessor is a <a href="package.html#JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]" class="extmbr" name="json.JSONAccessor">JSONAccessor</a> for objects that have named fields. Generally these
-are mostly seen as auto-generated <a href="internal/CaseClassObjectAccessor.html" class="extype" name="json.internal.CaseClassObjectAccessor">json.internal.CaseClassObjectAccessor</a> case class accessors.
+are mostly seen as auto-generated <span class="extype" name="json.internal.CaseClassObjectAccessor">json.internal.CaseClassObjectAccessor</span> case class accessors.
 Extend this if you need to make a custom accessor that has named fields.</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>The base type this accessor is for.</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a>[<span class="extype" name="json.ObjectAccessor.T">T</span>, <a href="JObject.html" class="extype" name="json.JObject">JObject</a>], <a href="JSONAccessorProducer$$CreateJSON.html" class="extype" name="json.JSONAccessorProducer.CreateJSON">CreateJSON</a>[<span class="extype" name="json.ObjectAccessor.T">T</span>, <a href="JObject.html" class="extype" name="json.JObject">JObject</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="internal/CaseClassObjectAccessor.html" class="extype" name="json.internal.CaseClassObjectAccessor">CaseClassObjectAccessor</a>, <a href="ObjectAccessor$$NoAccessor$.html" class="extype" name="json.ObjectAccessor.NoAccessor">NoAccessor</a></div>
+            <div class="subClasses hiddenContent"><a href="tools/Migration$$Accessor.html" class="extype" name="json.tools.Migration.Accessor">Accessor</a>, <a href="ObjectAccessor$$NoAccessor$.html" class="extype" name="json.ObjectAccessor.NoAccessor">NoAccessor</a></div>
           </div></div>
         
 
@@ -95,7 +95,27 @@ Extend this if you need to make a custom accessor that has named fields.</p></di
         <div id="allMembers">
         
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="json.JSONAccessorProducer.LocalType" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LocalType=T"></a>
+      <a id="LocalType:LocalType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">LocalType</span><span class="result"> = <span class="extype" name="json.ObjectAccessor.T">T</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.ObjectAccessor@LocalType=T" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a></dd></dl></div>
+    </li></ol>
+            </div>
 
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
@@ -133,36 +153,19 @@ Extend this if you need to make a custom accessor that has named fields.</p></di
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JSONAccessorProducer$$CreateJSON.html" class="extype" name="json.JSONAccessorProducer.CreateJSON">CreateJSON</a></dd></dl></div>
-    </li><li name="json.JSONAccessorProducer#describe" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="describe:json.JValue"></a>
-      <a id="describe:JValue"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">describe</span><span class="result">: <a href="JValue.html" class="extype" name="json.JValue">JValue</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#json.ObjectAccessor@describe:json.JValue" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a></dd></dl></div>
     </li><li name="json.ObjectAccessor#fields" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="fields:IndexedSeq[json.internal.FieldAccessor[T]]"></a>
-      <a id="fields:IndexedSeq[FieldAccessor[T]]"></a>
+      <a id="fields:IndexedSeq[json.internal.FieldAccessor[T,_]]"></a>
+      <a id="fields:IndexedSeq[FieldAccessor[T,_]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">fields</span><span class="result">: <span class="extype" name="scala.IndexedSeq">IndexedSeq</span>[<a href="internal/FieldAccessor.html" class="extype" name="json.internal.FieldAccessor">FieldAccessor</a>[<span class="extype" name="json.ObjectAccessor.T">T</span>]]</span>
+        <span class="name">fields</span><span class="result">: <span class="extype" name="scala.IndexedSeq">IndexedSeq</span>[<span class="extype" name="json.internal.FieldAccessor">FieldAccessor</span>[<span class="extype" name="json.ObjectAccessor.T">T</span>, _]]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#json.ObjectAccessor@fields:IndexedSeq[json.internal.FieldAccessor[T]]" title="Permalink" target="_top">
+      <a href="../index.html#json.ObjectAccessor@fields:IndexedSeq[json.internal.FieldAccessor[T,_]]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -257,23 +260,6 @@ Extend this if you need to make a custom accessor that has named fields.</p></di
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="json.JSONAccessorProducer#baseDescription" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="baseDescription:json.JObject"></a>
-      <a id="baseDescription:JObject"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">baseDescription</span><span class="result">: <a href="JObject.html" class="extype" name="json.JObject">JObject</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#json.ObjectAccessor@baseDescription:json.JObject" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a></dd></dl></div>
     </li><li name="json.ObjectAccessor#canEqual" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="canEqual(that:Any):Boolean"></a>
       <a id="canEqual(Any):Boolean"></a>
@@ -314,23 +300,23 @@ Extend this if you need to make a custom accessor that has named fields.</p></di
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="json.JSONAccessorProducer#createSwaggerProperty" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="createSwaggerProperty:json.JObject"></a>
-      <a id="createSwaggerProperty:JObject"></a>
+    </li><li name="json.ObjectAccessor#describe" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="describe:json.JObject"></a>
+      <a id="describe:JObject"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">createSwaggerProperty</span><span class="result">: <a href="JObject.html" class="extype" name="json.JObject">JObject</a></span>
+        <span class="name">describe</span><span class="result">: <a href="JObject.html" class="extype" name="json.JObject">JObject</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#json.ObjectAccessor@createSwaggerProperty:json.JObject" title="Permalink" target="_top">
+      <a href="../index.html#json.ObjectAccessor@describe:json.JObject" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.ObjectAccessor">ObjectAccessor</a> → <a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -365,23 +351,6 @@ Extend this if you need to make a custom accessor that has named fields.</p></di
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.ObjectAccessor">ObjectAccessor</a> → AnyRef → Any</dd></dl></div>
-    </li><li name="json.JSONAccessorProducer#extraSwaggerModels" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="extraSwaggerModels:Seq[json.JObject]"></a>
-      <a id="extraSwaggerModels:Seq[JObject]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">extraSwaggerModels</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="JObject.html" class="extype" name="json.JObject">JObject</a>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#json.ObjectAccessor@extraSwaggerModels:Seq[json.JObject]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -524,6 +493,23 @@ Extend this if you need to make a custom accessor that has named fields.</p></di
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="json.ObjectAccessor#referencedTypes" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="referencedTypes:Seq[json.JSONAccessorProducer[_,_]]"></a>
+      <a id="referencedTypes:Seq[JSONAccessorProducer[_,_]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">referencedTypes</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a>[_, _]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.ObjectAccessor@referencedTypes:Seq[json.JSONAccessorProducer[_,_]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.ObjectAccessor">ObjectAccessor</a> → <a href="JSONAccessorProducer.html" class="extype" name="json.JSONAccessorProducer">JSONAccessorProducer</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

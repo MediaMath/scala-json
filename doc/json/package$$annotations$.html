@@ -45,13 +45,13 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">annotations</span><span class="result"> extends <a href="internal/JSONAnnotations.html" class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</a></span>
+        <span class="name">annotations</span><span class="result"> extends <span class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Package space for all scala-json annotations</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="internal/JSONAnnotations.html" class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -99,14 +99,14 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">FieldAccessorAnnotation</span><span class="result"> = <a href="internal/FieldAccessorAnnotation.html" class="extype" name="json.internal.FieldAccessorAnnotation">internal.FieldAccessorAnnotation</a></span>
+        <span class="name">FieldAccessorAnnotation</span><span class="result"> = <span class="extype" name="json.internal.FieldAccessorAnnotation">internal.FieldAccessorAnnotation</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#json.package$$annotations$@FieldAccessorAnnotation=json.internal.FieldAccessorAnnotation" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Base type of all annotations, useful when reflecting <code>annos</code> in <a href="internal/FieldAccessor.html" class="extype" name="json.internal.FieldAccessor">json.internal.FieldAccessor</a></p><div class="fullcomment"><div class="comment cmt"><p>Base type of all annotations, useful when reflecting <code>annos</code> in <a href="internal/FieldAccessor.html" class="extype" name="json.internal.FieldAccessor">json.internal.FieldAccessor</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JSONAnnotations.html" class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</a></dd></dl></div>
+      <p class="shortcomment cmt">Base type of all annotations, useful when reflecting <code>annos</code> in <span class="extype" name="json.internal.FieldAccessor">json.internal.FieldAccessor</span></p><div class="fullcomment"><div class="comment cmt"><p>Base type of all annotations, useful when reflecting <code>annos</code> in <span class="extype" name="json.internal.FieldAccessor">json.internal.FieldAccessor</span></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
     </li><li name="json.internal.JSONAnnotations.description" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="description=json.internal.FieldDescriptionGeneric"></a>
       <a id="description:description"></a>
@@ -116,14 +116,14 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">description</span><span class="result"> = <a href="internal/FieldDescriptionGeneric.html" class="extype" name="json.internal.FieldDescriptionGeneric">FieldDescriptionGeneric</a></span>
+        <span class="name">description</span><span class="result"> = <span class="extype" name="json.internal.FieldDescriptionGeneric">FieldDescriptionGeneric</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#json.package$$annotations$@description=json.internal.FieldDescriptionGeneric" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Provide field description, useful when reflect on accessors for auto-gen docs, etc</p><div class="fullcomment"><div class="comment cmt"><p>Provide field description, useful when reflect on accessors for auto-gen docs, etc</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JSONAnnotations.html" class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</a></dd></dl></div>
+      <p class="shortcomment cmt">Provide field description, useful when reflect on accessors for auto-gen docs, etc</p><div class="fullcomment"><div class="comment cmt"><p>Provide field description, useful when reflect on accessors for auto-gen docs, etc</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
     </li><li name="json.internal.JSONAnnotations.ephemeral" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ephemeral=json.internal.EphemeralGeneric"></a>
       <a id="ephemeral:ephemeral"></a>
@@ -133,7 +133,7 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">ephemeral</span><span class="result"> = <a href="internal/EphemeralGeneric.html" class="extype" name="json.internal.EphemeralGeneric">EphemeralGeneric</a></span>
+        <span class="name">ephemeral</span><span class="result"> = <span class="extype" name="json.internal.EphemeralGeneric">EphemeralGeneric</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#json.package$$annotations$@ephemeral=json.internal.EphemeralGeneric" title="Permalink" target="_top">
@@ -144,7 +144,7 @@
 but not needed for construction (basically read only).</p><div class="fullcomment"><div class="comment cmt"><p>Marks an internal method/val to be emitted when serialized only,
 but not needed for construction (basically read only).</p><pre>@json.accessor <span class="kw">case</span> <span class="kw">class</span> Foo(bar: <span class="std">String</span>) {
   @json.ephemeral <span class="kw">def</span> twice = bar + bar
-}</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JSONAnnotations.html" class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</a></dd></dl></div>
+}</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
     </li><li name="json.internal.JSONAnnotations.ignoreDoc" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ignoreDoc=json.internal.IgnoreFieldDocGeneric"></a>
       <a id="ignoreDoc:ignoreDoc"></a>
@@ -154,14 +154,14 @@ but not needed for construction (basically read only).</p><pre>@json.accessor <s
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">ignoreDoc</span><span class="result"> = <a href="internal/IgnoreFieldDocGeneric.html" class="extype" name="json.internal.IgnoreFieldDocGeneric">IgnoreFieldDocGeneric</a></span>
+        <span class="name">ignoreDoc</span><span class="result"> = <span class="extype" name="json.internal.IgnoreFieldDocGeneric">IgnoreFieldDocGeneric</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#json.package$$annotations$@ignoreDoc=json.internal.IgnoreFieldDocGeneric" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Annotation used to mark whether a field will be ignored when emitting auto-gen docs</p><div class="fullcomment"><div class="comment cmt"><p>Annotation used to mark whether a field will be ignored when emitting auto-gen docs</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JSONAnnotations.html" class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</a></dd></dl></div>
+      <p class="shortcomment cmt">Annotation used to mark whether a field will be ignored when emitting auto-gen docs</p><div class="fullcomment"><div class="comment cmt"><p>Annotation used to mark whether a field will be ignored when emitting auto-gen docs</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
     </li><li name="json.internal.JSONAnnotations.name" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="name=json.internal.FieldNameGeneric"></a>
       <a id="name:name"></a>
@@ -171,7 +171,7 @@ but not needed for construction (basically read only).</p><pre>@json.accessor <s
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">name</span><span class="result"> = <a href="internal/FieldNameGeneric.html" class="extype" name="json.internal.FieldNameGeneric">FieldNameGeneric</a></span>
+        <span class="name">name</span><span class="result"> = <span class="extype" name="json.internal.FieldNameGeneric">FieldNameGeneric</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#json.package$$annotations$@name=json.internal.FieldNameGeneric" title="Permalink" target="_top">
@@ -180,7 +180,7 @@ but not needed for construction (basically read only).</p><pre>@json.accessor <s
     </span>
       <p class="shortcomment cmt">Provide field name that will be used in the JSON.</p><div class="fullcomment"><div class="comment cmt"><p>Provide field name that will be used in the JSON. Useful when making case classes for
 existing JSON models that aren't camel cased.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JSONAnnotations.html" class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</a></dd></dl></div>
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JSONAnnotations</dd></dl></div>
     </li></ol>
             </div>
 
@@ -551,7 +551,7 @@ existing JSON models that aren't camel cased.
 
         <div id="inheritedMembers">
         <div class="parent" name="json.internal.JSONAnnotations">
-              <h3>Inherited from <a href="internal/JSONAnnotations.html" class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</a></h3>
+              <h3>Inherited from <span class="extype" name="json.internal.JSONAnnotations">JSONAnnotations</span></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

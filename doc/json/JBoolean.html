@@ -28,7 +28,7 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="JBoolean$.html" title="See companion object"><img alt="Trait/Object" src="../lib/trait_to_object_big.png" /></a>
+        <a href="JBoolean$.html" title="See companion object"><img alt="Class/Object" src="../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="package.html" class="extype" name="json">json</a></p>
         <h1><a href="JBoolean$.html" title="See companion object">JBoolean</a></h1><h3><span class="morelinks"><div>
             Related Docs:
@@ -43,8 +43,8 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier">sealed </span>
-        <span class="kind">trait</span>
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
         <span class="name">JBoolean</span><span class="result"> extends <a href="JValue.html" class="extype" name="json.JValue">JValue</a> with <span class="extype" name="json.shadow.VMContext.JBooleanBase">JBooleanBase</span></span>
@@ -53,7 +53,7 @@
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Base type for JSON primitives <a href="JTrue$.html" class="extype" name="json.JTrue">JTrue</a> and <a href="JFalse$.html" class="extype" name="json.JFalse">JFalse</a></p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="json.shadow.VMContext.JBooleanBase">JBooleanBase</span>, <a href="JValue.html" class="extype" name="json.JValue">JValue</a>, <span class="extype" name="json.shadow.VMContext.JValueBase">JValueBase</span>, <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="json.shadow.VMContext.JBooleanBase">JBooleanBase</span>, <a href="JValue.html" class="extype" name="json.JValue">JValue</a>, <span class="extype" name="json.shadow.VMContext.JValueBase">JValueBase</span>, <span class="extype" name="json.internal.JValueLike">JValueLike</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
             <div class="subClasses hiddenContent"><a href="JFalse$.html" class="extype" name="json.JFalse">JFalse</a>, <a href="JTrue$.html" class="extype" name="json.JTrue">JTrue</a></div>
@@ -147,7 +147,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">JS-like numeric representation of this value.</p><div class="fullcomment"><div class="comment cmt"><p>JS-like numeric representation of this value.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">JS-like numeric representation of this value.</p><div class="fullcomment"><div class="comment cmt"><p>JS-like numeric representation of this value.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JValueLike</dd></dl></div>
     </li><li name="json.JBoolean#toJString" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="toJString:json.JString"></a>
       <a id="toJString:JString"></a>
@@ -164,7 +164,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">JS-like string representation of this value.</p><div class="fullcomment"><div class="comment cmt"><p>JS-like string representation of this value.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">JS-like string representation of this value.</p><div class="fullcomment"><div class="comment cmt"><p>JS-like string representation of this value.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JValueLike</dd></dl></div>
     </li><li name="json.JBoolean#value" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="value:Boolean"></a>
       <a id="value:Boolean"></a>
@@ -181,7 +181,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">underlying scala value for this JValue</p><div class="fullcomment"><div class="comment cmt"><p>underlying scala value for this JValue</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JBooleanBase → <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">underlying scala value for this JValue</p><div class="fullcomment"><div class="comment cmt"><p>underlying scala value for this JValue</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JBooleanBase → JValueLike</dd></dl></div>
     </li></ol>
             </div>
 
@@ -220,7 +220,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -254,7 +254,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">concats another JObject or JArray onto this value.</p><div class="fullcomment"><div class="comment cmt"><p>concats another JObject or JArray onto this value. Must be the same type!</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">concats another JObject or JArray onto this value.</p><div class="fullcomment"><div class="comment cmt"><p>concats another JObject or JArray onto this value. Must be the same type!</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#-" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="-[T](key:T)(implicitacc:json.JSONAccessor[T]):json.JValue"></a>
       <a id="-[T](T)(JSONAccessor[T]):JValue"></a>
@@ -271,13 +271,13 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#-" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="-(x:json.JValue):json.JValue"></a>
       <a id="-(JValue):JValue"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
@@ -288,7 +288,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">equivalent to javascript <i>delete object[field]</i></p><div class="fullcomment"><div class="comment cmt"><p>equivalent to javascript <i>delete object[field]</i></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">equivalent to javascript <i>delete object[field]</i></p><div class="fullcomment"><div class="comment cmt"><p>equivalent to javascript <i>delete object[field]</i></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
@@ -322,7 +322,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#\" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="\(idx:Int):json.JValue"></a>
       <a id="\(Int):JValue"></a>
@@ -339,7 +339,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#\" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="\(key:String):json.JValue"></a>
       <a id="\(String):JValue"></a>
@@ -356,24 +356,24 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">alternate operator form of <span class="extype" name="json.JValue#apply(key:String):json\.JValue">json.JValue#apply(key:String):json\.JValue</span></p><div class="fullcomment"><div class="comment cmt"><p>alternate operator form of <span class="extype" name="json.JValue#apply(key:String):json\.JValue">json.JValue#apply(key:String):json\.JValue</span></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">alternate operator form of <span class="extype" name="json.JValue#apply(key:String):json\.JValue">json.JValue#apply(key:String):json\.JValue</span></p><div class="fullcomment"><div class="comment cmt"><p>alternate operator form of <span class="extype" name="json.JValue#apply(key:String):json\.JValue">json.JValue#apply(key:String):json\.JValue</span></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.JBoolean#appendJSONStringBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="appendJSONStringBuilder(settings:json.JSONBuilderSettings,out:StringBuilder,lvl:Int):StringBuilder"></a>
-      <a id="appendJSONStringBuilder(JSONBuilderSettings,StringBuilder,Int):StringBuilder"></a>
+      <a id="appendJSONStringBuilder(settings:json.JSONBuilderSettings,out:json.internal.SimpleStringBuilder,lvl:Int):json.internal.SimpleStringBuilder"></a>
+      <a id="appendJSONStringBuilder(JSONBuilderSettings,SimpleStringBuilder,Int):SimpleStringBuilder"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">appendJSONStringBuilder</span><span class="params">(<span name="settings">settings: <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">JSONBuilderSettings</a> = <span class="symbol"><span class="name"><a href="JSONBuilderSettings$.html">JSONBuilderSettings.pretty</a></span></span></span>, <span name="out">out: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>, <span name="lvl">lvl: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>
+        <span class="name">appendJSONStringBuilder</span><span class="params">(<span name="settings">settings: <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">JSONBuilderSettings</a> = <span class="symbol"><span class="name"><a href="JSONBuilderSettings$.html">JSONBuilderSettings.pretty</a></span></span></span>, <span name="out">out: <span class="extype" name="json.internal.SimpleStringBuilder">SimpleStringBuilder</span></span>, <span name="lvl">lvl: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="json.internal.SimpleStringBuilder">SimpleStringBuilder</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#json.JBoolean@appendJSONStringBuilder(settings:json.JSONBuilderSettings,out:StringBuilder,lvl:Int):StringBuilder" title="Permalink" target="_top">
+      <a href="../index.html#json.JBoolean@appendJSONStringBuilder(settings:json.JSONBuilderSettings,out:json.internal.SimpleStringBuilder,lvl:Int):json.internal.SimpleStringBuilder" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(key:String):json.JValue"></a>
       <a id="apply(String):JValue"></a>
@@ -390,7 +390,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">select a key from this JValue.</p><div class="fullcomment"><div class="comment cmt"><p>select a key from this JValue. Equivalent to bracket selects in JS.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">select a key from this JValue.</p><div class="fullcomment"><div class="comment cmt"><p>select a key from this JValue. Equivalent to bracket selects in JS.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(x:json.JValue):json.JValue"></a>
       <a id="apply(JValue):JValue"></a>
@@ -407,7 +407,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">select a key from this JValue using a JValue.</p><div class="fullcomment"><div class="comment cmt"><p>select a key from this JValue using a JValue. Equivalent to bracket selects in JS.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">select a key from this JValue using a JValue.</p><div class="fullcomment"><div class="comment cmt"><p>select a key from this JValue using a JValue. Equivalent to bracket selects in JS.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -441,7 +441,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">gets the boolean value using <a href="internal/JValueLike.html#jBoolean:json.JBoolean" class="extmbr" name="json.internal.JValueLike#jBoolean">jBoolean</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the boolean value using <a href="internal/JValueLike.html#jBoolean:json.JBoolean" class="extmbr" name="json.internal.JValueLike#jBoolean">jBoolean</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">gets the boolean value using <a href="#jBoolean:json.JBoolean" class="extmbr" name="json.JBoolean#jBoolean">jBoolean</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the boolean value using <a href="#jBoolean:json.JBoolean" class="extmbr" name="json.JBoolean#jBoolean">jBoolean</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -481,7 +481,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#dynamic" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="dynamic:json.JDynamic"></a>
       <a id="dynamic:JDynamic"></a>
@@ -498,7 +498,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -549,7 +549,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">gets the Map[String, JValue] value using <a href="internal/JValueLike.html#jObject:json.JObject" class="extmbr" name="json.internal.JValueLike#jObject">jObject</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the Map[String, JValue] value using <a href="internal/JValueLike.html#jObject:json.JObject" class="extmbr" name="json.internal.JValueLike#jObject">jObject</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">gets the Map[String, JValue] value using <a href="#jObject:json.JObject" class="extmbr" name="json.JBoolean#jObject">jObject</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the Map[String, JValue] value using <a href="#jObject:json.JObject" class="extmbr" name="json.JBoolean#jObject">jObject</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -623,7 +623,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#isDefined" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isDefined:Boolean"></a>
       <a id="isDefined:Boolean"></a>
@@ -640,7 +640,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#isDefinedAt" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isDefinedAt(x:json.JValue):Boolean"></a>
       <a id="isDefinedAt(JValue):Boolean"></a>
@@ -657,7 +657,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -691,7 +691,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#isNull" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isNull:Boolean"></a>
       <a id="isNull:Boolean"></a>
@@ -708,7 +708,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#isNullOrUndefined" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isNullOrUndefined:Boolean"></a>
       <a id="isNullOrUndefined:Boolean"></a>
@@ -725,7 +725,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#isObject" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isObject:Boolean"></a>
       <a id="isObject:Boolean"></a>
@@ -742,7 +742,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.JBoolean#isTrue" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="isTrue:Boolean"></a>
       <a id="isTrue:Boolean"></a>
@@ -776,7 +776,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#jArray" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="jArray:json.JArray"></a>
       <a id="jArray:JArray"></a>
@@ -793,7 +793,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">quickly cast to and array or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to and array or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">quickly cast to and array or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to and array or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.JBoolean#jBoolean" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="jBoolean:json.JBoolean"></a>
       <a id="jBoolean:JBoolean"></a>
@@ -810,7 +810,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">quickly cast to a boolean or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to a boolean or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">quickly cast to a boolean or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to a boolean or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#jNumber" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="jNumber:json.JNumber"></a>
       <a id="jNumber:JNumber"></a>
@@ -827,7 +827,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">quickly cast to a number or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to a number or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">quickly cast to a number or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to a number or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#jObject" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="jObject:json.JObject"></a>
       <a id="jObject:JObject"></a>
@@ -844,7 +844,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">quickly cast to and object or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to and object or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">quickly cast to and object or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to and object or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#jString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="jString:json.JString"></a>
       <a id="jString:JString"></a>
@@ -861,7 +861,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">quickly cast to a string or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to a string or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">quickly cast to a string or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>quickly cast to a string or throw a <a href="GenericJSONException.html" class="extype" name="json.GenericJSONException">GenericJSONException</a> otherwise.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.JBoolean#jValue" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="jValue:json.JBoolean"></a>
       <a id="jValue:JBoolean"></a>
@@ -878,7 +878,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#keys" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="keys:Iterable[json.JValue]"></a>
       <a id="keys:Iterable[JValue]"></a>
@@ -895,7 +895,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">keys for this JValue.</p><div class="fullcomment"><div class="comment cmt"><p>keys for this JValue. Either iterable array indexes from <a href="JArray.html" class="extype" name="json.JArray">JArray</a> or iterable keys from a <a href="JObject.html" class="extype" name="json.JObject">JObject</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">keys for this JValue.</p><div class="fullcomment"><div class="comment cmt"><p>keys for this JValue. Either iterable array indexes from <a href="JArray.html" class="extype" name="json.JArray">JArray</a> or iterable keys from a <a href="JObject.html" class="extype" name="json.JObject">JObject</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -963,7 +963,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">gets the number value using <a href="internal/JValueLike.html#jNumber:json.JNumber" class="extmbr" name="json.internal.JValueLike#jNumber">jNumber</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the number value using <a href="internal/JValueLike.html#jNumber:json.JNumber" class="extmbr" name="json.internal.JValueLike#jNumber">jNumber</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">gets the number value using <a href="#jNumber:json.JNumber" class="extmbr" name="json.JBoolean#jNumber">jNumber</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the number value using <a href="#jNumber:json.JNumber" class="extmbr" name="json.JBoolean#jNumber">jNumber</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#select" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="select(seqStr:String):json.JValue"></a>
       <a id="select(String):JValue"></a>
@@ -980,7 +980,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">select from a value with a '.' delimited string</p><div class="fullcomment"><div class="comment cmt"><p>select from a value with a '.' delimited string</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">select from a value with a '.' delimited string</p><div class="fullcomment"><div class="comment cmt"><p>select from a value with a '.' delimited string</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#select" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="select(seq:Seq[String],safe:Boolean):json.JValue"></a>
       <a id="select(Seq[String],Boolean):JValue"></a>
@@ -997,7 +997,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">select from a value with a sequence of keys</p><div class="fullcomment"><div class="comment cmt"><p>select from a value with a sequence of keys</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">select from a value with a sequence of keys</p><div class="fullcomment"><div class="comment cmt"><p>select from a value with a sequence of keys</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#select" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="select(seqStr:String,safe:Boolean):json.JValue"></a>
       <a id="select(String,Boolean):JValue"></a>
@@ -1014,7 +1014,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">select from a value with a '.' delimited string</p><div class="fullcomment"><div class="comment cmt"><p>select from a value with a '.' delimited string</p></div><dl class="paramcmts block"><dt class="param">seqStr</dt><dd class="cmt"><p>period delimited string</p></dd><dt class="param">safe</dt><dd class="cmt"><p>if true, you will get back <a href="JUndefined$.html" class="extype" name="json.JUndefined">JUndefined</a> instead of an exception for <i>undefined</i> access</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">select from a value with a '.' delimited string</p><div class="fullcomment"><div class="comment cmt"><p>select from a value with a '.' delimited string</p></div><dl class="paramcmts block"><dt class="param">seqStr</dt><dd class="cmt"><p>period delimited string</p></dd><dt class="param">safe</dt><dd class="cmt"><p>if true, you will get back <a href="JUndefined$.html" class="extype" name="json.JUndefined">JUndefined</a> instead of an exception for <i>undefined</i> access</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#str" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="str:String"></a>
       <a id="str:String"></a>
@@ -1031,7 +1031,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">gets the string value using <a href="internal/JValueLike.html#jString:json.JString" class="extmbr" name="json.internal.JValueLike#jString">jString</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the string value using <a href="internal/JValueLike.html#jString:json.JString" class="extmbr" name="json.internal.JValueLike#jString">jString</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">gets the string value using <a href="#jString:json.JString" class="extmbr" name="json.JBoolean#jString">jString</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the string value using <a href="#jString:json.JString" class="extmbr" name="json.JBoolean#jString">jString</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -1065,7 +1065,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">converts this JValue into the desired type using the implicit <a href="package.html#JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]" class="extmbr" name="json.JSONAccessor">JSONAccessor</a></p><div class="fullcomment"><div class="comment cmt"><p>converts this JValue into the desired type using the implicit <a href="package.html#JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]" class="extmbr" name="json.JSONAccessor">JSONAccessor</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">converts this JValue into the desired type using the implicit <a href="package.html#JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]" class="extmbr" name="json.JSONAccessor">JSONAccessor</a></p><div class="fullcomment"><div class="comment cmt"><p>converts this JValue into the desired type using the implicit <a href="package.html#JSONAccessor[T]=json.JSONAccessorProducer[T,json.JValue]" class="extmbr" name="json.JSONAccessor">JSONAccessor</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#toDenseString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toDenseString:String"></a>
       <a id="toDenseString:String"></a>
@@ -1082,7 +1082,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">toString method that uses the <i>dense</i> builder settings</p><div class="fullcomment"><div class="comment cmt"><p>toString method that uses the <i>dense</i> builder settings</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">toString method that uses the <i>dense</i> builder settings</p><div class="fullcomment"><div class="comment cmt"><p>toString method that uses the <i>dense</i> builder settings</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#toJArray" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toJArray:json.JArray"></a>
       <a id="toJArray:JArray"></a>
@@ -1099,7 +1099,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">convert this JValue into an array if possible</p><div class="fullcomment"><div class="comment cmt"><p>convert this JValue into an array if possible</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">convert this JValue into an array if possible</p><div class="fullcomment"><div class="comment cmt"><p>convert this JValue into an array if possible</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.JBoolean#toJBoolean" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toJBoolean:json.JBoolean"></a>
       <a id="toJBoolean:JBoolean"></a>
@@ -1116,7 +1116,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">JS-like boolean representation of this value.</p><div class="fullcomment"><div class="comment cmt"><p>JS-like boolean representation of this value.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">JS-like boolean representation of this value.</p><div class="fullcomment"><div class="comment cmt"><p>JS-like boolean representation of this value.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="json.JBoolean">JBoolean</a> → JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#toJObject" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toJObject:json.JObject"></a>
       <a id="toJObject:JObject"></a>
@@ -1133,7 +1133,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">convert this JValue into an object if possible</p><div class="fullcomment"><div class="comment cmt"><p>convert this JValue into an object if possible</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">convert this JValue into an object if possible</p><div class="fullcomment"><div class="comment cmt"><p>convert this JValue into an object if possible</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.shadow.VMContext.JValueBase#toJSON" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toJSON():scala.scalajs.js.Any"></a>
       <a id="toJSON():Any"></a>
@@ -1170,24 +1170,24 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#toJSONStringBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toJSONStringBuilder(settings:json.JSONBuilderSettings,lvl:Int):StringBuilder"></a>
-      <a id="toJSONStringBuilder(JSONBuilderSettings,Int):StringBuilder"></a>
+      <a id="toJSONStringBuilder(settings:json.JSONBuilderSettings,lvl:Int):json.internal.SimpleStringBuilder"></a>
+      <a id="toJSONStringBuilder(JSONBuilderSettings,Int):SimpleStringBuilder"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toJSONStringBuilder</span><span class="params">(<span name="settings">settings: <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">JSONBuilderSettings</a> = <span class="symbol"><span class="name"><a href="package.html">JSONBuilderSettings.pretty</a></span></span></span>, <span name="lvl">lvl: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="result">: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>
+        <span class="name">toJSONStringBuilder</span><span class="params">(<span name="settings">settings: <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">JSONBuilderSettings</a> = <span class="symbol"><span class="name"><a href="package.html">JSONBuilderSettings.pretty</a></span></span></span>, <span name="lvl">lvl: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="result">: <span class="extype" name="json.internal.SimpleStringBuilder">SimpleStringBuilder</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#json.JBoolean@toJSONStringBuilder(settings:json.JSONBuilderSettings,lvl:Int):StringBuilder" title="Permalink" target="_top">
+      <a href="../index.html#json.JBoolean@toJSONStringBuilder(settings:json.JSONBuilderSettings,lvl:Int):json.internal.SimpleStringBuilder" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#toJValue" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toJValue:json.JValue"></a>
       <a id="toJValue:JValue"></a>
@@ -1204,7 +1204,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.shadow.VMContext.JBooleanBase#toNativeJS" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toNativeJS:scala.scalajs.js.Any"></a>
       <a id="toNativeJS:Any"></a>
@@ -1238,7 +1238,24 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">alternate and recommended form of <a href="internal/JValueLike.html#to[T](implicitevidence$1:json.JSONAccessor[T]):T" class="extmbr" name="json.internal.JValueLike#to">to</a></p><div class="fullcomment"><div class="comment cmt"><p>alternate and recommended form of <a href="internal/JValueLike.html#to[T](implicitevidence$1:json.JSONAccessor[T]):T" class="extmbr" name="json.internal.JValueLike#to">to</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">alternate and recommended form of <a href="#to[T](implicitevidence$1:json.JSONAccessor[T]):T" class="extmbr" name="json.JBoolean#to">to</a></p><div class="fullcomment"><div class="comment cmt"><p>alternate and recommended form of <a href="#to[T](implicitevidence$1:json.JSONAccessor[T]):T" class="extmbr" name="json.JBoolean#to">to</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
+    </li><li name="json.internal.JValueLike#toOption" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toOption:Option[json.JValue]"></a>
+      <a id="toOption:Option[JValue]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toOption</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="JValue.html" class="extype" name="json.JValue">JValue</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#json.JBoolean@toOption:Option[json.JValue]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">return Some(x) if value is not undefined or null</p><div class="fullcomment"><div class="comment cmt"><p>return Some(x) if value is not undefined or null</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#toPrettyString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toPrettyString:String"></a>
       <a id="toPrettyString:String"></a>
@@ -1255,7 +1272,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">toString method that uses the <i>pretty</i> builder settings</p><div class="fullcomment"><div class="comment cmt"><p>toString method that uses the <i>pretty</i> builder settings</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">toString method that uses the <i>pretty</i> builder settings</p><div class="fullcomment"><div class="comment cmt"><p>toString method that uses the <i>pretty</i> builder settings</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.JValue#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
@@ -1289,7 +1306,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">toString method that uses a specific <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">json.JSONBuilderSettings</a> and specific indent level to generate JSON</p><div class="fullcomment"><div class="comment cmt"><p>toString method that uses a specific <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">json.JSONBuilderSettings</a> and specific indent level to generate JSON</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">toString method that uses a specific <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">json.JSONBuilderSettings</a> and specific indent level to generate JSON</p><div class="fullcomment"><div class="comment cmt"><p>toString method that uses a specific <a href="JSONBuilderSettings.html" class="extype" name="json.JSONBuilderSettings">json.JSONBuilderSettings</a> and specific indent level to generate JSON</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#unary_!" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="unary_!():json.JBoolean"></a>
       <a id="unary_!():JBoolean"></a>
@@ -1306,7 +1323,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Boolean <i>not</i> according to JS boolean logic</p><div class="fullcomment"><div class="comment cmt"><p>Boolean <i>not</i> according to JS boolean logic</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">Boolean <i>not</i> according to JS boolean logic</p><div class="fullcomment"><div class="comment cmt"><p>Boolean <i>not</i> according to JS boolean logic</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="json.internal.JValueLike#values" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="values:Iterable[json.JValue]"></a>
       <a id="values:Iterable[JValue]"></a>
@@ -1323,7 +1340,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">gets the iterable JValues using <a href="internal/JValueLike.html#jArray:json.JArray" class="extmbr" name="json.internal.JValueLike#jArray">jArray</a> or the object values if <a href="JObject.html" class="extype" name="json.JObject">JObject</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the iterable JValues using <a href="internal/JValueLike.html#jArray:json.JArray" class="extmbr" name="json.internal.JValueLike#jArray">jArray</a> or the object values if <a href="JObject.html" class="extype" name="json.JObject">JObject</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">gets the iterable JValues using <a href="#jArray:json.JArray" class="extmbr" name="json.JBoolean#jArray">jArray</a> or the object values if <a href="JObject.html" class="extype" name="json.JObject">JObject</a></p><div class="fullcomment"><div class="comment cmt"><p>gets the iterable JValues using <a href="#jArray:json.JArray" class="extmbr" name="json.JBoolean#jArray">jArray</a> or the object values if <a href="JObject.html" class="extype" name="json.JObject">JObject</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -1426,7 +1443,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">This operator implements the JavaScript-like equality logic according to the <a href="http://bclary.com/2004/11/07/#a-11.9.3" target="_blank">JS Spec</a></p><div class="fullcomment"><div class="comment cmt"><p>This operator implements the JavaScript-like equality logic according to the <a href="http://bclary.com/2004/11/07/#a-11.9.3" target="_blank">JS Spec</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></dd></dl></div>
+      <p class="shortcomment cmt">This operator implements the JavaScript-like equality logic according to the <a href="http://bclary.com/2004/11/07/#a-11.9.3" target="_blank">JS Spec</a></p><div class="fullcomment"><div class="comment cmt"><p>This operator implements the JavaScript-like equality logic according to the <a href="http://bclary.com/2004/11/07/#a-11.9.3" target="_blank">JS Spec</a></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd>JValueLike</dd></dl></div>
     </li></ol>
             </div>
 
@@ -1443,7 +1460,7 @@
             </div><div class="parent" name="json.shadow.VMContext.JValueBase">
               <h3>Inherited from <span class="extype" name="json.shadow.VMContext.JValueBase">JValueBase</span></h3>
             </div><div class="parent" name="json.internal.JValueLike">
-              <h3>Inherited from <a href="internal/JValueLike.html" class="extype" name="json.internal.JValueLike">JValueLike</a></h3>
+              <h3>Inherited from <span class="extype" name="json.internal.JValueLike">JValueLike</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="scala.AnyRef">
