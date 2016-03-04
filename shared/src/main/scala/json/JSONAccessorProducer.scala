@@ -41,9 +41,7 @@ object JSONAccessorProducer {
   }
 }
 
-@implicitNotFound(msg = "No implicit JSONAccessor for ${T} in scope. If using " +
-    "@accessor make sure macro-paradise plugin is enabled. " +
-    "https://github.com/MediaMath/scala-json/blob/master/ACCESSORS.md")
+@implicitNotFound(msg = "No implicit JSONAccessor for ${T} in scope. If using @accessor make sure macro-paradise plugin is enabled. https://github.com/MediaMath/scala-json/blob/master/ACCESSORS.md")
 trait JSONAccessorProducer[T, +JV <: JValue] extends JSONAccessorProducer.CreateJSON[T, JV] {
   type LocalType = T
 

@@ -50,6 +50,8 @@ object PrimitiveJArray {
 
     def createFrom(prim: PrimitiveArray[T]) = new PrimitiveJArray[T](prim)(this)
 
+    def createFrom(prim: IndexedSeq[T]) = new PrimitiveJArray[T](prim)(this)
+
     def toPrimitiveString(x: T): String = x.toString
 
     def createFrom[F](from: PrimitiveJArray[F]): PrimitiveJArray[T] = {
