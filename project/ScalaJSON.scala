@@ -132,6 +132,7 @@ object ScalaJSON {
   def tutSettings(jsonJVM: Project): Seq[Setting[_]] = baseSettings ++ tut.Plugin.tutSettings ++ Seq(
     publish := {},
     publishLocal := {},
+    test in Test := {},
     genDocsTaskNil := Nil,
 
     name := "tut",

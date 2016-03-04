@@ -1,9 +1,7 @@
 # Contributing
-
 scala-json is looking forward to receiving your feedback and pull requests!
 
 #### Building and testing
-
 1. Fork [scala-json](https://github.com/MediaMath/scala-json)
 1. Clone your fork (we'll refer to your fork as `origin` hereafter)
 1. Install [SBT](http://www.scala-sbt.org/)
@@ -26,16 +24,18 @@ If you have a solution, you can submit a [Pull Request](#pr) with the fix, but p
 Before you submit your pull request consider the following guidelines:
 
 * Search [GitHub](https://github.com/MediaMath/scala-json/pulls) for an open or closed Pull Request that relates to your submission.
-* Make sure your fork is [synched](https://help.github.com/articles/syncing-a-fork/)
+* Make sure your fork is [synched](https://help.github.com/articles/syncing-a-fork/).
 * Open an issue first to discuss any potential changes.
 * Create a new branch from `develop`, the current stable version.
-* Branch name should be in the format: `<github.id>-<issue#>-<iteration>` (ex: `colinrgodsey-1853-2`)
+* Branch name should be in the format:
+
+    `<github.id>-<issue#>-<iteration>` (ex: `colinrgodsey-1853-2`)
 * Make your changes in a new git branch:
 
      ```bash
      git checkout -b mygithub-1234-1
      ```
-* Create your patch
+* Create your patch.
 * Follow our [Coding Guidelines](#guidelines).
 * Commit your changes using a descriptive commit message
 * Push your branch to GitHub:
@@ -48,7 +48,7 @@ Before you submit your pull request consider the following guidelines:
 ## <a name="cr"></a>Code Review
 If code review suggests changes...
 
-* Make the required updates
+* Make the required updates.
 * [Rebase](https://help.github.com/articles/about-git-rebase/) your branch and force push to your GitHub repository (this will update your Pull Request):
 
     ```bash
@@ -56,17 +56,15 @@ If code review suggests changes...
     git rebase -i upstream/develop
     git push -f origin mygithub-1234-1
     ```
-* When you solution is approved, please [squash](https://help.github.com/articles/about-git-rebase/) your commits
+* When you solution is approved, please [squash](https://help.github.com/articles/about-git-rebase/) your commits.
 
 Thanks for your contribution!
 
 #### After your pull request is merged
-
 After your pull request is merged, you can safely delete your branch and pull the changes
 from the main (upstream) repository.
 
 ## <a name="compat"></a> API Compatibility
-
 We follow the major version of the release to signify API compatibility. The `develop` branch is the staging area
 for the next API-compatible release. Any other changes that may break compatibility will need a pull request made
 to a specific development branch for that future major version. These semantics will need to be discussed in the issue
