@@ -13,7 +13,7 @@ $ cd scala-json/
 $ sbt test
 ```
 
-## <a name="issue"></a> Found an Issue?
+## <a name="issue"></a>Found an Issue?
 If you find a bug in the source code or a mistake in the documentation, help us by
 submitting an [issue](https://github.com/MediaMath/scala-json/issues).
 
@@ -65,13 +65,13 @@ Thanks for your contribution!
 After your pull request is merged, you can safely delete your branch and pull the changes
 from the main (upstream) repository.
 
-## <a name="compat"></a> API Compatibility
+## <a name="compat"></a>API Compatibility
 We follow the major version of the release to signify API compatibility. The `develop` branch is the staging area
 for the next API-compatible release. Any other changes that may break compatibility will need a pull request made
 to a specific development branch for that future major version. These semantics will need to be discussed in the issue
 before any pull request is made.
 
-## <a name="guidelines"></a> Coding Guidelines
+## <a name="guidelines"></a>Coding Guidelines
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
 * All features or bug fixes **must be tested**
