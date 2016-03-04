@@ -15,7 +15,6 @@
  */
 
 import json.exceptions.{GenericFieldException, InputFormatException}
-import json.{JSONAccessorProducer, JValue}
 import json.internal.JSONAnnotations
 
 import scala.annotation.implicitNotFound
@@ -56,10 +55,15 @@ package object json extends JSONAnnotations with Implicits {
   /** Base type for all JSON exceptions. All exceptions are based off of case classes. */
   type JSONException = exceptions.JSONException
 
+  /** Manual version of implicit Any#js method of [[AnyValJSEx]] */
   def fromJSON[T](jval: JValue)(implicit acc: JSONAccessor[T]) = acc.fromJSON(jval)
+
   def toJSONString[T: JSONAccessor](obj: T) = obj.js.toString
 
+  /** Get an accessor of a specific type */
   def accessorOf[T](implicit acc: JSONAccessor[T]) = acc
+
+  /** Get an accessor for a value of a specific type */
   def accessorFor[T](x: T)(implicit acc: JSONAccessor[T]) = acc
 
   /** Create a simple [[JValue]] [[JSONAccessor]] out of 'to' and 'from' functions. */

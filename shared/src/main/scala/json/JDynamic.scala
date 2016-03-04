@@ -18,6 +18,12 @@ package json
 
 import language.dynamics
 
+/**
+ * This class exists via [[JValue#dynamic]] for the convenience of a JS like DSL
+ * that uses dynamic select for every field value selected. This gives the appearance
+ * of typed field access while being completely dynamic underneath.
+ * @param value actual JValue to be referenced for dynamic selects
+ */
 case class JDynamic(value: JValue) extends Dynamic {
   def applyDynamic(method: String)(idx: Int): JDynamic = value(method).jArray(idx).dynamic
 
