@@ -28,7 +28,7 @@ Before you submit your pull request consider the following guidelines:
 * Create a new branch from `develop`, the current development version.
 * Branch name should be in the format:
 ```
-<github.id>-<issue#>-<iteration> (ex: colinrgodsey-1853-2)
+<github_name>-<issue#>-<iteration> (ex: colinrgodsey-1853-2)
 ```
 * Make your changes in a new git branch:
  ```bash
