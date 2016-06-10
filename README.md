@@ -51,10 +51,10 @@ SBT
 resolvers += "mmreleases" at "https://artifactory.mediamath.com/artifactory/libs-release-global"
 
 //scala
-libraryDependencies += "com.mediamath" %% "scala-json" % "1.0-SNAPSHOT"
+libraryDependencies += "com.mediamath" %% "scala-json" % "1.0"
 
 //or scala + scala-js
-libraryDependencies += "com.mediamath" %%% "scala-json" % "1.0-SNAPSHOT"
+libraryDependencies += "com.mediamath" %%% "scala-json" % "1.0"
 
 //for @accessor annotation support
 resolvers += Resolver.sonatypeRepo("releases")
