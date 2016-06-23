@@ -24,6 +24,7 @@ for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/sc
 * Provides a useful JS-like AST for intermediate JSON data.
 * Implicit [accessors](./docs/ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
 * Enables use of normal looking scala structures with any existing JSON API.
+* Preserves JS object field order!
 * Produces pretty and human readable JSON from normal scala types.
 * Supports [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
 * Enables you to create readable APIs that match existing/specific class structure.
