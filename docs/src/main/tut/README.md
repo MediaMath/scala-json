@@ -43,6 +43,7 @@ Docs
 * [Accessors](./docs/ACCESSORS.md) - Accessors are the compile-time constructs that allow you to go from a JValue to a scala type and back.
 * [Registry](./docs/REGISTRY.md) - The Accessor Registry allows you to pickle registered types from untyped (Any) data.
 * [Enumerator](./docs/ENUMERATOR.md) - Allows enumerated case object values of a sealed trait (useful for map keys).
+* [EpochDeadline](http://mediamath.github.io/scala-json/doc/index.html#json.tools.EpochDeadline$) - Clone of scala's Deadline that serializes to numeric Unix epoch time.
 * [Migration](./docs/MIGRATION.md) - Uses a version field in JSON to transform old schemas to new ones. 
 * [Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
 
