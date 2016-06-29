@@ -21,7 +21,7 @@ Compile time JSON marshalling of primitive values, case-classes, basic collectio
 for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js).
 * Extensible accessor API. Serialize any type you want.
 * Provides a useful JS-like AST for intermediate JSON data.
-* Implicit [accessors](./docs/ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
+* Implicit [accessors](./docs/ACCESSORS.md) that chain to resolve Higher-Kind types (e.g. ```Option[T]```).
 * Uses default fields correctly.
 * Preserves object field order.
 * Ability to use non-string key types in a Map (for key types that serialize to JString).
