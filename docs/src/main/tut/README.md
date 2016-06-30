@@ -20,11 +20,12 @@ Features
 Compile time JSON marshalling of primitive values, case-classes, basic collections, and whatever you can imagine
 for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js).
 * Extensible accessor API. Serialize any type you want.
-* Uses default fields correctly.
 * Provides a useful JS-like AST for intermediate JSON data.
-* Implicit [accessors](./docs/ACCESSORS.md) that chain to resolve Higher-Kind types (```Option[T]```).
-* Enables use of normal looking scala structures with any existing JSON API.
-* Preserves JS object field order.
+* Implicit [accessors](./docs/ACCESSORS.md) that chain to resolve Higher-Kind types (e.g. ```Option[T]```).
+* Uses default fields correctly.
+* Preserves object field order.
+* Ability to use non-string key types in a Map (for key types that serialize to JString).
+* Enables use of normal looking scala structures with any previously existing JSON API.
 * Produces pretty and human readable JSON from normal scala types.
 * Supports [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
 * Enables you to create readable APIs that match existing/specific class structure.
@@ -41,8 +42,9 @@ Docs
 * [Usage and Examples](./docs/USAGE.md) - Getting started with basic usage and examples.
 * [Accessors](./docs/ACCESSORS.md) - Accessors are the compile-time constructs that allow you to go from a JValue to a scala type and back.
 * [Registry](./docs/REGISTRY.md) - The Accessor Registry allows you to pickle registered types from untyped (Any) data.
-* [Enumerator](./docs/ENUMERATOR.md) - Allows enumerated case object values of a sealed trait.
-* [Migration](./docs/MIGRATION.md) - Simple JSON migration support.
+* [Enumerator](./docs/ENUMERATOR.md) - Allows enumerated case object values of a sealed trait (useful for map keys).
+* [EpochDeadline](http://mediamath.github.io/scala-json/doc/index.html#json.tools.EpochDeadline$) - Clone of scala's Deadline that serializes to numeric Unix epoch time.
+* [Migration](./docs/MIGRATION.md) - Uses a version field in JSON to transform old schemas to new ones. 
 * [Scaladocs](http://mediamath.github.io/scala-json/doc/json/package.html)
 
 SBT
