@@ -1,4 +1,4 @@
-version in ThisBuild := "1.0-SNAPSHOT"
+version in ThisBuild := "1.0"
 
 lazy val json = crossProject.in(file("."))
     .settings(ScalaJSON.commonSettings: _*)

@@ -32,7 +32,7 @@ object Repository {
   val snapshotRepo = "snapshots" at Repository.snapshots
   val releaseRepo = "releases" at Repository.releases
 
-  val publishSuffix = "-local" //"-global"
+  val publishSuffix = "-global"
 
   def repo(isSnapshot: Boolean) = if (isSnapshot) Repository.snapshots else Repository.releases
   def publishTo(isSnapshot: Boolean) = repo(isSnapshot) + publishSuffix
