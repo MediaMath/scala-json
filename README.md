@@ -24,6 +24,7 @@ for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/sc
 * Implicit [accessors](./docs/ACCESSORS.md) that chain to resolve Higher-Kind types (e.g. ```Option[T]```).
 * Uses default fields correctly.
 * Preserves object field order.
+* Rich field exceptions with field names (all field errors, not just the first), perfect for form validation.
 * Ability to use non-string key types in a Map (for key types that serialize to JString).
 * Enables use of normal looking scala structures with any previously existing JSON API.
 * Produces pretty and human readable JSON from normal scala types.
