@@ -18,7 +18,8 @@ res0: json.JObject =
 Features
 -----
 Compile time JSON marshalling of primitive values, case-classes, basic collections, and whatever you can imagine
-for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/scala-js/scala-js).
+for [scala](https://github.com/scala/scala), [scala-native](https://github.com/scala-native/scala-native)
+and [scala-js](https://github.com/scala-js/scala-js).
 * Extensible accessor API. Serialize any type you want.
 * Provides a useful JS-like AST for intermediate JSON data.
 * Implicit [accessors](./docs/ACCESSORS.md) that chain to resolve Higher-Kind types (e.g. ```Option[T]```).
@@ -29,12 +30,15 @@ for [scala](https://github.com/scala/scala) and [scala-js](https://github.com/sc
 * Enables use of normal looking scala structures with any previously existing JSON API.
 * Produces pretty and human readable JSON from normal scala types.
 * Supports [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
+* Supports [scala-native](https://github.com/scala-native/scala-native) so you can take your models everywhere else.
+  (requires [jansson](https://github.com/akheron/jansson)- available through apt, brew, etc)
 * Enables you to create readable APIs that match existing/specific class structure.
 * Exposes rich compile-time type info, more run-time type data than reflect could ever provide.
 * Uses existing scala collection CanBuildFrom factories to support buildable collections.
 * Provides support for unknown types (Any) via 'pickling' with a run-time class [registry](./docs/REGISTRY.md).
 * Support for scala 2.10.x, 2.11.x, 2.12.0-M3.
 * Support for scala-js 0.6.x.
+* Support for scala-native 0.1.x.
 
 
 Docs
@@ -57,7 +61,7 @@ resolvers += "mmreleases" at "https://artifactory.mediamath.com/artifactory/libs
 //scala
 libraryDependencies += "com.mediamath" %% "scala-json" % "__VER__"
 
-//or scala + scala-js
+//or scala + scala-js/scala-native
 libraryDependencies += "com.mediamath" %%% "scala-json" % "__VER__"
 
 //for @accessor annotation support
@@ -70,8 +74,10 @@ Dependencies
 
 * [macro-paradise](http://docs.scala-lang.org/overviews/macros/paradise.html) 2.1.0+ required for @accessor annotation
 * [jackson](https://github.com/FasterXML/jackson) for JVM JSON string parsing
+* [jansson](https://github.com/akheron/jansson) for Scala Native JSON string parsing
 * [µTest](https://github.com/lihaoyi/utest) for testing
 * [tut](https://github.com/tpolecat/tut) for doc building
 
 [Contributing](./docs/CONTRIBUTING.md)
 ---
+

@@ -45,7 +45,7 @@ object ScalaJSON {
   val genDocsTaskReal = TaskKey[Seq[File]]("gen-docs-real")
   val genDocsTaskNil = TaskKey[Seq[File]]("gen-docs-nil")
 
-  val targetScalaVer = "2.11.7"
+  val targetScalaVer = "2.11.8"
 
   val baseSettings = Seq(
     scalaVersion := targetScalaVer,
