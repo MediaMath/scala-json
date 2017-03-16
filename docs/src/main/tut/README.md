@@ -30,8 +30,8 @@ and [scala-js](https://github.com/scala-js/scala-js).
 * Enables use of normal looking scala structures with any previously existing JSON API.
 * Produces pretty and human readable JSON from normal scala types.
 * Supports [scala-js](https://github.com/scala-js/scala-js) so you can extend your models to the web.
-* Supports [scala-native](https://github.com/scala-native/scala-native) so you can take your models everywhere else.
-  (requires [jansson](https://github.com/akheron/jansson)- available through apt, brew, etc)
+* Supports [scala-native](https://github.com/scala-native/scala-native) so you can take your models everywhere else
+  (requires [jansson](https://github.com/akheron/jansson), available through apt, brew, etc).
 * Enables you to create readable APIs that match existing/specific class structure.
 * Exposes rich compile-time type info, more run-time type data than reflect could ever provide.
 * Uses existing scala collection CanBuildFrom factories to support buildable collections.
