@@ -34,7 +34,7 @@ object MigratingObjectAccessorTest extends TestSuite {
   val needsOneMigration = """{"data": "Awesome Data","version": 1}"""
   val needsTwoMigrations = """{"oldData": "Data","version": 0}"""
 
-  val tests = TestSuite {
+  val tests = this {
     "MigratingObjectAccessor" - {
 
       "Needs 1 Migration" - {

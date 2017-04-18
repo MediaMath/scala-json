@@ -18,11 +18,10 @@ package json
 
 import json.internal.PrimitiveJArray
 import utest._
-import utest.framework.TestSuite
 
 class JVMJSONTest extends TestSuite {
 
-  val tests = TestSuite {
+  val tests = this {
     "use primitive arrays" - {
       val arrJS = JArray(JTrue, JFalse, JTrue).toString
       val parsed = JValue.fromString(arrJS).jArray

@@ -20,7 +20,7 @@ import scala.scalajs.js.annotation.JSExport
 import scalajs.js
 
 import utest._
-import utest.ExecutionContext.RunNow
+import utest.framework.ExecutionContext.RunNow
 
 class ExportTest extends js.JSApp {
   @JSExport

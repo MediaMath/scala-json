@@ -64,7 +64,7 @@ object SampleTest extends TestSuite {
     }
   )
 
-  val tests = TestSuite {
+  val tests = this {
     "a sample test" - {
       "access as json" - {
         runTest()

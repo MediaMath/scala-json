@@ -53,7 +53,7 @@ object ScalaJSON {
     organizationName := "MediaMath, Inc",
     organizationHomepage := Some(url("http://www.mediamath.com")),
     crossPaths := true,
-    crossScalaVersions := Seq("2.10.6", targetScalaVer, "2.12.0-M3"),
+    crossScalaVersions := Seq("2.10.6", targetScalaVer, "2.12.1"),
     resolvers += Resolver.sonatypeRepo("releases"),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
   )
@@ -107,10 +107,7 @@ object ScalaJSON {
       </developers>
     },
 
-    //temporary resolver for colinrgodsey fork of utest@0.3.1 for 2.12.0-M3 support
-    resolvers += "mvn repo" at "https://raw.githubusercontent.com/colinrgodsey/maven/master",
-
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.1" % "test",
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.4.5" % "test",
 
     testFrameworks += new TestFramework("utest.runner.Framework")
   )

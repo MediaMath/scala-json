@@ -184,10 +184,7 @@ object ObjectAccessorFactory {
       val nameConversion = nameConversionAnno.headOption match {
         case None => reify {s: String => s}.tree
         case Some(anno) =>
-          println(showRaw(anno))
           val outTree = anno.tree.children.tail.head
-          println(showRaw(outTree))
-          println(show(outTree))
           outTree
       }
       val nameConversionExpr = c.Expr[String => String](nameConversion)
@@ -214,16 +211,15 @@ object ObjectAccessorFactory {
 
       val objMfExpr = classExpr(typ0)
 
-      val memberAnnos = (for {
-        mem <- typ0.members
-        anno <- mem.annotations
+      val memberSymbols: Iterable[Symbol] =
+        typ0.members ++ applyMethod.paramLists.flatten ++
+            typ0.decls ++ typ0.companion.paramLists.flatten
+
+      val memberAnnos = for {
+        sym <- memberSymbols
+        anno <- sym.annotations
         if anno.tree.tpe <:< typeOf[JSONAnnotation]
-      } yield mem.name -> anno) ++ (for {
-        paramSet <- applyMethod.paramLists
-        param <- paramSet
-        anno <- param.annotations
-        if anno.tree.tpe <:< typeOf[JSONAnnotation]
-      } yield param.name -> anno)
+      } yield sym.name -> anno
 
       //scan for annotations that show we should use a
       //different field name

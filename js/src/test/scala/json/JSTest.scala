@@ -31,7 +31,7 @@ object JSTest extends TestSuite {
     assert(JSJValue.from(x) == result)
   }
 
-  val tests = TestSuite("test JS" - {
+  val tests = this("test JS" - {
     "test native JSON" - {
       val str = Tester.testJSON2
       val native = NativeJSON.parse(str)

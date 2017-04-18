@@ -19,7 +19,6 @@ package json
 
 import json.internal.PrimitiveJArray
 import json.tools.{TypedEnumerator, Enumerator}
-import utest.framework.TestSuite
 import utest._
 
 import scala.annotation.meta
@@ -37,9 +36,6 @@ object Tester extends TestSuite {
     implicit val acc = ObjectAccessor.create[TestObject3]
   }
 
-  object TestObject2 {
-    implicit val acc = ObjectAccessor.create[TestObject2]
-  }
   case class TestObject2(a: String, b: String, qqq: Double = 2.456,
       c: String = "ddddd", d: Option[String] = Some("XXXX"),
       @name(field = "aa11") @Tester.NumAnno(11) ffff: Option[String] = None,
@@ -47,13 +43,16 @@ object Tester extends TestSuite {
           TestObject3("", 0.5, 4)),
       seqa: Seq[Int] = Nil,
       blah: Int = 123)
-
-  object TestObject {
-    implicit val acc = ObjectAccessor.create[TestObject]
+  object TestObject2 {
+    implicit val acc = ObjectAccessor.create[TestObject2]
   }
+
   case class TestObject(a: String,
       @name(field = "BLAH") b: String,
       c: Int, d: TestObject2)
+  object TestObject {
+    implicit val acc = ObjectAccessor.create[TestObject]
+  }
 
   trait TestTrait {
     def num: Int
@@ -106,7 +105,7 @@ object Tester extends TestSuite {
   def testJSONEqual(jv: JValue) =
     assert(JValue.fromString(jv.toString) == jv)
 
-  val tests = TestSuite {
+  val tests = this {
     "JSON accessor should" - {
       val test3 = TestObject3("", 0.5, 4)
       val test2 = TestObject2("sdfsdg", "dfdfd")

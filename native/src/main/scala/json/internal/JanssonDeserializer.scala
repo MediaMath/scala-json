@@ -19,6 +19,7 @@ package json.internal
 import scalanative.native
 
 import janssonConstants._
+import janssonTypes._
 import jansson._
 import native._
 import json._

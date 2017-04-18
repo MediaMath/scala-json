@@ -23,25 +23,7 @@ import Nat._
 @native.link("jansson")
 @native.extern
 object jansson {
-  type JSON_ERROR_TEXT_LENGTH = Digit[_1, Digit[_6, _0]]
-  type JSON_ERROR_SOURCE_LENGTH = Digit[_8, _0]
-
-  type json_type = CInt //enum
-
-  type json_error_t = CStruct5[
-      CInt, //line
-      CInt, //column
-      CInt, //position,
-      CArray[CChar, JSON_ERROR_SOURCE_LENGTH], //source
-      CArray[CChar, JSON_ERROR_TEXT_LENGTH] //text
-  ]
-
-  type json_t = CStruct2[
-      json_type, //type
-      CSize //refcount
-  ]
-
-  type json_iter = Ptr[Byte]
+  import janssonTypes._
 
   def json_loads(input: CString, flags: CSize, error: Ptr[json_error_t]): Ptr[json_t] = extern
 
@@ -68,6 +50,28 @@ object jansson {
   def json_string(value: CString): Ptr[json_t] = extern
 
   def json_string_value(str: Ptr[json_t]): CString = extern
+}
+
+object janssonTypes {
+  type JSON_ERROR_TEXT_LENGTH = Digit[_1, Digit[_6, _0]]
+  type JSON_ERROR_SOURCE_LENGTH = Digit[_8, _0]
+
+  type json_type = CInt //enum
+
+  type json_error_t = CStruct5[
+      CInt, //line
+      CInt, //column
+      CInt, //position,
+      CArray[CChar, JSON_ERROR_SOURCE_LENGTH], //source
+      CArray[CChar, JSON_ERROR_TEXT_LENGTH] //text
+      ]
+
+  type json_t = CStruct2[
+      json_type, //type
+      CSize //refcount
+      ]
+
+  type json_iter = Ptr[Byte]
 }
 
 object janssonConstants {
