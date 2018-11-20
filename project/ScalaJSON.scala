@@ -110,8 +110,6 @@ object ScalaJSON {
     //temporary resolver for colinrgodsey fork of utest@0.3.1 for 2.12.0-M3 support
     resolvers += "mvn repo" at "https://raw.githubusercontent.com/colinrgodsey/maven/master",
 
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.1" % "test",
-
     testFrameworks += new TestFramework("utest.runner.Framework")
   )
 

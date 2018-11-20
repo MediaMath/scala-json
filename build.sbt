@@ -1,14 +1,14 @@
-//shadow sbt-scalajs' crossProject and CrossType until Scala.js 1.0.0 is released
-import sbtcrossproject.{crossProject, CrossType}
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 version in ThisBuild := "1.0"
 
 lazy val json = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     .crossType(CrossType.Full)
     .settings(ScalaJSON.commonSettings: _*)
+    .settings(libraryDependencies += "com.lihaoyi" %%% "utest" % "0.6.6" % "test")
     .jvmSettings(ScalaJSON.jvmSettings: _*)
     .jsSettings(ScalaJSON.jsSettings: _*)
-    .nativeSettings(Nil)
+    .nativeSettings(nativeLinkStubs := true)
     .in(file("."))
 
 lazy val jsonJVM = json.jvm
