@@ -1,6 +1,6 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-version in ThisBuild := "1.0"
+version in ThisBuild := "1.1"
 
 lazy val json = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     .crossType(CrossType.Full)

@@ -47,7 +47,7 @@ public abstract class BaseJValueObjectDeserializer extends StdDeserializer<JValu
                 return jString(jp.getText());
             case VALUE_NUMBER_INT:
             case VALUE_NUMBER_FLOAT:
-                return JNumber$.MODULE$.apply(_parseDouble(jp, ctx));
+                return JNumber$.MODULE$.apply(_parseDoublePrimitive(jp, ctx));
             case VALUE_TRUE:
                 return JTrue$.MODULE$;
             case VALUE_FALSE:
