@@ -1,4 +1,5 @@
 scala-json
+[![Known Vulnerabilities](https://snyk.io/test/github/MediaMath/scala-json/badge.svg?targetFile=build.sbt)](https://snyk.io/test/github/MediaMath/scala-json?targetFile=build.sbt)
 ==========
 ```scala
 import json._
