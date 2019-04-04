@@ -18,7 +18,6 @@ package json
 
 import json.internal.PrimitiveJArray
 import utest._
-import utest.framework.TestSuite
 
 class JVMJSONTest extends TestSuite {
 

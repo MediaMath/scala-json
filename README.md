@@ -75,6 +75,7 @@ Dependencies
 * [macro-paradise](http://docs.scala-lang.org/overviews/macros/paradise.html) 2.1.0+ required for @accessor annotation
 * [jackson](https://github.com/FasterXML/jackson) for JVM JSON string parsing
 * [jansson](https://github.com/akheron/jansson) for Scala Native JSON string parsing
+* [re2](https://github.com/google/re2) for fast and safe RegEx
 * [µTest](https://github.com/lihaoyi/utest) for testing
 * [tut](https://github.com/tpolecat/tut) for doc building
 

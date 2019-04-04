@@ -79,6 +79,19 @@ trait JArrayLike extends immutable.IndexedSeq[JValue] with IndexedSeqLike[JValue
 
   def apply(key: JNumber): JValue = apply(key.num.toInt)
 
+  override def equals(that: Any): Boolean = that match {
+    case x: JArrayLike =>
+      val itr1 = iterator
+      val itr2 = x.iterator
+
+      while(itr1.hasNext && itr2.hasNext)
+        if(itr1.next != itr2.next)
+          return false
+
+      !itr1.hasNext && !itr2.hasNext
+    case _ => false
+  }
+
   override def apply(key: JValue): JValue = key match {
     case JString("length") => JNumber(length)
     case _ =>

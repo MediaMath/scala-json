@@ -152,7 +152,7 @@ trait JObjectLike { _: JObject =>
   def contains(key: String) = fields contains key
 
   override def equals(that: Any) = that match {
-    case JObject(f) => f == fields
+    case x: JObject => x.fields == fields
     case _ => false
   }
 

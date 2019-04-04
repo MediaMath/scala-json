@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-import sbt.Keys._
-import sbt.Project.Initialize
-import sbt._
-import sbt.dsl._
-import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import sbt.Keys._
+import sbt._
 
 object Repository {
   val host = "artifactory.mediamath.com"
@@ -110,14 +107,12 @@ object ScalaJSON {
     //temporary resolver for colinrgodsey fork of utest@0.3.1 for 2.12.0-M3 support
     resolvers += "mvn repo" at "https://raw.githubusercontent.com/colinrgodsey/maven/master",
 
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.1" % "test",
-
     testFrameworks += new TestFramework("utest.runner.Framework")
   )
 
   val jvmSettings = Seq(
-    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-core" % "2.7.1",
-    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.7.1",
+    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-core" % "2.9.5",
+    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.5",
     fork in Test := true
   )
 

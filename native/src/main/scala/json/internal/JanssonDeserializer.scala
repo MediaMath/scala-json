@@ -36,7 +36,7 @@ object JanssonDeserializer {
     sys.error(errString)
   }
 
-  def parseString(jsonString: String): JValue = {
+  def parseString(jsonString: String): JValue = Zone { implicit z =>
     val error = stackalloc[json_error_t]
 
     val decoded = json_loads(native toCString jsonString, JSON_DECODE_ANY, error)
@@ -51,7 +51,7 @@ object JanssonDeserializer {
     output
   }
 
-  def serializeString(str: String): String = {
+  def serializeString(str: String): String = Zone { implicit z =>
     val encoded = json_string(native toCString str)
 
     val outNative = json_dumps(encoded, JSON_ENCODE_ANY)

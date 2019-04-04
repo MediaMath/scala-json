@@ -18,12 +18,12 @@ package json.shadow
 
 import json._
 import json.internal.DefaultVMContext.PrimitiveArray
-import json.internal._
+import json.internal.{BaseVMContext, JSJValue, PrimitiveJArray, SimpleStringBuilder}
 import JSJValue.TypedArrayExtractor
+import json.Implicits._
 
 import scala.collection.mutable
 import scala.reflect.ClassTag
-
 import scalajs.js.{JSON => NativeJSON}
 import scalajs.js.annotation.JSExport
 import scalajs.js
@@ -44,7 +44,7 @@ object VMContext extends BaseVMContext {
     def result(): String = arr.join("")
   }
 
-  def fromString(str: String): JValue = {
+  def fromString(str: String): json.JValue = {
     def reviver = (key: js.Any, value: js.Any) =>
       (JSJValue fromNativeJS value).asInstanceOf[js.Any]
     val parsed = NativeJSON.parse(str, reviver)

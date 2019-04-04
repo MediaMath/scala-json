@@ -17,7 +17,6 @@
 package json.internal
 
 import json._
-import json.exceptions.{MissingFieldException, InputFormatsException, InputFormatException}
 
 import scala.collection.mutable
 import scala.language.experimental.macros
@@ -39,7 +38,7 @@ import Compat210._
 object ObjectAccessorFactory {
   import scala.reflect.macros._ // shadows blackbox from above
   import whitebox._
-
+  import json.exceptions.{MissingFieldException, InputFormatsException, InputFormatException}
 
   def annotation_impl(c: Context)(annottees: c.Expr[Any]*): c.Expr[Any] = {
     @deprecated("", "")
@@ -446,7 +445,7 @@ object ObjectAccessorFactory {
       reify {
         import json._
 
-        (new CaseClassObjectAccessor[T] {
+        (new json.internal.CaseClassObjectAccessor[T] {
           val nameMap = nameConversionExpr.splice
 
           val fields: IndexedSeq[FieldAccessor[T, _]] =
@@ -460,7 +459,7 @@ object ObjectAccessorFactory {
 
             deSerExpr.splice
           }
-        }: CaseClassObjectAccessor[T])
+        }: json.internal.CaseClassObjectAccessor[T])
       }
     }
   }
