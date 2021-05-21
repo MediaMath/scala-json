@@ -47,6 +47,27 @@ trait Accessors extends LowPriorityAccessors {
     override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[T])
   }
 
+  implicit def maybeJNullAccessor[T: JSONAccessor, U <: MaybeJNull[T]] = new MaybeJNullAccessor[T, U]
+
+  final class MaybeJNullAccessor[T: JSONAccessor, U <: MaybeJNull[T]]
+    extends JSONAccessorProducer[MaybeJNull[T], JValue] {
+    def clazz = classOf[MaybeJNull[Any]]
+
+    override def toString = "MaybeJNullAccessor"
+
+    def createJSON(obj: MaybeJNull[T]): JValue = obj match {
+      case ValueWrapper(x) => x.js
+      case _       => JNull
+    }
+
+    def fromJSON(js: JValue): MaybeJNull[T] = js match {
+      case JNull      => JNullWrapper
+      case x          => ValueWrapper(x.to[T])
+    }
+
+    override def referencedTypes: Seq[JSONAccessorProducer[_, _]] = Seq(accessorOf[T])
+  }
+
   implicit def mapAccessor[K, T](implicit valueAcc: JSONAccessor[T], keyAcc: JSONAccessorProducer[K, JString]) =
     new MapAccessor[K, T]
 
