@@ -16,11 +16,10 @@
 
 package json.internal
 
-import json._
+import json.{JNull, _}
 
 import scala.collection.mutable
 import scala.language.experimental.macros
-
 import language.experimental.macros
 import scala.reflect.api.Names
 import scala.reflect.macros.Universe
@@ -154,9 +153,9 @@ object ObjectAccessorFactory {
       import c.universe._ //shadow old Shadow210 compat methods
 
       case class MemberInfo(name: c.Expr[String],
-          preConvName: c.Expr[String],
-          getter: c.Expr[Any], // of obj: T
-          default: Option[c.Expr[Any]], typ: Type, origName: Name, ephemeral: Boolean)
+                            preConvName: c.Expr[String],
+                            getter: c.Expr[Any], // of obj: T
+                            default: Option[c.Expr[Any]], typ: Type, origName: Name, ephemeral: Boolean)
 
       val typ0 = implicitly[c.WeakTypeTag[T]].tpe
 
@@ -389,14 +388,54 @@ object ObjectAccessorFactory {
             case t                          => sys.error("Unkown default type for " + t)
           }
 
-          //special 'Option' handling
-          if (info.typ <:< typeOf[Option[Any]]) reify {
+          def handleOptionOrValue(): c.universe.Tree = {
+            //special 'Option' handling
+            if (info.typ <:< typeOf[Option[Any]]) reify {
+              val defOpt = defOptExpr.splice
+
+              val b = (jval.splice.apply(JString(info.name.splice)): JValue) match {
+                case JUndefined if defOpt.isDefined => defOpt.get
+                case JNull      => None
+                case JUndefined => None
+                case jv => try accExpr.splice.fromJSON(jv) catch {
+                  case e: InputFormatException =>
+                    inputExceptionsXpr.splice += e.prependFieldName(info.name.splice)
+                    typedNull.splice
+                }
+              }
+
+              checkLastExpr.splice
+
+              b
+            }.tree else reify {
+              val defOpt = defOptExpr.splice
+
+              val b = (jval.splice.apply(JString(info.name.splice)): JValue) match {
+                case j if j.isNullOrUndefined && defOpt.isDefined =>
+                  defOpt.get
+                case j if j.isNullOrUndefined =>
+                  val e = new MissingFieldException(info.name.splice)
+                  inputExceptionsXpr.splice += e
+                  typedNull.splice
+                case jv => try accExpr.splice.fromJSON(jv) catch {
+                  case e: InputFormatException =>
+                    inputExceptionsXpr.splice += e.prependFieldName(info.name.splice)
+                    typedNull.splice
+                }
+              }
+
+              checkLastExpr.splice
+
+              b
+            }.tree
+          }
+
+          //special 'MaybeJNull' handling
+          if (info.typ <:< typeOf[MaybeJNull[Any]]) reify {
             val defOpt = defOptExpr.splice
 
             val b = (jval.splice.apply(JString(info.name.splice)): JValue) match {
               case JUndefined if defOpt.isDefined => defOpt.get
-              case JNull      => None
-              case JUndefined => None
               case jv => try accExpr.splice.fromJSON(jv) catch {
                 case e: InputFormatException =>
                   inputExceptionsXpr.splice += e.prependFieldName(info.name.splice)
@@ -407,27 +446,9 @@ object ObjectAccessorFactory {
             checkLastExpr.splice
 
             b
-          }.tree else reify {
-            val defOpt = defOptExpr.splice
-
-            val b = (jval.splice.apply(JString(info.name.splice)): JValue) match {
-              case j if j.isNullOrUndefined && defOpt.isDefined =>
-                defOpt.get
-              case j if j.isNullOrUndefined =>
-                val e = new MissingFieldException(info.name.splice)
-                inputExceptionsXpr.splice += e
-                typedNull.splice
-              case jv => try accExpr.splice.fromJSON(jv) catch {
-                case e: InputFormatException =>
-                  inputExceptionsXpr.splice += e.prependFieldName(info.name.splice)
-                  typedNull.splice
-              }
-            }
-
-            checkLastExpr.splice
-
-            b
-          }.tree
+          }.tree else {
+            handleOptionOrValue()
+          }
         }
 
         c.Expr[T](Apply(Select(Ident(module),
